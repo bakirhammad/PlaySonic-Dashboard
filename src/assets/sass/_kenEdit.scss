@@ -1,0 +1,60 @@
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  //   border: "none";
+  //   -webkit-box-shadow: "0 0 0px 1000px none inset";
+  background-color: initial !important;
+  //   transition: background-color 5000s ease-in-out 0s;
+}
+.action-item-btn {
+  transition: all 0.3s ease;
+  border-radius: 5px;
+}
+
+.action-item-btn:hover {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.action-item-btn:active {
+  background-color: #0056b3;
+  border-color: #0056b3;
+  color: white;
+  transform: scale(0.95);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.action-item-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+}
+.fs-22 {
+  font-size: 22px !important;
+}
+
+.scroll {
+  overflow-y: auto;
+}
+
+.scroll:active::-webkit-scrollbar-thumb,
+.scroll:focus::-webkit-scrollbar-thumb,
+.scroll:hover::-webkit-scrollbar-thumb {
+  visibility: visible !important;
+}
+.scroll::-webkit-scrollbar-thumb {
+  background-color: darkgrey !important;
+  visibility: hidden !important;
+}
+
+.scroll::-webkit-scrollbar {
+  width: 4px !important;
+  height: 4px !important;
+}

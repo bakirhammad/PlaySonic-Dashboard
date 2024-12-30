@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    // "baseUrl": "./",
+    "paths": {
+      "@app/*": ["./src/app/*"],
+      "@domain/*": ["./src/domain/*"],
+      "@infrastructure/*": ["./src/infrastructure/*"],
+      "@presentation/*": ["./src/presentation/*"],
+      "@main/*": ["./src/main/*"],
+      "@assets/*": ["./src/assets/*"],
+      "@components/*": ["./src/components/*"],
+      "@helpers/*": ["./src/helpers/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@layout/*": ["./src/presentation/layout/*"],
+      "@localization/*": ["./src/localization/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@partials/*": ["./src/partials/*"],
+      "@routing/*": ["./src/routing/*"],
+      "@services/*": ["./src/services/*"]
+    }
+  },
+  "include": [
+    "src",
+    "src/presentation/pages/fixPackages/createPackage/components/PackageRateFormRight/FlightSellRule.tsx"
+  ],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
