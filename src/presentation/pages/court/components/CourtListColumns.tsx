@@ -4,11 +4,12 @@ import {
   CustomHeaderCell,
   CustomSelectAll,
   CustomSelectionCell,
+  CustomStatusCell,
 } from "@presentation/components/tables";
-import { IClubData } from "@domain/entities/Clubs/Clubs";
-import { ClubActionCell } from "./CustomClubActionCell";
+import { CourtActionCell } from "./CourtActionCell";
+import { ICourtData } from "@domain/entities/Court/Court";
 
-const ClubListColumns: ReadonlyArray<Column<IClubData>> = [
+const CourtListColumns: ReadonlyArray<Column<ICourtData>> = [
   {
     Header: (props) => <CustomSelectAll tableProps={props} />,
     id: "selection",
@@ -20,7 +21,7 @@ const ClubListColumns: ReadonlyArray<Column<IClubData>> = [
     Header: (props) => (
       <CustomHeaderCell
         tableProps={props}
-        title="SIDEBAR-CLUB-ID"
+        title="SIDEBAR-COURT-ID"
         enableSorting={false}
         className="min-w-125px"
       />
@@ -34,7 +35,35 @@ const ClubListColumns: ReadonlyArray<Column<IClubData>> = [
     Header: (props) => (
       <CustomHeaderCell
         tableProps={props}
-        title="SIDEBAR-CLUB-PAYLOAD"
+        title="SIDEBAR-COURT-NAME"
+        enableSorting={false}
+        className="min-w-125px"
+      />
+    ),
+    id: "name",
+    Cell: ({ ...props }) => (
+      <CustomCell data={props.data[props.row.index]?.name} />
+    ),
+  },
+  {
+    Header: (props) => (
+      <CustomHeaderCell
+        tableProps={props}
+        title="SIDEBAR-COURT-CLUB"
+        enableSorting={false}
+        className="min-w-125px"
+      />
+    ),
+    id: "club",
+    Cell: ({ ...props }) => (
+      <CustomCell data={props.data[props.row.index]?.clubId} />
+    ),
+  },
+  {
+    Header: (props) => (
+      <CustomHeaderCell
+        tableProps={props}
+        title="SIDEBAR-COURT-PAYLOAD"
         enableSorting={false}
         className="min-w-125px"
       />
@@ -48,70 +77,31 @@ const ClubListColumns: ReadonlyArray<Column<IClubData>> = [
     Header: (props) => (
       <CustomHeaderCell
         tableProps={props}
-        title="SIDEBAR-CLUB-COUNTRY"
+        title="SIDEBAR-COURT-RANK"
         enableSorting={false}
         className="min-w-125px"
       />
     ),
-    id: "country",
+    id: "rank",
     Cell: ({ ...props }) => (
-      <CustomCell data={props.data[props.row.index]?.countryId} />
+      <CustomCell data={props.data[props.row.index]?.rank} />
     ),
   },
   {
     Header: (props) => (
       <CustomHeaderCell
         tableProps={props}
-        title="SIDEBAR-CLUB-CITY"
+        title="SIDEBAR-COURT-INDOOR"
         enableSorting={false}
         className="min-w-125px"
       />
     ),
-    id: "city",
+    id: "indoor",
     Cell: ({ ...props }) => (
-      <CustomCell data={props.data[props.row.index]?.cityId} />
-    ),
-  },
-  {
-    Header: (props) => (
-      <CustomHeaderCell
-        tableProps={props}
-        title="SIDEBAR-CLUB-AREA"
-        enableSorting={false}
-        className="min-w-125px"
+      <CustomStatusCell
+        status={props.data[props.row.index]?.indoor ? "primary" : "danger"}
+        title={props.data[props.row.index]?.indoor ? "Yes" : "No"}
       />
-    ),
-    id: "area",
-    Cell: ({ ...props }) => (
-      <CustomCell data={props.data[props.row.index]?.areaId} />
-    ),
-  },
-  {
-    Header: (props) => (
-      <CustomHeaderCell
-        tableProps={props}
-        title="SIDEBAR-CLUB-FEATURE"
-        enableSorting={false}
-        className="min-w-125px"
-      />
-    ),
-    id: "feature",
-    Cell: ({ ...props }) => (
-      <CustomCell data={props.data[props.row.index]?.features} />
-    ),
-  },
-  {
-    Header: (props) => (
-      <CustomHeaderCell
-        tableProps={props}
-        title="SIDEBAR-CLUB-PHONENUMBER"
-        enableSorting={false}
-        className="min-w-125px"
-      />
-    ),
-    id: "phoneNumber",
-    Cell: ({ ...props }) => (
-      <CustomCell data={props.data[props.row.index]?.phone} />
     ),
   },
   {
@@ -124,12 +114,12 @@ const ClubListColumns: ReadonlyArray<Column<IClubData>> = [
     ),
     id: "actions",
     Cell: ({ ...props }) => (
-      <ClubActionCell
+      <CourtActionCell
         id={props.data[props.row.index].id}
-        name={props.data[props.row.index]?.payload}
+        name={props.data[props.row.index]?.name}
       />
     ),
   },
 ];
 
-export { ClubListColumns };
+export { CourtListColumns };

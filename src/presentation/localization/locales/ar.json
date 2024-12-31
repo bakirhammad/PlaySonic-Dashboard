@@ -3024,5 +3024,47 @@
   "HOTEL-VIEW-RATE" : "عرض",
   "HOTEL-HOTEL-RATE-VIEW-PAGE_TITLE" :"View",
     "-------------------------===============================":"",
-  "SIDEBAR-CLUB":"النوادي"
+  "SIDEBAR-CLUB":"النوادي",
+  "SIDEBAR-CLUB-PHONENUMBER" : "رقم الهاتف",
+  "SIDEBAR-CLUB-FEATURE" : "المميزات",
+  "SIDEBAR-CLUB-AREA" : "المنطقة",
+  "SIDEBAR-CLUB-CITY" : "المدينة",
+  "SIDEBAR-CLUB-COUNTRY" : "الدولة",
+  "SIDEBAR-CLUB-PAYLOAD" : "Payload",
+  "SIDEBAR-CLUB-ID":"ID",
+  "CLUB-NAME":"اسم النادي",
+  "CLUB-DESSCRIPTION":"الوصف",
+  "SELECT-FEATURE" :"Select Feature",
+  "DDL-FEATURE": "Feature",
+  "DDL-AREA":"المنطقة",
+  "CLUB-WEBSITE":"عنوان الموقع الالكتروني",
+  "CLUB-PAYLOAD":"Payload",
+  "CLUB-PHONE":"رقم الهاتف",
+  "CLUB-Longitude": "Club Longitude",
+  "CLUB-Latitude":"Club Latitude",
+  "Create-Club":"Create Club",
+  "CLUB-UPDATE-MODAL":"Update Club",
+  "SIDEBAR-COURT":"الملاعب",
+  "SIDEBAR-COURT-INDOOR" : "Is Indoor",
+  "SIDEBAR-COURT-RANK" : "التريب",
+  "SIDEBAR-COURT-PAYLOAD" : "Payload",
+  "SIDEBAR-COURT-CLUB" : "النادي",
+  "SIDEBAR-COURT-NAME" : "الاسم",
+  "SIDEBAR-COURT-ID" : "ID",
+  "DDL-CLUB-NAME": "اسم النادي",
+  "COURT-MANE" : "اسم الملعب",
+  "COURT-PAYLOAD" : "Court Payload",
+  "COURT-RANK" : "الترتيب",
+  "COURT-TYPE-ID" : "Court Type ID",
+  "COURT-SYSTEM-TYPE-ID" : "System Type ID",
+  "COURT-ALLOWED-SLOT-TYPES" : "Allowed Slot Types",
+  "COURT-SPORT-ID" : "Sport ID",
+  "COURT-INDOOR" : "Indoor",
+  "COURT-UPDATE-MODAL": "Update Court"
+
+
+
+
+
+
 }

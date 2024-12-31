@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-
-import { IClubCommand, IClubData } from "@domain/entities/Clubs/Clubs";
+import { ICourtCommand, ICourtData } from "@domain/entities/Court/Court";
 import { IHttpClient } from "@domain/entities/protocols/http";
 import { HttpStatusCode } from "@domain/enums";
 import { InvalidCredentialsError, UnexpectedError } from "@domain/errors";
@@ -11,14 +9,14 @@ import { ServerError } from "@domain/errors/ServerError";
 import { ICommand } from "@domain/primitives/commands/ICommand";
 import { makeAxiosHttpClient } from "@main/factories/http/AxiosHttpClient";
 
-export class ClubCommand
-  implements IClubCommand, ICommand {
+export class CourtCommand
+  implements ICourtCommand, ICommand {
   constructor(private readonly httpPostClient: IHttpClient) { }
 
-  async createClub(
+  async createCourt(
     url: any,
     body: any
-  ): Promise<IClubData> {
+  ): Promise<ICourtData> {
     const httpResponse = await this.httpPostClient.postRequest({
       url,
       body,
@@ -40,10 +38,10 @@ export class ClubCommand
         throw new UnexpectedError();
     }
   }
-  async updateClub(
+  async updateCourt(
     url: any,
     body: any
-  ): Promise<IClubData> {
+  ): Promise<ICourtData> {
     const httpResponse = await this.httpPostClient.putRequest({
       url,
       body,
@@ -65,10 +63,10 @@ export class ClubCommand
         throw new UnexpectedError();
     }
   }
-  async deleteClub(
+  async deleteCourt(
     url: string,
     id: number
-  ): Promise<IClubData> {
+  ): Promise<ICourtData> {
     const newUrl = `${url}Id=${id}`;
     const httpResponse = await this.httpPostClient.deleteRequest({
       url: newUrl,
@@ -91,10 +89,10 @@ export class ClubCommand
     }
   }
 
-  async multipleDeleteClub(
+  async multipleDeleteCourt(
     url: string,
     ids: number[]
-  ): Promise<IClubData> {
+  ): Promise<ICourtData> {
     const httpResponse = await this.httpPostClient.deleteRequest({
       url,
       body: ids,
@@ -118,6 +116,6 @@ export class ClubCommand
   }
 }
 
-export const ClubCommandInstance = new ClubCommand(
+export const CourtCommandInstance = new CourtCommand(
   makeAxiosHttpClient()
 );

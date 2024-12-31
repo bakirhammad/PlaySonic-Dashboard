@@ -38,18 +38,26 @@ const SidebarMenuMain = () => {
         </div>
       </div>
 
-      <SidebarMenuItemWithSub
+      {/* <SidebarMenuItemWithSub
         to="/apps/sightseeing"
         title={"SIGHT-SEEING-PAGE-TITLE"}
         icon="abstract-28"
         fontIcon="bi-people-fill"
       >
         <SidebarSightSeeingMenuItems />
-      </SidebarMenuItemWithSub>
+      </SidebarMenuItemWithSub> */}
+
       {/* .. >>>>>  */}
+
       <SidebarMenuItem
-        to="/apps/sightseeing/clubs"
+        to="/apps/club"
         title={"SIDEBAR-CLUB"}
+        hasBullet={true}
+      />
+
+      <SidebarMenuItem
+        to="/apps/court"
+        title={"SIDEBAR-COURT"}
         hasBullet={true}
       />
     </>

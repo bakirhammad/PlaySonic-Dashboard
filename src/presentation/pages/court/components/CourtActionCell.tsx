@@ -9,72 +9,72 @@ import { FC } from "react";
 import { useQueryClient, useMutation, useQuery } from "react-query";
 import { QUERIES } from "@presentation/helpers";
 import { useListView } from "@presentation/context/index";
-import UpdateClubModalForm from "./UpdateClubModalForm";
 import {
-  ClubCommandInstance,
-  ClubQueryByIdInstance,
-} from "@app/useCases/clubs";
-import { ClubUrlEnum } from "@domain/enums/URL/Clubs/ClubUrls/Club";
-import { IClubData } from "@domain/entities/Clubs/Clubs";
+  CourtCommandInstance,
+  CourtQueryByIdInstance,
+} from "@app/useCases/court";
+import { CourtUrlEnum } from "@domain/enums/URL/Court/CourtUrls/Court";
+import UpdateCourtModalForm from "./UpdateCourtModalForm";
+import { ICourtData } from "@domain/entities/Court/Court";
 
 interface Props {
   id: number;
   name: string;
 }
 
-const ClubActionCell: FC<Props> = ({ id, name }) => {
+const CourtActionCell: FC<Props> = ({ id, name }) => {
   const { itemIdForUpdate, setItemIdForUpdate } = useListView();
   const queryClient = useQueryClient();
 
   const { data, error, isLoading } = useQuery({
-    queryKey: [QUERIES.ClubList, id],
+    queryKey: [QUERIES.CourtList, id],
     queryFn: () => {
-      return ClubQueryByIdInstance.getClubById(ClubUrlEnum.GetClubById, id);
+      return CourtQueryByIdInstance.getCourtById(CourtUrlEnum.GetCourtById, id);
     },
     onError: () => {
       console.error("Error submitting form:", error);
-      CustomToast(`Failed to get Club data`, "error");
+      CustomToast(`Failed to get Court data`, "error");
       setItemIdForUpdate(undefined);
     },
     enabled: itemIdForUpdate === id,
   });
 
-  const { mutate: deleteClub } = useMutation(
+  const { mutate: deleteCourt } = useMutation(
     async (id: number) => {
-      const data = await ClubCommandInstance.deleteClub(
-        ClubUrlEnum.DeleteClub,
+      const data = await CourtCommandInstance.deleteCourt(
+        CourtUrlEnum.DeleteCourt,
         id
       );
       return data;
     },
     {
-      onSuccess: async (res: IClubData | number) => {
+      onSuccess: async (res: ICourtData | number) => {
         if (res === -1) {
           const confirmForceDelete = await showConfirmationAlert(
             "This Item has Related entities"
           );
           if (confirmForceDelete) {
-            await ClubCommandInstance.deleteClub(
-              ClubUrlEnum.DeleteClub + `forceDelete=true&`,
+            await CourtCommandInstance.deleteCourt(
+              CourtUrlEnum.DeleteCourt + `forceDelete=true&`,
               id
             );
             CustomToast(`Deleted successfully`, "success");
             showDeletedAlert(name);
             queryClient.invalidateQueries({
-              queryKey: [QUERIES.ClubList],
+              queryKey: [QUERIES.CourtList],
             });
           }
         } else {
           CustomToast(`Deleted successfully`, "success");
           showDeletedAlert(name);
           queryClient.invalidateQueries({
-            queryKey: [QUERIES.ClubList],
+            queryKey: [QUERIES.CourtList],
           });
         }
       },
       onError: (error) => {
-        console.error("Error when delete Club", error);
-        CustomToast(`Failed to delete Club`, "error");
+        console.error("Error when delete Court", error);
+        CustomToast(`Failed to delete Court`, "error");
       },
     }
   );
@@ -82,7 +82,7 @@ const ClubActionCell: FC<Props> = ({ id, name }) => {
   const handleDelete = async () => {
     const confirm = await showConfirmationAlert(name);
     if (confirm) {
-      deleteClub(id);
+      deleteCourt(id);
     }
   };
 
@@ -98,13 +98,13 @@ const ClubActionCell: FC<Props> = ({ id, name }) => {
       {itemIdForUpdate === id && (
         <CustomModal
           modalSize="xl"
-          modalTitle="CLUB-UPDATE-MODAL"
+          modalTitle="COURT-UPDATE-MODAL"
           onClick={() => {
             setItemIdForUpdate(undefined);
           }}
         >
           {data && (
-            <UpdateClubModalForm ClubData={data} isLoading={isLoading} />
+            <UpdateCourtModalForm CourtData={data} isLoading={isLoading} />
           )}
         </CustomModal>
       )}
@@ -112,4 +112,4 @@ const ClubActionCell: FC<Props> = ({ id, name }) => {
   );
 };
 
-export { ClubActionCell };
+export { CourtActionCell };

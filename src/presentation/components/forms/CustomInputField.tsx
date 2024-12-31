@@ -29,6 +29,9 @@ interface InputFieldProps
   showPasswordMeter?: boolean;
   withTooltip?: boolean;
   tooltipTitle?: string;
+  step?:string,
+  max?:number,
+  min?:number
 }
 
 const CustomInputField: FC<InputFieldProps> = ({
@@ -46,6 +49,9 @@ const CustomInputField: FC<InputFieldProps> = ({
   showPasswordMeter,
   withTooltip = false,
   tooltipTitle = "",
+  step,
+  max,
+  min
 }) => {
   const _label = useLocaleFormate(label || "");
   const _placeholder = useLocaleFormate(placeholder || "");
@@ -87,6 +93,9 @@ const CustomInputField: FC<InputFieldProps> = ({
           placeholder={_placeholder ? _placeholder : null}
           type={showHidePassword ? "text" : type}
           name={name}
+          step={type === "number" && step ? step : "any"}
+          max={type === "number" && max ? max : undefined}
+          min={type === "number" && min ? min : undefined}
           className={clsx(
             fieldClassName && fieldClassName,
             "form-control form-control-solid mb-3 mb-lg-0",

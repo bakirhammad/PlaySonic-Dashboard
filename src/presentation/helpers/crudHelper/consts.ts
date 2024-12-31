@@ -109,7 +109,8 @@ const QUERIES = {
   SightseeingData: "SightseeingData",
 
   // ===========
-  ClubList: "ClubList"
+  ClubList: "ClubList",
+  CourtList: "CourtList"
 };
 const PAGINATION_PAGES_COUNT = 3;
 const defaultPageNumberInPagination = 1;

@@ -25,11 +25,6 @@ const SightSeeingTourRateHistory = lazy(
 const SightSeeingTourRateListWrapper = lazy(
   () => import("@presentation/pages/sightSeeing/SightSeeingTourRate")
 );
-// >>>>>>>>>>
-
-const ClubListWrapper = lazy(
-  () => import("@presentation/pages/club")
-);
 
 const SightSeeingBreadcrumbs: Array<PageLink> = [
   {
@@ -109,15 +104,6 @@ const SightseeingRoute: Route = {
       component: SightSeeingTourRateHistory,
       role: [],
       breadcrumbs: SightSeeingTourRateHistoryBreadcrumbs,
-    },
-
-    // >>>>>>>
-    {
-      path: "clubs",
-      title: "SIDEBAR-CLUB",
-      component: ClubListWrapper,
-      role: [],
-      breadcrumbs: SightSeeingBreadcrumbs,
     },
 
   ],

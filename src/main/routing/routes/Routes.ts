@@ -3,6 +3,7 @@ import { PageLink } from "@presentation/layout/core";
 import { DashboardRoute } from "./DashboardRoute";
 import { SightseeingRoute } from "./SightSeeingRoute";
 import { DirectClientsRouter } from "./DirectClients";
+import { ClubRoute } from "./ClubRoute";
 
 
 export interface Route {
@@ -23,6 +24,7 @@ const routes: Route[] = [
   DashboardRoute,
   DirectClientsRouter,
   SightseeingRoute,
+  ClubRoute
 ];
 
 export { routes };

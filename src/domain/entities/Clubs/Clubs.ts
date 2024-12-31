@@ -39,32 +39,18 @@ export interface IClubBody {
 
 export interface IClubData {
   id: number;
-  categoryId: number;
-  image: string;
-  images: string;
-  status: boolean;
-  durationDays: number;
-  durationHours: number;
-  durationMinutes: number;
-  pickUpTime: string;
-  maxNumberOfSeats: number;
-  closingDay: number;
-  closingDates: closingDates[];
-  translationResponses: IClubTranslation[];
   cityId: number;
   countryId: number;
-}
-
-export interface IClubTranslation {
-  id: number;
-  tourId: number;
-  name: string;
-  description: string;
-  note: string;
-  langId: number;
-}
-export interface closingDates {
-  id: number;
-  tourId: number;
-  closingDate: string;
+  areaId: number;
+  phone: string;
+  website: string;
+  features: number;
+  payload: string;
+  location: string;
+  distance: number;
+  clubInfoResponses: any[];
+  areaTranslations: any | null;
+  courts: any | null;
+  lat: number,
+  lng:number
 }
