@@ -71,7 +71,7 @@ export const UpdateCourtModalForm = ({ CourtData, isLoading }: IProps) => {
   ) => {
     const formData = new FormData();
 
-    formData.append("id", String(initialValues.id));
+    formData.append("Id", String(initialValues.id));
     formData.append("ClubId", values.club.value);
     formData.append("Rank", values.rank);
     formData.append("Indoor", values.indoor);

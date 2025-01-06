@@ -1,5 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IDDlOption } from "@domain/entities";
+import {
+  IDDlOption,
+  IDDlOptionClub,
+  IDDlOptionSlotType,
+} from "@domain/entities";
 import { useLocaleFormate } from "@presentation/hooks/index";
 import clsx from "clsx";
 import {
@@ -27,7 +31,7 @@ interface InputFieldProps {
   isMulti?: boolean;
   closeMenuOnSelect?: boolean;
   isloading?: boolean;
-  options: IDDlOption[];
+  options: IDDlOption[] | IDDlOptionClub[] | IDDlOptionSlotType[];
   disabled?: boolean;
   isOptionDisabled?: (option: any) => boolean;
 }
@@ -76,7 +80,9 @@ const CustomSelectField: FC<InputFieldProps> = ({
             const searchTerm = inputValue.toLowerCase();
             options
               .filter((option) =>
-                option.label.toLowerCase().includes(searchTerm)
+                typeof option.label === "string"
+                  ? option.label.toLowerCase().includes(searchTerm)
+                  : option.label
               )
               .forEach((option) => uniqueOptions.add(option));
 

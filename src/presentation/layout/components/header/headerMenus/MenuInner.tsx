@@ -4,7 +4,7 @@ import { MenuInnerWithSub } from "./MenuInnerWithSub";
 export function MenuInner() {
   return (
     <>
-      <MenuItem title="MENU-DASHBOARD" to="/dashboard" />
+      {/* <MenuItem title="MENU-DASHBOARD" to="/dashboard" /> */}
       <MenuItem title="LAYOUT.BUILDER" to="/builder" />
       {/* <MenuInnerWithSub
         title="Crafted"
@@ -151,14 +151,13 @@ export function MenuInner() {
           />
         </MenuInnerWithSub>
       </MenuInnerWithSub> */}
-
+{/* 
       <MenuInnerWithSub
         title="Apps"
         to="/apps"
         menuPlacement="bottom-start"
         menuTrigger="click"
       >
-        {/* PAGES */}
         <MenuInnerWithSub
           title="Chat"
           to="/apps/chat"
@@ -194,7 +193,8 @@ export function MenuInner() {
           to="/apps/charter"
           title="CHARTER-PAGE_TITLE"
         />
-      </MenuInnerWithSub>
+      </MenuInnerWithSub> 
+      */}
     </>
   );
 }

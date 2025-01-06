@@ -29,6 +29,10 @@ import { useCountriesDDL } from "@presentation/hooks/queries/DDL/SightSeeing/Gen
 import { IClubData } from "@domain/entities/Clubs/Clubs";
 import { ClubCommandInstance } from "@app/useCases/clubs";
 import { ClubUrlEnum } from "@domain/enums/URL/Clubs/ClubUrls/Club";
+import {
+  FeaturesOptionsDDL,
+  IfeatureOptionsDDL,
+} from "@presentation/helpers/DDL/FeaturesOptions";
 
 interface IProps {
   ClubData: IClubData;
@@ -104,16 +108,17 @@ export const UpdateClubModalForm = ({ ClubData, isLoading }: IProps) => {
     values: FormikValues,
     setSubmitting: (isSubmitting: boolean) => void
   ) => {
-    const days = combineBits(values.days);
+    const features = combineBits(
+      values.features.map((feature: IfeatureOptionsDDL) => feature.value)
+    );
     const formData = new FormData();
-
-    formData.append("id", String(initialValues.id));
+    formData.append("Id", String(initialValues.id));
     formData.append("CountryId", values.country.value);
     formData.append("CityId", values.city.value);
     formData.append("AreaId", values.area.value);
     formData.append("Phone", values.phone);
     formData.append("Website", values.website);
-    formData.append("Features", values.features.value);
+    formData.append("Features", String(features));
     formData.append("Payload", values.payload);
     formData.append("lat", values.lat);
     formData.append("lng", values.lng);
@@ -325,7 +330,8 @@ const ClubUpdateForm = ({ ClubData }: IPropsUpdate) => {
                 touched={touched}
                 errors={errors}
                 isSubmitting={isSubmitting}
-                options={daysDDLOption}
+                options={FeaturesOptionsDDL}
+                isMulti={true}
               />
               <CustomInputField
                 name="lat"

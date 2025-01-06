@@ -7,6 +7,7 @@ import {
 } from "@presentation/components/tables";
 import { IClubData } from "@domain/entities/Clubs/Clubs";
 import { ClubActionCell } from "./CustomClubActionCell";
+import { FeaturesCell } from "@presentation/helpers/cells/FeaturesCell";
 
 const ClubListColumns: ReadonlyArray<Column<IClubData>> = [
   {
@@ -97,7 +98,7 @@ const ClubListColumns: ReadonlyArray<Column<IClubData>> = [
     ),
     id: "feature",
     Cell: ({ ...props }) => (
-      <CustomCell data={props.data[props.row.index]?.features} />
+      <FeaturesCell features={props.data[props.row.index]?.features} />
     ),
   },
   {

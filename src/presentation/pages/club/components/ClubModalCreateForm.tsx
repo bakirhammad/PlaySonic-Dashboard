@@ -20,12 +20,15 @@ import { combineBits, QUERIES } from "@presentation/helpers";
 import { useLanguageStore } from "@infrastructure/storage/LanguageStore";
 import clsx from "clsx";
 import CustomEditor from "@presentation/components/forms/CustomEditor";
-import { daysDDLOption } from "@presentation/hooks";
 import CustomSelectField from "@presentation/components/forms/CustomSelectField";
 import validationSchemas from "@presentation/helpers/validationSchemas";
 import { useCountriesDDL } from "@presentation/hooks/queries/DDL/SightSeeing/GeneralDDL";
 import { ClubCommandInstance } from "@app/useCases/clubs";
 import { ClubUrlEnum } from "@domain/enums/URL/Clubs/ClubUrls/Club";
+import {
+  FeaturesOptionsDDL,
+  IfeatureOptionsDDL,
+} from "@presentation/helpers/DDL/FeaturesOptions";
 
 export const ClubModalCreateForm = () => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);
@@ -83,7 +86,9 @@ export const ClubModalCreateForm = () => {
     values: FormikValues,
     setSubmitting: (isSubmitting: boolean) => void
   ) => {
-    const days = combineBits(values.days);
+    const features = combineBits(
+      values.features.map((feature: IfeatureOptionsDDL) => feature.value)
+    );
 
     const formData = new FormData();
     formData.append("CountryId", values.country.value);
@@ -91,7 +96,7 @@ export const ClubModalCreateForm = () => {
     formData.append("AreaId", values.area.value);
     formData.append("Phone", values.phone);
     formData.append("Website", values.website);
-    formData.append("Features", values.features.value);
+    formData.append("Features", String(features));
     formData.append("Payload", values.payload);
     formData.append("lat", values.lat);
     formData.append("lng", values.lng);
@@ -228,7 +233,8 @@ const ClubForm = () => {
                 touched={touched}
                 errors={errors}
                 isSubmitting={isSubmitting}
-                options={daysDDLOption}
+                options={FeaturesOptionsDDL}
+                isMulti={true}
               />
               <CustomInputField
                 name="lat"

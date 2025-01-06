@@ -1,6 +1,7 @@
 import { SidebarMenuItemWithSub } from "./SidebarMenuItemWithSub";
 import { SidebarMenuItem } from "./SidebarMenuItem";
-import { SidebarSightSeeingMenuItems } from "./SidebarSightseeingMenuItems";
+import { SidebarCourtMenuItems } from "./SidebarCourtMenuItems";
+import { SidebarClubMenuItems } from "./SidebarClubMenuItems";
 
 const SidebarMenuMain = () => {
   return (
@@ -38,7 +39,7 @@ const SidebarMenuMain = () => {
         </div>
       </div>
 
-      {/* <SidebarMenuItemWithSub
+      {/*      <SidebarMenuItemWithSub
         to="/apps/sightseeing"
         title={"SIGHT-SEEING-PAGE-TITLE"}
         icon="abstract-28"
@@ -49,15 +50,27 @@ const SidebarMenuMain = () => {
 
       {/* .. >>>>>  */}
 
-      <SidebarMenuItem
+      <SidebarMenuItemWithSub
         to="/apps/club"
-        title={"SIDEBAR-CLUB"}
-        hasBullet={true}
-      />
+        title={"Club"}
+        icon="abstract-28"
+        fontIcon="bi-people-fill"
+      >
+        <SidebarClubMenuItems />
+      </SidebarMenuItemWithSub>
+
+      <SidebarMenuItemWithSub
+        to="/apps/court"
+        title={"Court"}
+        icon="abstract-28"
+        fontIcon="bi-people-fill"
+      >
+        <SidebarCourtMenuItems />
+      </SidebarMenuItemWithSub>
 
       <SidebarMenuItem
-        to="/apps/court"
-        title={"SIDEBAR-COURT"}
+        to="/apps/slottype"
+        title="SIDEBAR-SLOT-TYPE"
         hasBullet={true}
       />
     </>

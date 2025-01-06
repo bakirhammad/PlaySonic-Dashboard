@@ -47,7 +47,6 @@ const CourtList = () => {
     },
   });
 
-  console.log(CourtData, "Courttts");
   useEffect(() => {
     updateData(CourtData);
     setIsLoading(isFetching || isLoading);
@@ -84,12 +83,12 @@ const CourtList = () => {
           addBtnAction={() => {
             setItemIdForUpdate(null);
           }}
-          searchPlaceholder="SEARCH-SIGHT-SEEING-TOUR"
+          searchPlaceholder="SEARCH"
           filterBtn={true}
           // FilterComponent={<ClubFilter></ClubFilter>}
           onDeleteSelectedAll={() => handleDeleteSelected()}
           addBtn={true}
-          addName="ADD-SIGHT-SEEING-TOUR-BUTTON"
+          addName="ADD"
         />
         <CustomTable columns={columns} data={tableData || []} />
       </CustomKTCard>

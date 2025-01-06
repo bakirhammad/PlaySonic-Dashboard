@@ -6,12 +6,9 @@ const ClubListWrapper = lazy(
   () => import("@presentation/pages/club")
 );
 
-const CourtListWrapper = lazy(
-  () => import("@presentation/pages/court")
-);
 
 const ClubRoute: Route = {
-  path: "/apps",
+  path: "/apps/club",
   title: "",
   component: SightSeeingWrapper,
   role: ["admin"],
@@ -25,20 +22,12 @@ const ClubRoute: Route = {
     //   breadcrumbs: SightSeeingBreadcrumbs,
     // },
     {
-      path: "club",
+      path: "clublist",
       title: "SIDEBAR-CLUB",
       component: ClubListWrapper,
       role: [],
       breadcrumbs: [],
-    },
-    {
-      path: "court",
-      title: "SIDEBAR-COURT",
-      component: CourtListWrapper,
-      role: [],
-      breadcrumbs: [],
-    },
-
+    }
   ],
 };
 

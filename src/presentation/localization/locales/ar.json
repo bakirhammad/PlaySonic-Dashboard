@@ -3060,7 +3060,32 @@
   "COURT-ALLOWED-SLOT-TYPES" : "Allowed Slot Types",
   "COURT-SPORT-ID" : "Sport ID",
   "COURT-INDOOR" : "Indoor",
-  "COURT-UPDATE-MODAL": "Update Court"
+  "COURT-UPDATE-MODAL": "Update Court",
+  "SIDEBAR-COURT-SCHEDULE": "Court Schedule",
+  "COURT-NAME": "اسم الملعب",
+  "DAYS": "اليوم",
+  "START-TIME": "وقت البدء",
+  "END-TIME" : "وقت الانتهاء",
+  "DDL-DAYS": "حدد الايام",
+  "SELECT-DAYS":"الأيام" ,
+  "DDL-COURT-MANE": "اسم الملعب",
+  "Create-Court-Schedule":"Create Schedule",
+  "Start-Time":"وقت البدء",
+  "End-Time" : "وقت الانتهاء",
+  "Court-Schedule-UPDATE-MODAL": "Update Court Schedule",
+  "SIDEBAR-SLOT-TYPE": "Slot Type",
+  "Duration":"Duration",
+  "Create-Slot-Type": "Create Slot-Type",
+  "SIDEBAR-COURT-SLOTS":"Court Slots",
+  "SLOT-TYPE-ID":"Slot Type",
+  "FULL-PRICE":"Full Price",
+  "SINGLE-PRICE":"Single Price",
+  "DDL-SLOT-TYPE":"Slot Type",
+  "Court-Slots-UPDATE-MODAL": "Update Court Slots"
+
+
+
+
 
 
 

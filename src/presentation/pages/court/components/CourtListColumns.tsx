@@ -8,6 +8,7 @@ import {
 } from "@presentation/components/tables";
 import { CourtActionCell } from "./CourtActionCell";
 import { ICourtData } from "@domain/entities/Court/Court";
+import ClubNameCell from "@presentation/helpers/cells/ClubNameCell";
 
 const CourtListColumns: ReadonlyArray<Column<ICourtData>> = [
   {
@@ -55,9 +56,10 @@ const CourtListColumns: ReadonlyArray<Column<ICourtData>> = [
       />
     ),
     id: "club",
-    Cell: ({ ...props }) => (
-      <CustomCell data={props.data[props.row.index]?.clubId} />
-    ),
+    Cell: ({ ...props }) => {
+      return <ClubNameCell clubId={props.data[props.row.index]?.clubId} />
+      
+    },
   },
   {
     Header: (props) => (

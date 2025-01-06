@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useCallback, useEffect, useState } from "react";
-import { IDDlOption } from "@domain/entities";
+import { IDDlOptionClub } from "@domain/entities";
 import { IClubBody } from "@domain/entities/Clubs/Clubs";
 import { ClubQueryInstance } from "@app/useCases/clubs";
 import { ClubUrlEnum } from "@domain/enums/URL/Clubs/ClubUrls/Club";
@@ -8,10 +8,10 @@ import { ClubUrlEnum } from "@domain/enums/URL/Clubs/ClubUrls/Club";
 
 function useClubsDDL() {
   const [clubsList, setClubs] = useState<IClubBody>();
-  const [clubsOption, setClubsOption] = useState<IDDlOption[]>([]);
+  const [clubsOption, setClubsOption] = useState<IDDlOptionClub[]>([]);
   const [isLoading, setIsLoadingClubs] = useState<boolean>(false);
 
-  const fetchCities = useCallback(async () => {
+  const fetchClubs = useCallback(async () => {
     try {
       setIsLoadingClubs(true);
       const clubsListRes = await ClubQueryInstance.getClubList(
@@ -33,8 +33,8 @@ function useClubsDDL() {
   }, []);
 
   useEffect(() => {
-    fetchCities();
-  }, []);
+    fetchClubs();
+  }, [fetchClubs]);
   return { clubsList, isClubLoading: isLoading, clubsOption };
 }
 
