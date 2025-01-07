@@ -37,7 +37,7 @@ import { CustomUploadFile } from "@presentation/components/forms/CustomUploadFil
 import CustomTimePicker from "@presentation/components/forms/CustomTimePicker";
 
 import { formatToUtc } from "@presentation/helpers/DateFormater/formatDate";
-import { useCountriesDDL } from "@presentation/hooks/queries/DDL/SightSeeing/GeneralDDL";
+import { useCountriesDDL } from "@presentation/hooks/queries/DDL/GeneralDDL";
 
 export const CreateSightSeeingTourModalForm = () => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);

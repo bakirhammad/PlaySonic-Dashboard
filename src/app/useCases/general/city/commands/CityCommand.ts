@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ICityBody, ICityCommand } from "@domain/entities";
+
+import { ICityBody, ICityCommand } from "@domain/entities/general/city/City";
 import { IHttpClient } from "@domain/entities/protocols/http";
 import { HttpStatusCode } from "@domain/enums";
 import { InvalidCredentialsError, UnexpectedError } from "@domain/errors";

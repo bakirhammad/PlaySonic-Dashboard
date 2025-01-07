@@ -16,23 +16,16 @@ import {
 } from "formik";
 import * as Yup from "yup";
 import { useQueryClient } from "react-query";
-import { combineBits, QUERIES } from "@presentation/helpers";
+import { QUERIES } from "@presentation/helpers";
 import { useLanguageStore } from "@infrastructure/storage/LanguageStore";
 import clsx from "clsx";
-import CustomEditor from "@presentation/components/forms/CustomEditor";
 import CustomSelectField from "@presentation/components/forms/CustomSelectField";
-import { ClubCommandInstance } from "@app/useCases/clubs";
-import { ClubUrlEnum } from "@domain/enums/URL/Clubs/ClubUrls/Club";
-import {
-  FeaturesOptionsDDL,
-  IfeatureOptionsDDL,
-} from "@presentation/helpers/DDL/FeaturesOptions";
-import { useCitiesDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useCitiesDDL";
-import { useAreasDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useAreasDDL";
-import { useCountriesDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useCountriesDDL";
 import validationSchemas from "@presentation/helpers/validationSchemas";
+import { AreaUrlEnum } from "@domain/enums/URL/General/GeneralEnum/AreaEnum";
+import { AreaCommandInstance } from "@app/useCases/general/area/command/AreaCommand";
+import { useCitiesDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useCitiesDDL";
 
-export const ClubModalCreateForm = () => {
+export const CreateArea = () => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);
   const { setItemIdForUpdate } = useListView();
   const queryClient = useQueryClient();
@@ -40,27 +33,20 @@ export const ClubModalCreateForm = () => {
 
   const initialValues = Object.assign(
     {
-      city: 0,
-      country: 0,
-      area: 0,
-      phone: "",
-      website: "",
-      features: 0,
-      payload: "",
-      lat: 0,
-      lng: 0,
+      rank: null,
+      payload: null,
+      cityId: null,
     },
     ...Languages.map((lang) => ({
       [`name${lang?.id}`]: "",
-      [`description${lang?.id}`]: "",
     }))
   );
 
-  const _ClubSchema = Object.assign(
+  const _AreaSchema = Object.assign(
     {
-      country: validationSchemas.object,
-      city: validationSchemas.object,
-      area: validationSchemas.object,
+      rank: Yup.number().required("Rank is required"),
+      payload: Yup.string().required("Name is required"),
+      cityId: validationSchemas.object,
     },
     ...Languages.map((lang) => {
       return lang.id === 2
@@ -70,64 +56,51 @@ export const ClubModalCreateForm = () => {
             ),
           }
         : {
-            [`name${lang?.id}`]: Yup.string().when([`description${lang.id}`], {
-              is: (descriptionVal: string) =>
-                descriptionVal && descriptionVal.trim() !== "",
-              then: (schema) => schema.required("This field is required"),
-              otherwise: (schema) => schema,
-            }),
+            [`name${lang?.id}`]: Yup.string().required(
+              "This field is required"
+            ),
           };
     })
   );
 
-  const ClubSchema = Yup.object().shape(_ClubSchema);
+  const AreaSchema = Yup.object().shape(_AreaSchema);
 
   const handleSubmit = async (
     values: FormikValues,
     setSubmitting: (isSubmitting: boolean) => void
   ) => {
-    const features = combineBits(
-      values.features.map((feature: IfeatureOptionsDDL) => feature.value)
-    );
-
     const formData = new FormData();
-    formData.append("CountryId", values.country.value);
-    formData.append("CityId", values.city.value);
-    formData.append("AreaId", values.area.value);
-    formData.append("Phone", values.phone);
-    formData.append("Website", values.website);
-    formData.append("Features", String(features));
+    formData.append("Rank", values.rank);
     formData.append("Payload", values.payload);
-    formData.append("lat", values.lat);
-    formData.append("lng", values.lng);
+    formData.append("CityId", values.cityId.value);
 
-    ///
     let index = 0;
     Languages.forEach((lang) => {
       if (values[`name${lang?.id}`]) {
-        formData.append(`ClubInfos[${index}].languageId`, lang.id.toString());
-        formData.append(`ClubInfos[${index}].name`, values[`name${lang?.id}`]);
         formData.append(
-          `ClubInfos[${index}].description`,
-          values[`description${lang?.id}`]
+          `Translations[${index}].languageId`,
+          lang.id.toString()
         );
-
+        formData.append(
+          `Translations[${index}].name`,
+          values[`name${lang?.id}`]
+        );
         index++;
       }
     });
 
     try {
-      const data = await ClubCommandInstance.createClub(
-        ClubUrlEnum.CreateClub,
+      const data = await AreaCommandInstance.createArea(
+        AreaUrlEnum.CreateArea,
         formData
       );
       if (data) {
-        CustomToast("Club is created successfully", "success", {
+        CustomToast("Area is created successfully", "success", {
           autoClose: 3000,
         });
         setItemIdForUpdate(undefined);
         queryClient.invalidateQueries({
-          queryKey: [QUERIES.ClubList],
+          queryKey: [QUERIES.AreaList],
         });
       }
     } catch (error) {
@@ -144,17 +117,17 @@ export const ClubModalCreateForm = () => {
     <Formik
       innerRef={formikRef}
       initialValues={initialValues}
-      validationSchema={ClubSchema}
+      validationSchema={AreaSchema}
       onSubmit={(values, { setSubmitting }) => {
         handleSubmit(values, setSubmitting);
       }}
     >
-      <ClubForm />
+      <AreaForm />
     </Formik>
   );
 };
 
-const ClubForm = () => {
+const AreaForm = () => {
   const {
     errors,
     touched,
@@ -169,9 +142,7 @@ const ClubForm = () => {
   const [languageInput, setLanguageInput] = useState(2);
 
   console.log("ddd", values);
-  const { CountryOption, isCountryLoading } = useCountriesDDL();
   const { CityOption, isCityLoading } = useCitiesDDL();
-  const { AreaOption, isAreaLoading } = useAreasDDL();
 
   return (
     <>
@@ -184,102 +155,35 @@ const ClubForm = () => {
         <div className="row row-cols-md-1 row-cols-sm-1 row-cols-1">
           <div className="row">
             <div className="row row-cols-3">
-              <CustomSelectField
-                name="country"
-                options={CountryOption}
-                labelRequired={false}
-                isloading={isCountryLoading}
-                label="DDL-COUNTRY_LABEL"
-                placeholder="DDL-COUNTRY_LABEL"
-                touched={touched}
-                errors={errors}
-              />
-              <CustomSelectField
-                name="city"
-                labelRequired={false}
-                options={CityOption}
-                isloading={isCityLoading}
-                label="DDL-CITY_LABEL"
-                placeholder="DDL-CITY_LABEL"
-                touched={touched}
-                errors={errors}
-              />
-              <CustomSelectField
-                name="area"
-                labelRequired={false}
-                options={AreaOption}
-                isloading={isAreaLoading}
-                label="DDL-AREA"
-                placeholder="DDL-AREA"
-                touched={touched}
-                errors={errors}
-              />
-            </div>
-            <div className="row row-cols-md-3 border-info-subtle border-black">
-              <CustomSelectField
-                name="features"
-                placeholder="DDL-FEATURE"
-                label="SELECT-FEATURE"
-                touched={touched}
-                errors={errors}
-                isSubmitting={isSubmitting}
-                options={FeaturesOptionsDDL}
-                isMulti={true}
-              />
               <CustomInputField
-                name="lat"
-                placeholder="CLUB-Latitude"
-                label="CLUB-Latitude"
+                name="rank"
+                placeholder="Country-RANK"
+                label="Country-RANK"
                 as="input"
                 touched={touched}
                 errors={errors}
-                type="text"
+                type="number"
                 isSubmitting={isSubmitting}
               />
-              <CustomInputField
-                name="lng"
-                placeholder="CLUB-Longitude"
-                label="CLUB-Longitude"
-                as="input"
-                touched={touched}
-                errors={errors}
-                type="text"
-                isSubmitting={isSubmitting}
-              />
-            </div>
-
-            <div className="row row-cols-3">
-              <CustomInputField
-                name="phone"
-                placeholder="CLUB-PHONE"
-                label="CLUB-PHONE"
-                as="input"
-                touched={touched}
-                errors={errors}
-                type="text"
-                isSubmitting={isSubmitting}
-              />
-
               <CustomInputField
                 name="payload"
-                placeholder="CLUB-PAYLOAD"
-                label="CLUB-PAYLOAD"
+                placeholder="Country-PAYLOAD"
+                label="Country-PAYLOAD"
                 as="input"
                 touched={touched}
                 errors={errors}
                 type="text"
                 isSubmitting={isSubmitting}
               />
-
-              <CustomInputField
-                name="website"
-                placeholder="CLUB-WEBSITE"
-                label="CLUB-WEBSITE"
-                as="input"
+              <CustomSelectField
+                name="cityId"
+                options={CityOption}
+                labelRequired={false}
+                isloading={isCityLoading}
+                label="DDL-City-label"
+                placeholder="DDL-City-label"
                 touched={touched}
                 errors={errors}
-                type="text"
-                isSubmitting={isSubmitting}
               />
             </div>
             <hr />
@@ -311,8 +215,8 @@ const ClubForm = () => {
                             "input name"
                           }
                           name={`name${lang?.id}`}
-                          label="CLUB-NAME"
-                          placeholder="CLUB-NAME"
+                          label="SIDEBAR-Area-NAME"
+                          placeholder="SIDEBAR-Area-NAME"
                           as="input"
                           touched={touched}
                           errors={errors}
@@ -320,12 +224,6 @@ const ClubForm = () => {
                           labelRequired={languageInput === 2 ? true : false}
                         />
                       </div>
-                      <CustomEditor
-                        key={lang.prefix + lang.id + "editor"}
-                        name={`description${lang?.id}`}
-                        labelRequired={languageInput === 2 ? true : false}
-                        label={"CLUB-DISSCRIPTION"}
-                      />
                     </Fragment>
                   )
               )}

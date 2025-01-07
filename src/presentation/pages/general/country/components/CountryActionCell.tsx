@@ -9,75 +9,73 @@ import { FC } from "react";
 import { useQueryClient, useMutation, useQuery } from "react-query";
 import { QUERIES } from "@presentation/helpers";
 import { useListView } from "@presentation/context/index";
-import { ISlotTypeData } from "@domain/entities/SlotType/SlotType";
-import {
-  SlotTypeCommandInstance,
-  SlotTypeQueryByIdInstance,
-} from "@app/useCases/slotType";
-import { SlotTypeUrlEnum } from "@domain/enums/URL/SlotType/SlotTyeUrls/SlotType";
-import UpdateSlotTypeModalForm from "./UpdateSlotTypeModalForm";
+import { CountryQueryByIdInstance } from "@app/useCases/general/country/query/CountryQueryById";
+import { CountryUrlEnum } from "@domain/enums";
+import { CountryCommandInstance } from "@app/useCases/general/country/commands/CountryCommand";
+import { ICountryBody } from "@domain/entities";
+import UpdateCountry from "./UpdateCountry";
 
 interface Props {
   id: number;
   name?: string;
 }
 
-const SlotTypeActionCell: FC<Props> = ({ id, name }) => {
+const CountryActionCell: FC<Props> = ({ id, name }) => {
   const { itemIdForUpdate, setItemIdForUpdate } = useListView();
   const queryClient = useQueryClient();
 
   const { data, error, isLoading } = useQuery({
-    queryKey: [QUERIES.SlotTypeList, id],
+    queryKey: [QUERIES.CountryList, id],
     queryFn: () => {
-      return SlotTypeQueryByIdInstance.getSlotTypeById(
-        SlotTypeUrlEnum.GetSlotTypeById,
+      return CountryQueryByIdInstance.getCountryById(
+        CountryUrlEnum.GetCountryById,
         id
       );
     },
     onError: () => {
       console.error("Error submitting form:", error);
-      CustomToast(`Failed to get SlotType data`, "error");
+      CustomToast(`Failed to get Country data`, "error");
       setItemIdForUpdate(undefined);
     },
     enabled: itemIdForUpdate === id,
   });
 
-  const { mutate: deleteSlotType } = useMutation(
+  const { mutate: deleteCountry } = useMutation(
     async (id: number) => {
-      const data = await SlotTypeCommandInstance.deleteSlotType(
-        SlotTypeUrlEnum.DeleteSlotType,
+      const data = await CountryCommandInstance.deleteCountry(
+        CountryUrlEnum.DeleteCountry,
         id
       );
       return data;
     },
     {
-      onSuccess: async (res: ISlotTypeData | number) => {
+      onSuccess: async (res: ICountryBody | number) => {
         if (res === -1) {
           const confirmForceDelete = await showConfirmationAlert(
             "This Item has Related entities"
           );
           if (confirmForceDelete) {
-            await SlotTypeCommandInstance.deleteSlotType(
-              SlotTypeUrlEnum.DeleteSlotType + `forceDelete=true&`,
+            await CountryCommandInstance.deleteCountry(
+              CountryUrlEnum.DeleteCountry + `forceDelete=true&`,
               id
             );
             CustomToast(`Deleted successfully`, "success");
             showDeletedAlert(name);
             queryClient.invalidateQueries({
-              queryKey: [QUERIES.SlotTypeList],
+              queryKey: [QUERIES.CountryList],
             });
           }
         } else {
           CustomToast(`Deleted successfully`, "success");
           showDeletedAlert(name);
           queryClient.invalidateQueries({
-            queryKey: [QUERIES.SlotTypeList],
+            queryKey: [QUERIES.CountryList],
           });
         }
       },
       onError: (error) => {
-        console.error("Error when delete SlotType", error);
-        CustomToast(`Failed to delete SlotType`, "error");
+        console.error("Error when delete Country", error);
+        CustomToast(`Failed to delete Country`, "error");
       },
     }
   );
@@ -85,7 +83,7 @@ const SlotTypeActionCell: FC<Props> = ({ id, name }) => {
   const handleDelete = async () => {
     const confirm = await showConfirmationAlert(name);
     if (confirm) {
-      deleteSlotType(id);
+      deleteCountry(id);
     }
   };
 
@@ -100,22 +98,17 @@ const SlotTypeActionCell: FC<Props> = ({ id, name }) => {
       />
       {itemIdForUpdate === id && (
         <CustomModal
-          modalSize="lg"
-          modalTitle="Court-Schedule-UPDATE-MODAL"
+          modalSize="xl"
+          modalTitle="Country-UPDATE-MODAL"
           onClick={() => {
             setItemIdForUpdate(undefined);
           }}
         >
-          {data && (
-            <UpdateSlotTypeModalForm
-              SlotTypeData={data}
-              isLoading={isLoading}
-            />
-          )}
+          {data && <UpdateCountry CountryData={data} isLoading={isLoading} />}
         </CustomModal>
       )}
     </>
   );
 };
 
-export { SlotTypeActionCell };
+export { CountryActionCell };

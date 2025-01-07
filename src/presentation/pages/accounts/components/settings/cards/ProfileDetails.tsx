@@ -38,7 +38,7 @@ import { UserCommandInstance } from "@app/useCases/authentication/command/userCo
 import validationSchemas from "@presentation/helpers/validationSchemas";
 import { IDDlOption, IUserCurrencies, IUserData } from "@domain/entities";
 import { CustomUploadFile } from "@presentation/components/forms/CustomUploadFile";
-import { useCountriesDDL } from "@presentation/hooks/queries/DDL/SightSeeing/GeneralDDL";
+import { useCountriesDDL } from "@presentation/hooks/queries/DDL/GeneralDDL";
 
 const profileDetailsSchema = Yup.object().shape({
   // UserName: Yup.string().required("UserName is required"),

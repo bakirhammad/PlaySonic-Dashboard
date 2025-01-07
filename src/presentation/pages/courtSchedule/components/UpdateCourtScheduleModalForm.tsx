@@ -55,8 +55,9 @@ export const UpdateCourtScheduleModalForm = ({
   }, [CourtScheduleData]);
 
   const _CourtScheduleSchema = Object.assign({
+    days: validationSchemas.message,
+    courtId: validationSchemas.object,
     startTime: Yup.string().required("Start Time is Required"),
-    days: validationSchemas.array,
     endTime: Yup.string().required("End Time is Required"),
   });
   const CourtScheduleSchema = Yup.object().shape(_CourtScheduleSchema);

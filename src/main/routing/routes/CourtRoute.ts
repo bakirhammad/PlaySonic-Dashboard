@@ -50,6 +50,13 @@ const CourtRoute: Route = {
       role: [],
       breadcrumbs: [],
     },
+    {
+      path: "slottype",
+      title: "SIDEBAR-SLOT-TYPE",
+      component: SlotTypeListWrapper,
+      role: [],
+      breadcrumbs: [],
+    },
   ],
 };
 

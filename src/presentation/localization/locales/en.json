@@ -3443,7 +3443,27 @@
   "FULL-PRICE":"Full Price",
   "SINGLE-PRICE":"Single Price",
   "DDL-SLOT-TYPE":"Slot Type",
-  "Court-Slots-UPDATE-MODAL": "Update Court Slots"
+  "Court-Slots-UPDATE-MODAL": "Update Court Slots",
+  "SIDEBAR-COUNTRY-RANK": "Rank",
+  "SIDEBAR-COUNTRY-NAME":"Name",
+  "SIDEBAR-COUNTRY": "Countries",
+  "Country-NAME":"Name",
+  "Country-PAYLOAD":"Payload",
+  "Country-RANK":"Rank",
+  "Country-UPDATE-MODAL":"Update Country",
+  "SIDEBAR-Cities":"Cities",
+  "SIDEBAR-CITY-NAME": "City Name",
+  "SIDEBAR-COUNTRYNAME":"Country Name",
+  "City-DISSCRIPTION":"City Discrption",
+  "City-NAME":"City Name",
+  "City-UPDATE-MODAL":"Update City",
+  "SIDEBAR-Area":"Areas",
+  "SIDEBAR-CITYYNAME": "City Name",
+  "SIDEBAR-Area-NAME":"Area Name",
+  "DDL-City-label":"City",
+  "Area-UPDATE-MODAL" : "Update Area",
+  "Create-Area": "Create Area",
+  "SIDEBAR-CLUB-NAME": "Club Name"
 
 
 

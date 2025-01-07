@@ -8,7 +8,7 @@ import {
 import { Content } from "../../../layout/components/content";
 import { CustomKTIcon } from "../../../components";
 import { useAuthStore } from "@infrastructure/storage/AuthStore";
-import { useCountriesDDL } from "@presentation/hooks/queries/DDL/SightSeeing/GeneralDDL";
+import { useCountriesDDL } from "@presentation/hooks/queries/DDL/GeneralDDL";
 
 export function Overview() {
   const { currentUser } = useAuthStore();

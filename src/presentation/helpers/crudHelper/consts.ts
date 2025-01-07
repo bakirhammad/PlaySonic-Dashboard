@@ -10,7 +10,10 @@ const QUERIES = {
   CourtList: "CourtList",
   CourtScheduleList: "CourtScheduleList",
   SlotTypeList: "SlotTypeList",
-  CourtSlotsList: "CourtSlotsList"
+  CourtSlotsList: "CourtSlotsList",
+  CountryList: "CountryList",
+  CityList:"CityList",
+  AreaList: "AreaList"
 };
 const PAGINATION_PAGES_COUNT = 3;
 const defaultPageNumberInPagination = 1;

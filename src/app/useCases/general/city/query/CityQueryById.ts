@@ -1,4 +1,5 @@
-import { ICityData, ICityQueryById } from "@domain/entities";
+
+import { ICityData, ICityQueryById } from "@domain/entities/general/city/City";
 import { IHttpClient } from "@domain/entities/protocols/http";
 import { HttpStatusCode } from "@domain/enums";
 import { InvalidCredentialsError, UnexpectedError } from "@domain/errors";
@@ -11,7 +12,7 @@ import { makeAxiosHttpClient } from "@main/factories/http/AxiosHttpClient";
 export class CityQuery implements ICityQueryById, IQuery {
   constructor(private readonly httpPostClient: IHttpClient) { }
 
-  async getCityListById(url: string, id: number): Promise<ICityData> {
+  async getCityById(url: string, id: number): Promise<ICityData> {
     const newUrl = `${url}Id=${id}`;
     const httpResponse = await this.httpPostClient.getRequest({
       url: newUrl,

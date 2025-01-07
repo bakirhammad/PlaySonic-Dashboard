@@ -2,22 +2,42 @@ import { SightSeeingWrapper } from "@presentation/pages/sightSeeing";
 import { Route } from "./Routes";
 import { lazy } from "react";
 
-const SlotTypeListWrapper = lazy(
-  () => import("@presentation/pages/slotType")
+const CountryListWrapper = lazy(
+  () => import("@presentation/pages/general/country")
 );
 
+const CityListWrapper = lazy(
+  () => import("@presentation/pages/general/city")
+);
+const AreaListWrapper = lazy(
+  () => import("@presentation/pages/general/area")
+);
 
 const GeneralRoute: Route = {
-  path: "/apps",
+  path: "/apps/general",
   title: "",
   component: SightSeeingWrapper,
   role: ["admin"],
   breadcrumbs: [],
   children: [
     {
-      path: "slottype",
-      title: "SIDEBAR-SLOT-TYPE",
-      component: SlotTypeListWrapper,
+      path: "countrylist",
+      title: "SIDEBAR-COUNTRY",
+      component: CountryListWrapper,
+      role: [],
+      breadcrumbs: [],
+    },
+    {
+      path: "citylist",
+      title: "SIDEBAR-Cities",
+      component: CityListWrapper,
+      role: [],
+      breadcrumbs: [],
+    },
+    {
+      path: "arealist",
+      title: "SIDEBAR-Area",
+      component: AreaListWrapper,
       role: [],
       breadcrumbs: [],
     },

@@ -1,8 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  ICountryBody,
-  ICountryCommand,
-} from "@domain/entities/general/country/Country";
+import { ICountryBody, ICountryCommand } from "@domain/entities";
 import { IHttpClient } from "@domain/entities/protocols/http";
 import { HttpStatusCode } from "@domain/enums";
 import { InvalidCredentialsError, UnexpectedError } from "@domain/errors";

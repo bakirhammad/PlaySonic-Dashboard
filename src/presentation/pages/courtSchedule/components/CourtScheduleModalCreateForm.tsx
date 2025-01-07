@@ -40,8 +40,9 @@ export const CourtScheduleModalCreateForm = () => {
   });
 
   const _CourtScheduleSchema = Object.assign({
+    courtId:validationSchemas.object,
     startTime: Yup.string().required("Start Time is Required"),
-    days: validationSchemas.array,
+    days: validationSchemas.message,
     endTime: Yup.string().required("End Time is Required"),
   });
 

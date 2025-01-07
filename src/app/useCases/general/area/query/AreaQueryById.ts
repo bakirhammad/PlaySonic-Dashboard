@@ -11,7 +11,7 @@ import { makeAxiosHttpClient } from "@main/factories/http/AxiosHttpClient";
 export class AreaQueryById implements IAreaQueryById, IQuery {
   constructor(private readonly httpPostClient: IHttpClient) { }
 
-  async getAreaListById(url: string, id: number): Promise<IAreaData> {
+  async getAreaById(url: string, id: number): Promise<IAreaData> {
     const newUrl = `${url}Id=${id}`;
     const httpResponse = await this.httpPostClient.getRequest({
       url: newUrl,

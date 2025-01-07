@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IAreaCommand, IAreaCommandData } from "@domain/entities";
+import { IAreaBody, IAreaCommand } from "@domain/entities/general/area/Area";
 import { IHttpClient } from "@domain/entities/protocols/http";
 import { HttpStatusCode } from "@domain/enums";
 import { InvalidCredentialsError, UnexpectedError } from "@domain/errors";
@@ -12,7 +12,7 @@ import { makeAxiosHttpClient } from "@main/factories/http/AxiosHttpClient";
 export class AreaCommand implements IAreaCommand, ICommand {
   constructor(private readonly httpPostClient: IHttpClient) {}
 
-  async createArea(url: string, body: any): Promise<IAreaCommandData> {
+  async createArea(url: string, body: any): Promise<IAreaBody[]> {
     const httpResponse = await this.httpPostClient.postRequest({ url, body });
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
@@ -31,7 +31,7 @@ export class AreaCommand implements IAreaCommand, ICommand {
         throw new UnexpectedError();
     }
   }
-  async updateArea(url: string, body: any): Promise<IAreaCommandData> {
+  async updateArea(url: string, body: any): Promise<IAreaBody[]> {
     const httpResponse = await this.httpPostClient.putRequest({ url, body });
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
@@ -50,7 +50,7 @@ export class AreaCommand implements IAreaCommand, ICommand {
         throw new UnexpectedError();
     }
   }
-  async deleteArea(url: string, id: number): Promise<IAreaCommandData> {
+  async deleteArea(url: string, id: number): Promise<IAreaBody[]> {
     const newUrl = `${url}Id=${id}`;
     const httpResponse = await this.httpPostClient.deleteRequest({
       url: newUrl,
@@ -76,7 +76,7 @@ export class AreaCommand implements IAreaCommand, ICommand {
   async multipleDeleteArea(
     url: string,
     ids: number[]
-  ): Promise<IAreaCommandData> {
+  ): Promise<IAreaBody> {
     const httpResponse = await this.httpPostClient.deleteRequest({
       url,
       body: ids,

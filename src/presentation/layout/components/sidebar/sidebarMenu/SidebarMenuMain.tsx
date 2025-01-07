@@ -2,6 +2,7 @@ import { SidebarMenuItemWithSub } from "./SidebarMenuItemWithSub";
 import { SidebarMenuItem } from "./SidebarMenuItem";
 import { SidebarCourtMenuItems } from "./SidebarCourtMenuItems";
 import { SidebarClubMenuItems } from "./SidebarClubMenuItems";
+import { SidebarGeneralMenuItems } from "./SidebarGeneralMenuItems";
 
 const SidebarMenuMain = () => {
   return (
@@ -39,15 +40,6 @@ const SidebarMenuMain = () => {
         </div>
       </div>
 
-      {/*      <SidebarMenuItemWithSub
-        to="/apps/sightseeing"
-        title={"SIGHT-SEEING-PAGE-TITLE"}
-        icon="abstract-28"
-        fontIcon="bi-people-fill"
-      >
-        <SidebarSightSeeingMenuItems />
-      </SidebarMenuItemWithSub> */}
-
       {/* .. >>>>>  */}
 
       <SidebarMenuItemWithSub
@@ -68,11 +60,14 @@ const SidebarMenuMain = () => {
         <SidebarCourtMenuItems />
       </SidebarMenuItemWithSub>
 
-      <SidebarMenuItem
-        to="/apps/slottype"
-        title="SIDEBAR-SLOT-TYPE"
-        hasBullet={true}
-      />
+      <SidebarMenuItemWithSub
+        to="/apps/general"
+        title={"General"}
+        icon="abstract-28"
+        fontIcon="bi-people-fill"
+      >
+        <SidebarGeneralMenuItems />
+      </SidebarMenuItemWithSub> 
     </>
   );
 };

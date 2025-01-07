@@ -8,6 +8,9 @@ import {
 import { IClubData } from "@domain/entities/Clubs/Clubs";
 import { ClubActionCell } from "./CustomClubActionCell";
 import { FeaturesCell } from "@presentation/helpers/cells/FeaturesCell";
+import CityNameCell from "@presentation/helpers/cells/CityNameCell";
+import CountryNameCell from "@presentation/helpers/cells/CountryNameCell";
+import AreaNameCell from "@presentation/helpers/cells/AreaNameCell";
 
 const ClubListColumns: ReadonlyArray<Column<IClubData>> = [
   {
@@ -35,6 +38,20 @@ const ClubListColumns: ReadonlyArray<Column<IClubData>> = [
     Header: (props) => (
       <CustomHeaderCell
         tableProps={props}
+        title="SIDEBAR-CLUB-NAME"
+        enableSorting={false}
+        className="min-w-125px"
+      />
+    ),
+    id: "name",
+    Cell: ({ ...props }) => (
+      <CustomCell data={props.data[props.row.index]?.clubInfoResponses[0]?.name} />
+    ),
+  },
+  {
+    Header: (props) => (
+      <CustomHeaderCell
+        tableProps={props}
         title="SIDEBAR-CLUB-PAYLOAD"
         enableSorting={false}
         className="min-w-125px"
@@ -56,7 +73,7 @@ const ClubListColumns: ReadonlyArray<Column<IClubData>> = [
     ),
     id: "country",
     Cell: ({ ...props }) => (
-      <CustomCell data={props.data[props.row.index]?.countryId} />
+      <CountryNameCell countryId={props.data[props.row.index]?.countryId} />
     ),
   },
   {
@@ -70,7 +87,7 @@ const ClubListColumns: ReadonlyArray<Column<IClubData>> = [
     ),
     id: "city",
     Cell: ({ ...props }) => (
-      <CustomCell data={props.data[props.row.index]?.cityId} />
+      <CityNameCell cityId={props.data[props.row.index]?.cityId} />
     ),
   },
   {
@@ -84,7 +101,7 @@ const ClubListColumns: ReadonlyArray<Column<IClubData>> = [
     ),
     id: "area",
     Cell: ({ ...props }) => (
-      <CustomCell data={props.data[props.row.index]?.areaId} />
+      <AreaNameCell areaId={props.data[props.row.index]?.areaId} />
     ),
   },
   {

@@ -51,7 +51,7 @@ import {
   formatFromUtcToLocale,
   formatToUtc,
 } from "@presentation/helpers/DateFormater/formatDate";
-import { useCountriesDDL } from "@presentation/hooks/queries/DDL/SightSeeing/GeneralDDL";
+import { useCountriesDDL } from "@presentation/hooks/queries/DDL/GeneralDDL";
 
 interface IProps {
   SightSeeingTourData: ISightSeeingTourData;

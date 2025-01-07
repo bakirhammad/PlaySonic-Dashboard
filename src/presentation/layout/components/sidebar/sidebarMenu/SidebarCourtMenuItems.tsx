@@ -19,6 +19,11 @@ const SidebarCourtMenuItems: FC = () => {
         title="SIDEBAR-COURT-SLOTS"
         hasBullet={true}
       />
+       <SidebarMenuItem
+        to="/apps/court/slottype"
+        title="SIDEBAR-SLOT-TYPE"
+        hasBullet={true}
+      />
     </>
   );
 };

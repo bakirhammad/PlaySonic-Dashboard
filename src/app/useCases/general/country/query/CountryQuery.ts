@@ -1,7 +1,5 @@
-import {
-  ICountryBody,
-  ICountryQuery,
-} from "@domain/entities/general/country/Country";
+
+import { ICountryBody, ICountryQuery } from "@domain/entities";
 import { IHttpClient } from "@domain/entities/protocols/http";
 import { HttpStatusCode } from "@domain/enums";
 import { InvalidCredentialsError, UnexpectedError } from "@domain/errors";

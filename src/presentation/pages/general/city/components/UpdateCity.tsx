@@ -15,7 +15,7 @@ import {
   useFormikContext,
 } from "formik";
 import * as Yup from "yup";
-import { combineBits, QUERIES } from "@presentation/helpers";
+import { QUERIES } from "@presentation/helpers";
 import { useQueryClient } from "react-query";
 import PleaseWaitTxt from "@presentation/helpers/loading/PleaseWaitTxt";
 import { useLanguageStore } from "@infrastructure/storage/LanguageStore";
@@ -23,23 +23,17 @@ import clsx from "clsx";
 import validationSchemas from "@presentation/helpers/validationSchemas";
 import CustomEditor from "@presentation/components/forms/CustomEditor";
 import CustomSelectField from "@presentation/components/forms/CustomSelectField";
-import { IClubData } from "@domain/entities/Clubs/Clubs";
-import { ClubCommandInstance } from "@app/useCases/clubs";
-import { ClubUrlEnum } from "@domain/enums/URL/Clubs/ClubUrls/Club";
-import {
-  FeaturesOptionsDDL,
-  IfeatureOptionsDDL,
-} from "@presentation/helpers/DDL/FeaturesOptions";
-import { useCitiesDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useCitiesDDL";
-import { useAreasDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useAreasDDL";
+import { ICityData } from "@domain/entities/general/city/City";
+import { CityCommandInstance } from "@app/useCases/general/city/commands/CityCommand";
+import { CityUrlEnum } from "@domain/enums/URL/General/GeneralEnum/CityEnum";
 import { useCountriesDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useCountriesDDL";
 
 interface IProps {
-  ClubData: IClubData;
+  CityData: ICityData;
   isLoading: boolean;
 }
 
-export const UpdateClubModalForm = ({ ClubData, isLoading }: IProps) => {
+export const UpdateCity = ({ CityData, isLoading }: IProps) => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);
   const { setItemIdForUpdate } = useListView();
   const queryClient = useQueryClient();
@@ -54,31 +48,25 @@ export const UpdateClubModalForm = ({ ClubData, isLoading }: IProps) => {
       },
       {}
     );
-    ClubData.clubInfoResponses.forEach((lang) => {
-      translations[`name${lang.langId}`] = lang.name;
-      translations[`description${lang.langId}`] = lang.description;
+    CityData.translations.forEach((lang) => {
+      translations[`name${lang.languageId}`] = lang.name;
+      translations[`description${lang.languageId}`] = lang.description;
     });
 
     return {
-      id: ClubData.id,
-      city: ClubData?.cityId,
-      country: ClubData?.countryId,
-      area: ClubData.areaId,
-      phone: ClubData.phone,
-      website: ClubData.website,
-      features: ClubData.features,
-      payload: ClubData.payload,
-      lat: ClubData.lat,
-      lng: ClubData.lng,
+      id: CityData.id,
+      rank: CityData.rank,
+      payload: CityData.payload,
+      countryId: CityData.countryId,
       ...translations,
     };
-  }, [ClubData, Languages]);
+  }, [CityData, Languages]);
 
-  const _ClubSchema = Object.assign(
+  const _CitySchema = Object.assign(
     {
-      country: validationSchemas.object,
-      city: validationSchemas.object,
-      area: validationSchemas.object,
+      rank: Yup.number().required("Rank is required"),
+      payload: Yup.string().required("Name is required"),
+      countryId: validationSchemas.object,
     },
     ...Languages.map((lang) => {
       return lang.id === 2
@@ -101,53 +89,51 @@ export const UpdateClubModalForm = ({ ClubData, isLoading }: IProps) => {
           };
     })
   );
-  const ClubSchema = Yup.object().shape(_ClubSchema);
+  const CitySchema = Yup.object().shape(_CitySchema);
   const handleSubmit = async (
     values: FormikValues,
     setSubmitting: (isSubmitting: boolean) => void
   ) => {
-    const features = combineBits(
-      values.features.map((feature: IfeatureOptionsDDL) => feature.value)
-    );
     const formData = new FormData();
     formData.append("Id", String(initialValues.id));
-    formData.append("CountryId", values.country.value);
-    formData.append("CityId", values.city.value);
-    formData.append("AreaId", values.area.value);
-    formData.append("Phone", values.phone);
-    formData.append("Website", values.website);
-    formData.append("Features", String(features));
+    formData.append("Rank", values.rank);
     formData.append("Payload", values.payload);
-    formData.append("lat", values.lat);
-    formData.append("lng", values.lng);
+    formData.append("CountryId", values.countryId.value);
 
     let index = 0;
     Languages.forEach((lang) => {
       if (values[`name${lang?.id}`]) {
-        formData.append(`ClubInfos[${index}].id`, values.id.toString());
-        formData.append(`ClubInfos[${index}].clubId`, values.id.toString());
-        formData.append(`ClubInfos[${index}].languageId`, lang.id.toString());
-        formData.append(`ClubInfos[${index}].name`, values[`name${lang?.id}`]);
+        formData.append(`Translations[${index}].id`, values.id.toString());
+        formData.append(`Translations[${index}].cityId`, values.id.toString());
         formData.append(
-          `ClubInfos[${index}].description`,
+          `Translations[${index}].languageId`,
+          lang.id.toString()
+        );
+        formData.append(
+          `Translations[${index}].name`,
+          values[`name${lang?.id}`]
+        );
+        formData.append(
+          `Translations[${index}].description`,
           values[`description${lang?.id}`]
         );
 
         index++;
       }
     });
+
     try {
-      const data = await ClubCommandInstance.updateClub(
-        ClubUrlEnum.UpdateClub,
+      const data = await CityCommandInstance.updateCity(
+        CityUrlEnum.UpdateCity,
         formData
       );
       if (data) {
-        CustomToast("Club updated successfully", "success", {
+        CustomToast("City updated successfully", "success", {
           autoClose: 3000,
         });
         setItemIdForUpdate(undefined);
         queryClient.invalidateQueries({
-          queryKey: [QUERIES.ClubList],
+          queryKey: [QUERIES.CityList],
         });
       }
     } catch (error) {
@@ -175,19 +161,19 @@ export const UpdateClubModalForm = ({ ClubData, isLoading }: IProps) => {
             },
             {}
           )}
-          validationSchema={ClubSchema}
+          validationSchema={CitySchema}
           onSubmit={(values, { setSubmitting }) => {
             handleSubmit(values, setSubmitting);
           }}
         >
-          <ClubUpdateForm />
+          <CityUpdateForm />
         </Formik>
       )}
     </>
   );
 };
 
-const ClubUpdateForm = () => {
+const CityUpdateForm = () => {
   const { setItemIdForUpdate } = useListView();
 
   const {
@@ -201,10 +187,7 @@ const ClubUpdateForm = () => {
 
   const { Languages } = useLanguageStore();
   const [languageInput, setLanguageInput] = useState(2);
-  console.log("values", values);
   const { CountryOption, isCountryLoading } = useCountriesDDL();
-  const { CityOption, isCityLoading } = useCitiesDDL();
-  const { AreaOption, isAreaLoading } = useAreasDDL();
 
   return (
     <>
@@ -217,8 +200,28 @@ const ClubUpdateForm = () => {
         <div className="row row-cols-md-1 row-cols-sm-1 row-cols-1">
           <div className="row">
             <div className="row row-cols-3">
+              <CustomInputField
+                name="rank"
+                placeholder="Country-RANK"
+                label="Country-RANK"
+                as="input"
+                touched={touched}
+                errors={errors}
+                type="number"
+                isSubmitting={isSubmitting}
+              />
+              <CustomInputField
+                name="payload"
+                placeholder="Country-PAYLOAD"
+                label="Country-PAYLOAD"
+                as="input"
+                touched={touched}
+                errors={errors}
+                type="text"
+                isSubmitting={isSubmitting}
+              />
               <CustomSelectField
-                name="country"
+                name="countryId"
                 options={CountryOption}
                 labelRequired={false}
                 isloading={isCountryLoading}
@@ -226,93 +229,6 @@ const ClubUpdateForm = () => {
                 placeholder="DDL-COUNTRY_LABEL"
                 touched={touched}
                 errors={errors}
-              />
-              <CustomSelectField
-                name="city"
-                labelRequired={false}
-                options={CityOption}
-                isloading={isCityLoading}
-                label="DDL-CITY_LABEL"
-                placeholder="DDL-CITY_LABEL"
-                touched={touched}
-                errors={errors}
-              />
-              <CustomSelectField
-                name="area"
-                labelRequired={false}
-                options={AreaOption}
-                isloading={isAreaLoading}
-                label="DDL-AREA"
-                placeholder="DDL-AREA"
-                touched={touched}
-                errors={errors}
-              />
-            </div>
-            <div className="row row-cols-md-3 border-info-subtle border-black">
-              <CustomSelectField
-                name="features"
-                placeholder="DDL-FEATURE"
-                label="SELECT-FEATURE"
-                touched={touched}
-                errors={errors}
-                isSubmitting={isSubmitting}
-                options={FeaturesOptionsDDL}
-                isMulti={true}
-              />
-              <CustomInputField
-                name="lat"
-                placeholder="CLUB-Latitude"
-                label="CLUB-Latitude"
-                as="input"
-                touched={touched}
-                errors={errors}
-                type="text"
-                isSubmitting={isSubmitting}
-              />
-              <CustomInputField
-                name="lng"
-                placeholder="CLUB-Longitude"
-                label="CLUB-Longitude"
-                as="input"
-                touched={touched}
-                errors={errors}
-                type="text"
-                isSubmitting={isSubmitting}
-              />
-            </div>
-
-            <div className="row row-cols-3">
-              <CustomInputField
-                name="phone"
-                placeholder="CLUB-PHONE"
-                label="CLUB-PHONE"
-                as="input"
-                touched={touched}
-                errors={errors}
-                type="text"
-                isSubmitting={isSubmitting}
-              />
-
-              <CustomInputField
-                name="payload"
-                placeholder="CLUB-PAYLOAD"
-                label="CLUB-PAYLOAD"
-                as="input"
-                touched={touched}
-                errors={errors}
-                type="text"
-                isSubmitting={isSubmitting}
-              />
-
-              <CustomInputField
-                name="website"
-                placeholder="CLUB-WEBSITE"
-                label="CLUB-WEBSITE"
-                as="input"
-                touched={touched}
-                errors={errors}
-                type="text"
-                isSubmitting={isSubmitting}
               />
             </div>
             <hr />
@@ -344,8 +260,8 @@ const ClubUpdateForm = () => {
                             "input name"
                           }
                           name={`name${lang?.id}`}
-                          label="CLUB-NAME"
-                          placeholder="CLUB-NAME"
+                          label="City-NAME"
+                          placeholder="City-NAME"
                           as="input"
                           touched={touched}
                           errors={errors}
@@ -357,7 +273,7 @@ const ClubUpdateForm = () => {
                         key={lang.prefix + lang.id + "editor"}
                         name={`description${lang?.id}`}
                         labelRequired={languageInput === 2 ? true : false}
-                        label={"CLUB-DISSCRIPTION"}
+                        label={"City-DISSCRIPTION"}
                       />
                     </Fragment>
                   )
@@ -387,4 +303,4 @@ const ClubUpdateForm = () => {
   );
 };
 
-export default UpdateClubModalForm;
+export default UpdateCity;

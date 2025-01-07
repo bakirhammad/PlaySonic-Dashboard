@@ -1,4 +1,5 @@
-import { ICityBody, ICityQuery } from "@domain/entities";
+
+import { ICityBody, ICityQuery } from "@domain/entities/general/city/City";
 import { IHttpClient } from "@domain/entities/protocols/http";
 import { HttpStatusCode } from "@domain/enums";
 import { InvalidCredentialsError, UnexpectedError } from "@domain/errors";
