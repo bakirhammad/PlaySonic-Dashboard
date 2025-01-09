@@ -1,6 +1,6 @@
-import { SightSeeingWrapper } from "@presentation/pages/sightSeeing";
 import { Route } from "./Routes";
 import { lazy } from "react";
+import { CourtWrapper } from "@presentation/pages/court/CourtWrapper";
 
 const CourtListWrapper = lazy(
   () => import("@presentation/pages/court")
@@ -18,7 +18,7 @@ const CourtSlotsListWrapper = lazy(
 const CourtRoute: Route = {
   path: "/apps/court",
   title: "",
-  component: SightSeeingWrapper,
+  component: CourtWrapper,
   role: ["admin"],
   breadcrumbs: [],
   children: [

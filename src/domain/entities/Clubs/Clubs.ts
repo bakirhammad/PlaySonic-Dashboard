@@ -48,9 +48,15 @@ export interface IClubData {
   payload: string;
   location: string;
   distance: number;
-  clubInfoResponses: any[];
+  clubInfoResponses: IClubInfoResponse[];
   areaTranslations: any | null;
   courts: any | null;
   lat: number,
-  lng:number
+  lng: number
+}
+
+export interface IClubInfoResponse {
+  languageId: number,
+  name: string,
+  description: string
 }

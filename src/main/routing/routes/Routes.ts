@@ -6,6 +6,8 @@ import { DirectClientsRouter } from "./DirectClients";
 import { ClubRoute } from "./ClubRoute";
 import { CourtRoute } from "./CourtRoute";
 import { GeneralRoute } from "./GeneralRoute";
+import { ReservationRoute } from "./ReservationRoute";
+import { ClubAdminRoutes } from "./ClubAdminRoutes";
 
 
 export interface Route {
@@ -28,7 +30,9 @@ const routes: Route[] = [
   SightseeingRoute,
   ClubRoute,
   CourtRoute,
-  GeneralRoute
+  GeneralRoute,
+  ReservationRoute,
+  ClubAdminRoutes
 ];
 
 export { routes };

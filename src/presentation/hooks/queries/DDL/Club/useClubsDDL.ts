@@ -17,10 +17,11 @@ function useClubsDDL() {
       const clubsListRes = await ClubQueryInstance.getClubList(
         ClubUrlEnum.GetClubList
       );
+      console.log(clubsListRes)
       const _clubsOption = clubsListRes?.data?.map((club) => {
         return {
           value: club.id,
-          label: club.payload,
+          label: club.clubInfoResponses[0]?.name || "NA",
         };
       });
       setClubsOption(_clubsOption?.length ? _clubsOption : []);
@@ -35,6 +36,7 @@ function useClubsDDL() {
   useEffect(() => {
     fetchClubs();
   }, [fetchClubs]);
+  console.log(clubsOption)
   return { clubsList, isClubLoading: isLoading, clubsOption };
 }
 

@@ -12,6 +12,7 @@ import CustomSelectField from "@presentation/components/forms/CustomSelectField"
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import CustomTimePicker from "@presentation/components/forms/CustomTimePicker";
+import { useClubsDDL } from "@presentation/hooks/queries/DDL/Club/useClubsDDL";
 
 interface FilterProps {
   title?: string;
@@ -39,12 +40,8 @@ const SightSeeingTourFilter: FC<FilterProps & WithChildren> = ({
   const resetData = () => {
     updateState({ filter: undefined, ...initialQueryState });
   };
-  const { isSightSeeingCategoryListLoading, SightSeeingCategoryOptions } =
-    useSightSeeingCategoryDDL({
-      onError: (error: Error) => {
-        handleError("Failed to get Sightseeing Category data", error);
-      },
-    });
+  const {clubsOption,isClubLoading } =
+    useClubsDDL();
 
   const initialValues = {
     sightSeeingCategory: {
@@ -144,9 +141,9 @@ const SightSeeingTourFilter: FC<FilterProps & WithChildren> = ({
                   label="SELECT-DDL-SIGHT-SEEING-CATEGORY"
                   touched={touched}
                   errors={errors}
-                  isloading={isSightSeeingCategoryListLoading}
+                  isloading={isClubLoading}
                   isSubmitting={isSubmitting}
-                  options={SightSeeingCategoryOptions}
+                  options={clubsOption}
                   labelRequired={false}
                 />
               </div>

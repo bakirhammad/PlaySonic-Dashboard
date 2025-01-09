@@ -16,57 +16,52 @@ import {
   showConfirmationAlert,
   showDeletedAlert,
 } from "@presentation/components";
-import { ClubCommandInstance, ClubQueryInstance } from "@app/useCases/clubs";
+import { ClubCommandInstance } from "@app/useCases/clubs";
 import { ClubUrlEnum } from "@domain/enums/URL/Clubs/ClubUrls/Club";
-import { ClubListColumns } from "./components/ClubListColumns";
-import { ClubModalCreateForm } from "./components/ClubModalCreateForm";
+import { CourtModalCreateForm } from "./components/CourtModalCreateForm";
+import { CourtQueryInstance } from "@app/useCases/court";
+import { CourtUrlEnum } from "@domain/enums/URL/Court/CourtUrls/Court";
+import { CourtListColumns } from "./components/CourtListColumns";
 
-
-const ClubList = () => {
+const MyCourts = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
 
-  const columns = useMemo(() => ClubListColumns, []);
+  const columns = useMemo(() => CourtListColumns, []);
 
   const queryClient = useQueryClient();
 
   const { itemIdForUpdate, setItemIdForUpdate, selected, clearSelected } =
     useListView();
   const {
-    data: ClubData,
+    data: CourtData,
     error,
     isLoading,
     isFetching,
   } = useQuery({
-    queryKey: [QUERIES.ClubList, [query]],
-
+    queryKey: [QUERIES.CourtList, [query]],
     queryFn: () => {
       const searchQuery = query ? `&${query}` : "";
-      return ClubQueryInstance.getClubList(
-        `${ClubUrlEnum.GetClubList + searchQuery}`
+      return CourtQueryInstance.getCourtList(
+        `${CourtUrlEnum.GetCourtList + searchQuery}`
       );
     },
   });
 
   useEffect(() => {
-    updateData(ClubData);
+    updateData(CourtData);
     setIsLoading(isFetching || isLoading);
     setError(error as Error);
-  }, [ClubData, isFetching, isLoading, error]);
+  }, [CourtData, isFetching, isLoading, error]);
 
-  const tableData = useMemo(
-    () => ClubData?.data,
-    [ClubData]
-  );
-
+  const tableData = useMemo(() => CourtData?.data, [CourtData]);
   const handleDeleteSelected = async () => {
     const confirm = await showConfirmationAlert(`${selected.length} item`);
     if (confirm) {
       try {
-        const data =
-          await ClubCommandInstance.multipleDeleteClub(
-            ClubUrlEnum.MultipleDeleteClub,
-            selected
-          );
+        const data = await ClubCommandInstance.multipleDeleteClub(
+          ClubUrlEnum.MultipleDeleteClub,
+          selected
+        );
         if (data) {
           showDeletedAlert(`${selected.length} item`);
           queryClient.invalidateQueries([QUERIES.ClubList]);
@@ -74,8 +69,8 @@ const ClubList = () => {
           CustomToast(`Deleted successfully`, "success");
         }
       } catch (error) {
-        console.error("Error when delete Club", error);
-        CustomToast(`Failed to Delete Club`, "error");
+        console.error("Error when delete Sightseeing Tour", error);
+        CustomToast(`Failed to Delete Sightseeing  Tour `, "error");
       }
     }
   };
@@ -89,7 +84,7 @@ const ClubList = () => {
           }}
           searchPlaceholder="SEARCH"
           filterBtn={true}
-          // FilterComponent={<SightSeeingTourFilter/>}
+          // FilterComponent={<ClubFilter></ClubFilter>}
           onDeleteSelectedAll={() => handleDeleteSelected()}
           addBtn={true}
           addName="ADD"
@@ -102,20 +97,20 @@ const ClubList = () => {
           modalTitle="Create-Club"
           onClick={() => setItemIdForUpdate(undefined)}
         >
-          <ClubModalCreateForm />
+          <CourtModalCreateForm />
         </CustomModal>
       )}
     </>
   );
 };
 
-function ClubListWrapper() {
+function MyCourtsWrapper() {
   return (
     <QueryRequestProvider>
       <ListViewProvider>
-        <ClubList />
+        <MyCourts />
       </ListViewProvider>
     </QueryRequestProvider>
   );
 }
-export default ClubListWrapper;
+export default MyCourtsWrapper;

@@ -16,57 +16,53 @@ import {
   showConfirmationAlert,
   showDeletedAlert,
 } from "@presentation/components";
-import { ClubCommandInstance, ClubQueryInstance } from "@app/useCases/clubs";
+import { ClubCommandInstance } from "@app/useCases/clubs";
 import { ClubUrlEnum } from "@domain/enums/URL/Clubs/ClubUrls/Club";
-import { ClubListColumns } from "./components/ClubListColumns";
-import { ClubModalCreateForm } from "./components/ClubModalCreateForm";
+import { ReservationQueryInstance } from "@app/useCases/reservation";
+import { ReservationUrlEnum } from "@domain/enums/URL/Reservation/reservationUrls/Reservation";
+import { ReservationListColumns } from "./components/ReservationListColumns";
+import { CreateReservationForm } from "./components/CreateReservationForm";
 
-
-const ClubList = () => {
+const ReservationList = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
 
-  const columns = useMemo(() => ClubListColumns, []);
+  const columns = useMemo(() => ReservationListColumns, []);
 
   const queryClient = useQueryClient();
 
   const { itemIdForUpdate, setItemIdForUpdate, selected, clearSelected } =
     useListView();
   const {
-    data: ClubData,
+    data: ReservationData,
     error,
     isLoading,
     isFetching,
   } = useQuery({
-    queryKey: [QUERIES.ClubList, [query]],
-
+    queryKey: [QUERIES.ReservationList, [query]],
     queryFn: () => {
       const searchQuery = query ? `&${query}` : "";
-      return ClubQueryInstance.getClubList(
-        `${ClubUrlEnum.GetClubList + searchQuery}`
+      return ReservationQueryInstance.getReservationList(
+        `${ReservationUrlEnum.GetReservationList + searchQuery}`
       );
     },
   });
 
   useEffect(() => {
-    updateData(ClubData);
+    updateData(ReservationData);
     setIsLoading(isFetching || isLoading);
     setError(error as Error);
-  }, [ClubData, isFetching, isLoading, error]);
+  }, [ReservationData, isFetching, isLoading, error]);
 
-  const tableData = useMemo(
-    () => ClubData?.data,
-    [ClubData]
-  );
+  const tableData = useMemo(() => ReservationData?.data, [ReservationData]);
 
   const handleDeleteSelected = async () => {
     const confirm = await showConfirmationAlert(`${selected.length} item`);
     if (confirm) {
       try {
-        const data =
-          await ClubCommandInstance.multipleDeleteClub(
-            ClubUrlEnum.MultipleDeleteClub,
-            selected
-          );
+        const data = await ClubCommandInstance.multipleDeleteClub(
+          ClubUrlEnum.MultipleDeleteClub,
+          selected
+        );
         if (data) {
           showDeletedAlert(`${selected.length} item`);
           queryClient.invalidateQueries([QUERIES.ClubList]);
@@ -74,8 +70,8 @@ const ClubList = () => {
           CustomToast(`Deleted successfully`, "success");
         }
       } catch (error) {
-        console.error("Error when delete Club", error);
-        CustomToast(`Failed to Delete Club`, "error");
+        console.error("Error when delete Sightseeing Tour", error);
+        CustomToast(`Failed to Delete Sightseeing  Tour `, "error");
       }
     }
   };
@@ -89,7 +85,7 @@ const ClubList = () => {
           }}
           searchPlaceholder="SEARCH"
           filterBtn={true}
-          // FilterComponent={<SightSeeingTourFilter/>}
+          //  FilterComponent={<SightSeeingTourFilter/>}
           onDeleteSelectedAll={() => handleDeleteSelected()}
           addBtn={true}
           addName="ADD"
@@ -102,20 +98,20 @@ const ClubList = () => {
           modalTitle="Create-Club"
           onClick={() => setItemIdForUpdate(undefined)}
         >
-          <ClubModalCreateForm />
+          <CreateReservationForm />
         </CustomModal>
       )}
     </>
   );
 };
 
-function ClubListWrapper() {
+function ReservationListWrapper() {
   return (
     <QueryRequestProvider>
       <ListViewProvider>
-        <ClubList />
+        <ReservationList />
       </ListViewProvider>
     </QueryRequestProvider>
   );
 }
-export default ClubListWrapper;
+export default ReservationListWrapper;

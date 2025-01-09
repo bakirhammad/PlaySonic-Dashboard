@@ -9,7 +9,7 @@ const SlotTypeNameCell: FC<ICourtName> = ({ slotTypeId }) => {
   const { SlotTypesOption } = useSlotTypesDDL();
   const SlotTypeName = SlotTypesOption.map((elem) => {
     if (elem.value === slotTypeId) {
-      return elem.label;
+      return elem.label || "NA";
     }
   });
   return SlotTypeName;

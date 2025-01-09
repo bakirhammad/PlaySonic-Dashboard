@@ -1,6 +1,6 @@
-import { SightSeeingWrapper } from "@presentation/pages/sightSeeing";
 import { Route } from "./Routes";
 import { lazy } from "react";
+import { GeneralWrapper } from "@presentation/pages/general/GeneralWrapper";
 
 const CountryListWrapper = lazy(
   () => import("@presentation/pages/general/country")
@@ -16,7 +16,7 @@ const AreaListWrapper = lazy(
 const GeneralRoute: Route = {
   path: "/apps/general",
   title: "",
-  component: SightSeeingWrapper,
+  component: GeneralWrapper,
   role: ["admin"],
   breadcrumbs: [],
   children: [

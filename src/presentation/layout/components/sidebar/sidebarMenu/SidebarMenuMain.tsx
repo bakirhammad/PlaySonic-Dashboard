@@ -1,8 +1,6 @@
-import { SidebarMenuItemWithSub } from "./SidebarMenuItemWithSub";
 import { SidebarMenuItem } from "./SidebarMenuItem";
-import { SidebarCourtMenuItems } from "./SidebarCourtMenuItems";
-import { SidebarClubMenuItems } from "./SidebarClubMenuItems";
-import { SidebarGeneralMenuItems } from "./SidebarGeneralMenuItems";
+import { SidebarMenuAdmin } from "./SidebarMenuAdmin";
+import { SidebarMenuClubAdmins } from "./SidebarMenuClubAdmins";
 
 const SidebarMenuMain = () => {
   return (
@@ -42,32 +40,8 @@ const SidebarMenuMain = () => {
 
       {/* .. >>>>>  */}
 
-      <SidebarMenuItemWithSub
-        to="/apps/club"
-        title={"Club"}
-        icon="abstract-28"
-        fontIcon="bi-people-fill"
-      >
-        <SidebarClubMenuItems />
-      </SidebarMenuItemWithSub>
-
-      <SidebarMenuItemWithSub
-        to="/apps/court"
-        title={"Court"}
-        icon="abstract-28"
-        fontIcon="bi-people-fill"
-      >
-        <SidebarCourtMenuItems />
-      </SidebarMenuItemWithSub>
-
-      <SidebarMenuItemWithSub
-        to="/apps/general"
-        title={"General"}
-        icon="abstract-28"
-        fontIcon="bi-people-fill"
-      >
-        <SidebarGeneralMenuItems />
-      </SidebarMenuItemWithSub> 
+      <SidebarMenuAdmin />
+      <SidebarMenuClubAdmins />
     </>
   );
 };

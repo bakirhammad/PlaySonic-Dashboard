@@ -54,7 +54,6 @@ const CourtList = () => {
   }, [CourtData, isFetching, isLoading, error]);
 
   const tableData = useMemo(() => CourtData?.data, [CourtData]);
-
   const handleDeleteSelected = async () => {
     const confirm = await showConfirmationAlert(`${selected.length} item`);
     if (confirm) {

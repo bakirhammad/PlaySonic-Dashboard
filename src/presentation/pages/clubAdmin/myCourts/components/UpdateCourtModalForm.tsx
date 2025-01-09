@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import {
   CustomButton,
   CustomCheckbox,
@@ -10,39 +10,52 @@ import { useListView } from "@presentation/context";
 import {
   Form,
   Formik,
-  FormikProps,
-  useFormikContext,
-  FormikValues,
   FormikContextType,
+  FormikProps,
+  FormikValues,
+  useFormikContext,
 } from "formik";
 import * as Yup from "yup";
-import { useQueryClient } from "react-query";
 import { QUERIES } from "@presentation/helpers";
-import CustomSelectField from "@presentation/components/forms/CustomSelectField";
+import { useQueryClient } from "react-query";
+import PleaseWaitTxt from "@presentation/helpers/loading/PleaseWaitTxt";
+import { useLanguageStore } from "@infrastructure/storage/LanguageStore";
 import validationSchemas from "@presentation/helpers/validationSchemas";
+import CustomSelectField from "@presentation/components/forms/CustomSelectField";
+import { ICourtData } from "@domain/entities/Court/Court";
 import { CourtCommandInstance } from "@app/useCases/court";
 import { CourtUrlEnum } from "@domain/enums/URL/Court/CourtUrls/Court";
 import { useClubsDDL } from "@presentation/hooks/queries/DDL/Club/useClubsDDL";
 
-export const CourtModalCreateForm = () => {
+interface IProps {
+  CourtData: ICourtData;
+  isLoading: boolean;
+}
+
+export const UpdateCourtModalForm = ({ CourtData, isLoading }: IProps) => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);
   const { setItemIdForUpdate } = useListView();
   const queryClient = useQueryClient();
+  const { Languages } = useLanguageStore();
 
-  const initialValues = Object.assign({
-    club: 0,
-    rank: 1,
-    payload: "",
-    indoor: false,
-    courtTypeId: 1,
-    name: "",
-    systemTypeId: 1,
-    allowedSlotTypes: 1,
-    sportId: 1,
-  });
+  const initialValues = useMemo(() => {
+    return {
+      id: CourtData.id,
+      club: CourtData.clubId,
+      rank: CourtData.rank,
+      payload: CourtData.payload,
+      indoor: CourtData.indoor,
+      courtTypeId: CourtData.courtTypeId,
+      name: CourtData.name,
+      systemTypeId: CourtData.systemTypeId,
+      allowedSlotTypes: CourtData.allowedSlotTypes,
+      sportId: CourtData.sportId,
+    };
+  }, [CourtData]);
 
   const _CourtSchema = Object.assign({
     club: validationSchemas.object,
+    rank: validationSchemas.number,
     allowedSlotTypes: validationSchemas.number,
     systemTypeId: validationSchemas.number,
     sportId: validationSchemas.number,
@@ -52,12 +65,13 @@ export const CourtModalCreateForm = () => {
   });
 
   const CourtSchema = Yup.object().shape(_CourtSchema);
-
   const handleSubmit = async (
     values: FormikValues,
     setSubmitting: (isSubmitting: boolean) => void
   ) => {
     const formData = new FormData();
+
+    formData.append("Id", String(initialValues.id));
     formData.append("ClubId", values.club.value);
     formData.append("Rank", values.rank);
     formData.append("Indoor", values.indoor);
@@ -69,12 +83,12 @@ export const CourtModalCreateForm = () => {
     formData.append("SportId", values.sportId);
 
     try {
-      const data = await CourtCommandInstance.createCourt(
-        CourtUrlEnum.CreateCourt,
+      const data = await CourtCommandInstance.updateCourt(
+        CourtUrlEnum.UpdateCourt,
         formData
       );
       if (data) {
-        CustomToast("Court is created successfully", "success", {
+        CustomToast("Court updated successfully", "success", {
           autoClose: 3000,
         });
         setItemIdForUpdate(undefined);
@@ -85,7 +99,7 @@ export const CourtModalCreateForm = () => {
     } catch (error) {
       if (error instanceof Error) {
         CustomToast(error.message, "error", { autoClose: 6000 });
-        console.error("Error Create form:", error);
+        console.error("Error submitting form:", error);
       }
     } finally {
       setSubmitting(false);
@@ -93,31 +107,45 @@ export const CourtModalCreateForm = () => {
   };
 
   return (
-    <Formik
-      innerRef={formikRef}
-      initialValues={initialValues}
-      validationSchema={CourtSchema}
-      onSubmit={(values, { setSubmitting }) => {
-        handleSubmit(values, setSubmitting);
-      }}
-    >
-      <CourtForm />
-    </Formik>
+    <>
+      {isLoading ? (
+        <PleaseWaitTxt />
+      ) : (
+        <Formik
+          innerRef={formikRef}
+          initialValues={initialValues}
+          initialTouched={Languages.reduce<{ [key: string]: boolean }>(
+            (acc, lang) => {
+              if (lang.id !== 2) acc[`name${lang.id}`] = true;
+              return acc;
+            },
+            {}
+          )}
+          validationSchema={CourtSchema}
+          onSubmit={(values, { setSubmitting }) => {
+            handleSubmit(values, setSubmitting);
+          }}
+        >
+          <CourtUpdateForm />
+        </Formik>
+      )}
+    </>
   );
 };
 
-const CourtForm = () => {
+const CourtUpdateForm = () => {
+  const { setItemIdForUpdate } = useListView();
+
   const {
     errors,
     touched,
     isSubmitting,
     isValid,
-  }: // values,
-  FormikContextType<FormikValues> = useFormikContext();
-
-  const { setItemIdForUpdate } = useListView();
+    values,
+  }: FormikContextType<FormikValues> = useFormikContext();
+  console.log("values", values);
   const { isClubLoading, clubsOption } = useClubsDDL();
- 
+
   return (
     <>
       <Form
@@ -168,6 +196,8 @@ const CourtForm = () => {
                 touched={touched}
                 errors={errors}
                 type="number"
+                step="0.5"
+                max={7}
                 min={1}
                 isSubmitting={isSubmitting}
               />
@@ -235,6 +265,7 @@ const CourtForm = () => {
             className="btn btn-light me-3"
             disabled={isSubmitting}
           />
+
           <CustomButton
             type="submit"
             className="btn btn-primary"
@@ -247,3 +278,5 @@ const CourtForm = () => {
     </>
   );
 };
+
+export default UpdateCourtModalForm;
