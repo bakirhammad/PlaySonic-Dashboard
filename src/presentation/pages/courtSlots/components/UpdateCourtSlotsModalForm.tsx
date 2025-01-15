@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import {
   CustomButton,
   CustomInputField,
@@ -25,6 +25,8 @@ import CustomSelectField from "@presentation/components/forms/CustomSelectField"
 import { useCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useCourtsDDL";
 import { useSlotTypesDDL } from "@presentation/hooks/queries/DDL/SlotTypes/useSlotTypesDDL";
 import validationSchemas from "@presentation/helpers/validationSchemas";
+import { useClubsDDL } from "@presentation/hooks/queries/DDL/Club/useClubsDDL";
+import { useCourtBuClubDDL } from "@presentation/hooks/queries/DDL/Court/useCourtBuClubDDL";
 
 interface IProps {
   CourtSlotsData: ICourtSlotsData;
@@ -42,10 +44,11 @@ export const UpdateCourtSlotsModalForm = ({
   const initialValues = useMemo(() => {
     return {
       id: CourtSlotsData.id,
+      clubId: 18,
       courtId: CourtSlotsData.courtId,
       slotTypeId: CourtSlotsData.slotTypeId,
       fullPrice: CourtSlotsData.fullPrice,
-      singlePrice: CourtSlotsData.singlePrice
+      singlePrice: CourtSlotsData.singlePrice,
     };
   }, [CourtSlotsData]);
 
@@ -119,10 +122,43 @@ const CourtSlotsUpdateForm = () => {
     touched,
     isSubmitting,
     isValid,
+    values,
+    setFieldValue,
   }: FormikContextType<FormikValues> = useFormikContext();
 
-  const { CourtsOption, isCourtLoading } = useCourtsDDL();
+  const { CourtsOption } = useCourtsDDL();
   const { SlotTypesOption, isSlotTypesLoading } = useSlotTypesDDL();
+  const { clubsOption, isClubLoading } = useClubsDDL();
+  const { ClubCourtsOption, isClubCourtLoading } = useCourtBuClubDDL(
+    values.clubId.value
+  );
+  useEffect(() => {
+    clubsOption.forEach((elem) => {
+      if (elem.value === values.clubId) {
+        return setFieldValue("clubId", {
+          value: elem.value,
+          label: elem.label,
+        });
+      }
+    });
+    CourtsOption.forEach((elem) => {
+      if (elem.value === values.courtId) {
+        return setFieldValue("courtId", {
+          value: elem.value,
+          label: elem.label,
+        });
+      }
+    });
+
+    SlotTypesOption.forEach((elem) => {
+      if (elem.value === values.slotTypeId) {
+        return setFieldValue("slotTypeId", {
+          value: elem.value,
+          label: elem.label,
+        });
+      }
+    });
+  }, [CourtsOption, SlotTypesOption, clubsOption]);
   return (
     <>
       <Form
@@ -135,20 +171,20 @@ const CourtSlotsUpdateForm = () => {
           <div className="row">
             <div className="row row-cols-2">
               <CustomSelectField
-                name="courtId"
-                options={CourtsOption}
-                isloading={isCourtLoading}
-                label="DDL-COURT-MANE"
-                placeholder="DDL-COURT-MANE"
+                name="clubId"
+                options={clubsOption}
+                isloading={isClubLoading}
+                label="DDL-CLUB-MANE"
+                placeholder="DDL-CLUB-MANE"
                 touched={touched}
                 errors={errors}
               />
               <CustomSelectField
-                name="slotTypeId"
-                options={SlotTypesOption}
-                isloading={isSlotTypesLoading}
-                label="DDL-SLOT-TYPE"
-                placeholder="DDL-SLOT-TYPE"
+                name="courtId"
+                options={ClubCourtsOption}
+                isloading={isClubCourtLoading}
+                label="DDL-COURT-MANE"
+                placeholder="DDL-COURT-MANE"
                 touched={touched}
                 errors={errors}
               />
@@ -173,6 +209,17 @@ const CourtSlotsUpdateForm = () => {
                 errors={errors}
                 type="number"
                 isSubmitting={isSubmitting}
+              />
+            </div>
+            <div className="row row-cols-2">
+              <CustomSelectField
+                name="slotTypeId"
+                options={SlotTypesOption}
+                isloading={isSlotTypesLoading}
+                label="DDL-SLOT-TYPE"
+                placeholder="DDL-SLOT-TYPE"
+                touched={touched}
+                errors={errors}
               />
             </div>
           </div>

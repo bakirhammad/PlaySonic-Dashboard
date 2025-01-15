@@ -22,6 +22,7 @@ import { ReservationQueryInstance } from "@app/useCases/reservation";
 import { ReservationUrlEnum } from "@domain/enums/URL/Reservation/reservationUrls/Reservation";
 import { ReservationListColumns } from "./components/ReservationListColumns";
 import { CreateReservationForm } from "./components/CreateReservationForm";
+import ReservaionFilter from "./components/ReservaionFilter";
 
 const ReservationList = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
@@ -85,7 +86,7 @@ const ReservationList = () => {
           }}
           searchPlaceholder="SEARCH"
           filterBtn={true}
-          //  FilterComponent={<SightSeeingTourFilter/>}
+          FilterComponent={<ReservaionFilter />}
           onDeleteSelectedAll={() => handleDeleteSelected()}
           addBtn={true}
           addName="ADD"

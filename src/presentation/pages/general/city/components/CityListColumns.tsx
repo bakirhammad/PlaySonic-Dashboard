@@ -59,20 +59,20 @@ const CityListColumns: ReadonlyArray<Column<ICityData>> = [
       <CountryNameCell countryId={props.data[props.row.index]?.countryId} />
     ),
   },
-  {
-    Header: (props) => (
-      <CustomHeaderCell
-        tableProps={props}
-        title="SIDEBAR-CLUB-PAYLOAD"
-        enableSorting={false}
-        className="min-w-125px"
-      />
-    ),
-    id: "payload",
-    Cell: ({ ...props }) => (
-      <CustomCell data={props.data[props.row.index]?.payload} />
-    ),
-  },
+  // {
+  //   Header: (props) => (
+  //     <CustomHeaderCell
+  //       tableProps={props}
+  //       title="SIDEBAR-CLUB-PAYLOAD"
+  //       enableSorting={false}
+  //       className="min-w-125px"
+  //     />
+  //   ),
+  //   id: "payload",
+  //   Cell: ({ ...props }) => (
+  //     <CustomCell data={props.data[props.row.index]?.payload} />
+  //   ),
+  // },
   {
     Header: (props) => (
       <CustomHeaderCell

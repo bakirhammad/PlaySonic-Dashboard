@@ -21,7 +21,7 @@ function useCountriesDDL() {
       const _CountryOption = CountryListRes?.data?.map((Country) => {
         return {
           value: Country.id,
-          label: Country.translations[0]?.name,
+          label: Country.translations[0]?.name || "NA",
         };
       });
 

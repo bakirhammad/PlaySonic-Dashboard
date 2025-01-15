@@ -189,7 +189,7 @@
   "SIDEBAR-RESERVATION-LEVEL-MIN":"Level Min",
   "SIDEBAR-RESERVATION-RESERVATION-TYPE-ID": "نوع الحجز",
   "SIDEBAR-RESERVATION-STATUS": "الحالة",
-  "SIDEBAR-RESERVATION-OWNER-ID":"المالك",
+  "SIDEBAR-RESERVATION-OWNER-NAME":"اسم المالك",
   "SIDEBAR-RESERVATION-END-TIME":"وقت الانتهاء",
   "SIDEBAR-RESERVATION-START-TIME":"وقت البدء",
   "SIDEBAR-RESERVATION-SLOT-TYPE-ID": "Slot Type",
@@ -207,7 +207,28 @@
   "Reservation-Date": "تاريخ الحجز",
   "isPublic": "مغلق",
   "SIDEBAR-My-Courts": "ملاعبي",
-  "SIDEBAR-My-Reservations":"حجوزاتي"
+  "SIDEBAR-My-Reservations":"حجوزاتي",
+  "SIDEBAR-Court":"الملعب",
+  "ADD-Reservation": "اضافة حجز",
+  "ADD" : "اضافة",
+  "PAGE_SIZE": "Page Size",
+  "10": "10",
+  "50": "50",
+  "100":"100",
+  "DDL-CITY": "المدينة",
+  "DDL-SELECT-CITY" :"اختار المدينة",
+  "DDL-SELECT-AREA" : "اختار المنطقة",
+  "STATUS-APPROVAL": "Status Approval",
+  "DDL-COURT":"الملعب",
+  "Create-Country":"Create Country",
+  "DDL-CLUB-MANE":"اسم النادي"
+
+
+
+
+
+
+
 
 
 

@@ -43,7 +43,7 @@ const CourtListColumns: ReadonlyArray<Column<ICourtData>> = [
     ),
     id: "name",
     Cell: ({ ...props }) => (
-      <CustomCell data={props.data[props.row.index]?.name} />
+      <CustomCell data={props.data[props.row.index]?.name || "NA"} />
     ),
   },
   {

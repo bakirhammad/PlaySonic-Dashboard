@@ -1,3 +1,4 @@
+import { CustomTable } from "@presentation/components/tables";
 import { CustomKTCard } from "@presentation/helpers/index";
 import { CustomTableToolbar } from "@presentation/components/subToolbar";
 import { useEffect, useMemo } from "react";
@@ -15,55 +16,58 @@ import {
   showConfirmationAlert,
   showDeletedAlert,
 } from "@presentation/components";
-import { CourtModalCreateForm } from "./components/CourtModalCreateForm";
-import { CourtCommandInstance, CourtQueryInstance } from "@app/useCases/court";
-import { CourtUrlEnum } from "@domain/enums/URL/Court/CourtUrls/Court";
-import { CourtListColumns } from "./components/CourtListColumns";
-import CustomTemplate from "@presentation/components/CustomTemplate";
+import { ClubCommandInstance } from "@app/useCases/clubs";
+import { ClubUrlEnum } from "@domain/enums/URL/Clubs/ClubUrls/Club";
+import { ReservationQueryInstance } from "@app/useCases/reservation";
+import { ReservationUrlEnum } from "@domain/enums/URL/Reservation/reservationUrls/Reservation";
+import { ReservationListColumns } from "./components/ReservationListColumns";
+import { CreateReservationForm } from "./components/CreateMyReservationForm";
+import ReservaionFilter from "./components/ReservaionFilter";
 
-const MyCourts = () => {
+const MyReservations = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
 
-  const columns = useMemo(() => CourtListColumns, []);
+  const columns = useMemo(() => ReservationListColumns, []);
 
   const queryClient = useQueryClient();
-  const clubId = 7;
+
   const { itemIdForUpdate, setItemIdForUpdate, selected, clearSelected } =
     useListView();
   const {
-    data: CourtData,
+    data: ReservationData,
     error,
     isLoading,
     isFetching,
   } = useQuery({
-    queryKey: [QUERIES.CourtList, [query]],
+    queryKey: [QUERIES.ReservationList, [query]],
     queryFn: () => {
       const searchQuery = query ? `&${query}` : "";
-      return CourtQueryInstance.getCourtList(
-        `${CourtUrlEnum.GetCourtList + `clubId=${clubId}` + searchQuery}`
+      return ReservationQueryInstance.getReservationList(
+        `${ReservationUrlEnum.GetReservationList + searchQuery}`
       );
     },
   });
 
-
+  console.log(ReservationData)
   useEffect(() => {
-    updateData(CourtData);
+    updateData(ReservationData);
     setIsLoading(isFetching || isLoading);
     setError(error as Error);
-  }, [CourtData, isFetching, isLoading, error]);
+  }, [ReservationData, isFetching, isLoading, error]);
 
-  const tableData = useMemo(() => CourtData?.data, [CourtData]);
+  const tableData = useMemo(() => ReservationData?.data, [ReservationData]);
+
   const handleDeleteSelected = async () => {
     const confirm = await showConfirmationAlert(`${selected.length} item`);
     if (confirm) {
       try {
-        const data = await CourtCommandInstance.multipleDeleteCourt(
-          CourtUrlEnum.MultipleDeleteCourt,
+        const data = await ClubCommandInstance.multipleDeleteClub(
+          ClubUrlEnum.MultipleDeleteClub,
           selected
         );
         if (data) {
           showDeletedAlert(`${selected.length} item`);
-          queryClient.invalidateQueries([QUERIES.CourtList]);
+          queryClient.invalidateQueries([QUERIES.ClubList]);
           clearSelected();
           CustomToast(`Deleted successfully`, "success");
         }
@@ -76,21 +80,19 @@ const MyCourts = () => {
 
   return (
     <>
-      <CustomKTCard className="">
+      <CustomKTCard>
         <CustomTableToolbar
           addBtnAction={() => {
             setItemIdForUpdate(null);
           }}
           searchPlaceholder="SEARCH"
           filterBtn={true}
-          // FilterComponent={<ClubFilter></ClubFilter>}
+           FilterComponent={<ReservaionFilter/>}
           onDeleteSelectedAll={() => handleDeleteSelected()}
-          addBtn={true}
+          addBtn={false}
           addName="ADD"
-          
         />
-        <CustomTemplate courtData={tableData || []}/>
-        {/* <CustomTable columns={columns} data={tableData || []} /> */}
+        <CustomTable columns={columns} data={tableData || []} />
       </CustomKTCard>
       {itemIdForUpdate === null && (
         <CustomModal
@@ -98,20 +100,20 @@ const MyCourts = () => {
           modalTitle="Create-Club"
           onClick={() => setItemIdForUpdate(undefined)}
         >
-          <CourtModalCreateForm id={clubId} />
+          <CreateReservationForm />
         </CustomModal>
       )}
     </>
   );
 };
 
-function MyCourtsWrapper() {
+function MyReservationsWrapper() {
   return (
     <QueryRequestProvider>
       <ListViewProvider>
-        <MyCourts />
+        <MyReservations />
       </ListViewProvider>
     </QueryRequestProvider>
   );
 }
-export default MyCourtsWrapper;
+export default MyReservationsWrapper;

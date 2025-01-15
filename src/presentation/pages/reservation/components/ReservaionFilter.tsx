@@ -11,26 +11,33 @@ import {
   FormikValues,
   useFormikContext,
 } from "formik";
+import CustomTimePicker from "@presentation/components/forms/CustomTimePicker";
 import { CustomButton } from "@presentation/components";
 import moment from "moment";
 import CustomSelectField from "@presentation/components/forms/CustomSelectField";
-import { useCitiesDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useCitiesDDL";
-import { useAreasDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useAreasDDL";
+import { ReservationStatusOptionsOptions } from "@presentation/helpers/DDL/ReservationStatusOptions";
+import { useCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useCourtsDDL";
 
 interface IReservationFilter {
-  cityId: { value: number; label: string } | null;
-  areaId: { value: number; label: string } | null;
+  reservationDate: string;
+  endTime: string;
+  startTime: string;
+  status: { value: number; label: string } | null;
+  courtId: { value: number; label: string } | null;
 }
 const validationSchema = Yup.object().shape({
   // reservationDate: Yup.date(),
 });
 
-const ClubFilter = () => {
+const ReservaionFilter = () => {
   const { updateState } = useQueryRequest();
 
   const initialValues: IReservationFilter = {
-    cityId: null,
-    areaId: null,
+    reservationDate: "",
+    endTime: "",
+    startTime: "",
+    status: null,
+    courtId: null,
   };
 
   useEffect(() => {
@@ -40,8 +47,11 @@ const ClubFilter = () => {
   const filterData = (values: typeof initialValues) => {
     updateState({
       filter: {
-        cityId: values.cityId?.value,
-        areaId: values.areaId?.value,
+        reservationDate: values.reservationDate,
+        endTime: values.endTime,
+        startTime: values.startTime,
+        status: values.status?.value,
+        courtId: values.courtId?.value,
       },
       ...initialQueryState,
     });
@@ -56,13 +66,18 @@ const ClubFilter = () => {
         setSubmitting(false);
       }}
     >
-      <ClubFilterWrapper />
+      <DailyFlightsFilterWrapper />
     </Formik>
   );
 };
-const ClubFilterWrapper = () => {
-  const { setFieldValue, resetForm, values }: FormikContextType<FormikValues> =
-    useFormikContext();
+const DailyFlightsFilterWrapper = () => {
+  const {
+    errors,
+    touched,
+    setFieldValue,
+    resetForm,
+    values,
+  }: FormikContextType<FormikValues> = useFormikContext();
   const { updateState, isLoading } = useQueryRequest();
 
   const resetData = (resetForm: () => void) => {
@@ -78,8 +93,7 @@ const ClubFilterWrapper = () => {
     }
   }, [values.reservationDate, setFieldValue]);
 
-  const { CityOption, isCityLoading } = useCitiesDDL();
-  const { AreaOption, isAreaLoading } = useAreasDDL();
+  const { CourtsOption, isCourtLoading } = useCourtsDDL();
   return (
     <>
       <button
@@ -93,7 +107,7 @@ const ClubFilterWrapper = () => {
         {useLocaleFormate("FILTER")}
       </button>
       <div
-        className="menu menu-sub menu-sub-dropdown p-6 w-300px w-md-350px"
+        className="menu menu-sub menu-sub-dropdown p-6 w-300px w-md-800px"
         data-kt-menu="true"
       >
         <>
@@ -102,32 +116,48 @@ const ClubFilterWrapper = () => {
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
           >
-            <div className="row row-cols-1">
-              <CustomSelectField
-                name="cityId"
-                options={CityOption}
-                isloading={isCityLoading}
-                label="DDL-CITY"
-                placeholder="DDL-SELECT-CITY"
+            <div className="row row-cols-3">
+              <CustomTimePicker
+                name="reservationDate"
+                label="SIDEBAR-RESERVATION-RESERVATOIN-DATE"
+                placeholder="SIDEBAR-RESERVATION-RESERVATOIN-DATE"
+                enableTime={false}
+                touched={touched}
+                errors={errors}
+                labelRequired={false}
+              />
+              <CustomTimePicker
+                name="startTime"
+                label="SIDEBAR-RESERVATION-START-TIME"
+                placeholder="SIDEBAR-RESERVATION-START-TIME"
+                Mode="time"
+                labelRequired={false}
+              />
+              <CustomTimePicker
+                name="endTime"
+                label="SIDEBAR-RESERVATION-END-TIME"
+                placeholder="SIDEBAR-RESERVATION-END-TIME"
+                Mode="time"
                 labelRequired={false}
               />
               <CustomSelectField
-                name="areaId"
-                options={AreaOption}
-                isloading={isAreaLoading}
-                label="DDL-AREA"
-                labelRequired={false}
-                placeholder="DDL-SELECT-AREA"
+                name="courtId"
+                options={CourtsOption}
+                isloading={isCourtLoading}
+                label="DDL-COURT"
+                placeholder="DDL-COURT"
+                touched={touched}
+                errors={errors}
+              />
+              <CustomSelectField
+                name="status"
+                options={ReservationStatusOptionsOptions}
+                label="DDL-Status"
+                placeholder="DDL-Status"
+                touched={touched}
+                errors={errors}
               />
             </div>
-            <div className="row row-cols-2"></div>
-            {/* <CustomCheckbox
-              labelTxt="Include_Return"
-              labelRequired={false}
-              name="includeReturn"
-              touched={touched}
-              errors={errors}
-            /> */}
             <div className="d-flex justify-content-end">
               <CustomButton
                 type="reset"
@@ -152,4 +182,4 @@ const ClubFilterWrapper = () => {
     </>
   );
 };
-export default ClubFilter;
+export default ReservaionFilter;

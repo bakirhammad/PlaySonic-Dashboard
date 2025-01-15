@@ -44,6 +44,7 @@ export interface IReservationData {
   startTime: string;
   endTime: string;
   ownerID: string;
+  name: string;
   status: number;
   reservationTypeId: number;
   levelMin: number;

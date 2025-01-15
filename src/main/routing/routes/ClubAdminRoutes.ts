@@ -6,9 +6,14 @@ const MyCourtsWrapper = lazy(
   () => import("@presentation/pages/clubAdmin/myCourts")
 );
 
-const CityListWrapper = lazy(
-  () => import("@presentation/pages/general/city")
+const MyReservationsWrapper = lazy(
+  () => import("@presentation/pages/clubAdmin/myReservations")
 );
+
+const ViewCourtWrapper = lazy(
+  () => import("@presentation/pages/clubAdmin/myCourts/components/ViewCourt")
+);
+
 
 
 const ClubAdminRoutes: Route = {
@@ -28,7 +33,14 @@ const ClubAdminRoutes: Route = {
     {
       path: "myreservations",
       title: "SIDEBAR-My-Reservations",
-      component: CityListWrapper,
+      component: MyReservationsWrapper,
+      role: [],
+      breadcrumbs: [],
+    },
+    {
+      path: "viewcourt/:id",
+      title: "SIDEBAR-Court",
+      component: ViewCourtWrapper,
       role: [],
       breadcrumbs: [],
     },

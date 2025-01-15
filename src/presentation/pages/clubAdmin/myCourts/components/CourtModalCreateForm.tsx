@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { FC, useRef } from "react";
 import {
   CustomButton,
   CustomCheckbox,
@@ -18,19 +18,20 @@ import {
 import * as Yup from "yup";
 import { useQueryClient } from "react-query";
 import { QUERIES } from "@presentation/helpers";
-import CustomSelectField from "@presentation/components/forms/CustomSelectField";
 import validationSchemas from "@presentation/helpers/validationSchemas";
 import { CourtCommandInstance } from "@app/useCases/court";
 import { CourtUrlEnum } from "@domain/enums/URL/Court/CourtUrls/Court";
-import { useClubsDDL } from "@presentation/hooks/queries/DDL/Club/useClubsDDL";
 
-export const CourtModalCreateForm = () => {
+interface IClubtId {
+  id: number;
+}
+export const CourtModalCreateForm: FC<IClubtId> = ({ id }) => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);
   const { setItemIdForUpdate } = useListView();
   const queryClient = useQueryClient();
 
   const initialValues = Object.assign({
-    club: 0,
+    club: id,
     rank: 1,
     payload: "",
     indoor: false,
@@ -42,7 +43,6 @@ export const CourtModalCreateForm = () => {
   });
 
   const _CourtSchema = Object.assign({
-    club: validationSchemas.object,
     allowedSlotTypes: validationSchemas.number,
     systemTypeId: validationSchemas.number,
     sportId: validationSchemas.number,
@@ -58,7 +58,7 @@ export const CourtModalCreateForm = () => {
     setSubmitting: (isSubmitting: boolean) => void
   ) => {
     const formData = new FormData();
-    formData.append("ClubId", values.club.value);
+    formData.append("ClubId", values.club);
     formData.append("Rank", values.rank);
     formData.append("Indoor", values.indoor);
     formData.append("CourtTypeId", values.courtTypeId);
@@ -116,8 +116,8 @@ const CourtForm = () => {
   FormikContextType<FormikValues> = useFormikContext();
 
   const { setItemIdForUpdate } = useListView();
-  const { isClubLoading, clubsOption } = useClubsDDL();
- 
+  // const { isClubLoading, clubsOption } = useClubsDDL();
+
   return (
     <>
       <Form
@@ -139,17 +139,6 @@ const CourtForm = () => {
                 type="text"
                 isSubmitting={isSubmitting}
               />
-              <CustomSelectField
-                name="club"
-                options={clubsOption}
-                isloading={isClubLoading}
-                label="DDL-CLUB-NAME"
-                placeholder="DDL-CLUB-NAME"
-                touched={touched}
-                errors={errors}
-              />
-            </div>
-            <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
               <CustomInputField
                 name="payload"
                 placeholder="COURT-PAYLOAD"
@@ -160,6 +149,8 @@ const CourtForm = () => {
                 type="text"
                 isSubmitting={isSubmitting}
               />
+            </div>
+            <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
               <CustomInputField
                 name="rank"
                 placeholder="COURT-RANK"
@@ -171,9 +162,6 @@ const CourtForm = () => {
                 min={1}
                 isSubmitting={isSubmitting}
               />
-            </div>
-
-            <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
               <CustomInputField
                 name="courtTypeId"
                 placeholder="COURT-TYPE-ID"
@@ -184,6 +172,9 @@ const CourtForm = () => {
                 type="number"
                 isSubmitting={isSubmitting}
               />
+            </div>
+
+            <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
               <CustomInputField
                 name="systemTypeId"
                 placeholder="COURT-SYSTEM-TYPE-ID"
@@ -194,8 +185,6 @@ const CourtForm = () => {
                 type="number"
                 isSubmitting={isSubmitting}
               />
-            </div>
-            <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
               <CustomInputField
                 name="allowedSlotTypes"
                 placeholder="COURT-ALLOWED-SLOT-TYPES"
@@ -206,6 +195,8 @@ const CourtForm = () => {
                 type="number"
                 isSubmitting={isSubmitting}
               />
+            </div>
+            <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
               <CustomInputField
                 name="sportId"
                 placeholder="COURT-SPORT-ID"

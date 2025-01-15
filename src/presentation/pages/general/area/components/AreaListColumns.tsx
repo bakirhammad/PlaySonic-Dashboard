@@ -59,20 +59,20 @@ const AreaListColumns: ReadonlyArray<Column<IAreaData>> = [
       <CityNameCell cityId={props.data[props.row.index]?.cityId} />
     ),
   },
-  {
-    Header: (props) => (
-      <CustomHeaderCell
-        tableProps={props}
-        title="SIDEBAR-CLUB-PAYLOAD"
-        enableSorting={false}
-        className="min-w-125px"
-      />
-    ),
-    id: "payload",
-    Cell: ({ ...props }) => (
-      <CustomCell data={props.data[props.row.index]?.payload} />
-    ),
-  },
+  // {
+  //   Header: (props) => (
+  //     <CustomHeaderCell
+  //       tableProps={props}
+  //       title="SIDEBAR-CLUB-PAYLOAD"
+  //       enableSorting={false}
+  //       className="min-w-125px"
+  //     />
+  //   ),
+  //   id: "payload",
+  //   Cell: ({ ...props }) => (
+  //     <CustomCell data={props.data[props.row.index]?.payload} />
+  //   ),
+  // },
   {
     Header: (props) => (
       <CustomHeaderCell

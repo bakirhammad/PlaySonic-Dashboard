@@ -49,3 +49,10 @@ export interface ICourtData {
   allowedSlotTypes: number;
   sportId: number;
 }
+
+export interface IMyCourt {
+  id:number
+  image : string,
+  name :  string,
+  indoor: boolean,
+}

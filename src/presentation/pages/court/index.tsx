@@ -19,9 +19,10 @@ import {
 import { ClubCommandInstance } from "@app/useCases/clubs";
 import { ClubUrlEnum } from "@domain/enums/URL/Clubs/ClubUrls/Club";
 import { CourtModalCreateForm } from "./components/CourtModalCreateForm";
-import { CourtQueryInstance } from "@app/useCases/court";
+import { CourtCommandInstance, CourtQueryInstance } from "@app/useCases/court";
 import { CourtUrlEnum } from "@domain/enums/URL/Court/CourtUrls/Court";
 import { CourtListColumns } from "./components/CourtListColumns";
+import CourtFilter from "./components/CourtFilter";
 
 const CourtList = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
@@ -58,13 +59,13 @@ const CourtList = () => {
     const confirm = await showConfirmationAlert(`${selected.length} item`);
     if (confirm) {
       try {
-        const data = await ClubCommandInstance.multipleDeleteClub(
-          ClubUrlEnum.MultipleDeleteClub,
+        const data = await CourtCommandInstance.multipleDeleteCourt(
+          CourtUrlEnum.MultipleDeleteCourt,
           selected
         );
         if (data) {
           showDeletedAlert(`${selected.length} item`);
-          queryClient.invalidateQueries([QUERIES.ClubList]);
+          queryClient.invalidateQueries([QUERIES.CourtList]);
           clearSelected();
           CustomToast(`Deleted successfully`, "success");
         }
@@ -84,7 +85,7 @@ const CourtList = () => {
           }}
           searchPlaceholder="SEARCH"
           filterBtn={true}
-          // FilterComponent={<ClubFilter></ClubFilter>}
+          FilterComponent={<CourtFilter />}
           onDeleteSelectedAll={() => handleDeleteSelected()}
           addBtn={true}
           addName="ADD"

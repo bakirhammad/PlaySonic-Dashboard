@@ -20,9 +20,10 @@ import { QUERIES } from "@presentation/helpers";
 import { CourtSlotsCommandInstance } from "@app/useCases/courtSlot";
 import { CourtSlotsUrlEnum } from "@domain/enums/URL/courtSlots/courtSlotsUrls/CourtSlots";
 import CustomSelectField from "@presentation/components/forms/CustomSelectField";
-import { useCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useCourtsDDL";
 import { useSlotTypesDDL } from "@presentation/hooks/queries/DDL/SlotTypes/useSlotTypesDDL";
 import validationSchemas from "@presentation/helpers/validationSchemas";
+import { useCourtBuClubDDL } from "@presentation/hooks/queries/DDL/Court/useCourtBuClubDDL";
+import { useClubsDDL } from "@presentation/hooks/queries/DDL/Club/useClubsDDL";
 
 export const CourtSlotsModalCreateForm = () => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);
@@ -30,6 +31,7 @@ export const CourtSlotsModalCreateForm = () => {
   const queryClient = useQueryClient();
 
   const initialValues = Object.assign({
+    clubId: null,
     courtId: null,
     slotTypeId: null,
     fullPrice: null,
@@ -104,8 +106,14 @@ const CourtSlotsForm = () => {
 
   const { setItemIdForUpdate } = useListView();
   console.log("ddd", values);
-  const { CourtsOption, isCourtLoading } = useCourtsDDL();
+
   const { SlotTypesOption, isSlotTypesLoading } = useSlotTypesDDL();
+
+  const { clubsOption, isClubLoading } = useClubsDDL();
+
+  const { ClubCourtsOption, isClubCourtLoading } = useCourtBuClubDDL(
+    values.clubId ? values.clubId.value : 0
+  );
   return (
     <>
       <Form
@@ -118,22 +126,23 @@ const CourtSlotsForm = () => {
           <div className="row">
             <div className="row row-cols-2">
               <CustomSelectField
-                name="courtId"
-                options={CourtsOption}
-                isloading={isCourtLoading}
-                label="DDL-COURT-MANE"
-                placeholder="DDL-COURT-MANE"
+                name="clubId"
+                options={clubsOption}
+                isloading={isClubLoading}
+                label="DDL-CLUB-MANE"
+                placeholder="DDL-CLUB-MANE"
                 touched={touched}
                 errors={errors}
               />
               <CustomSelectField
-                name="slotTypeId"
-                options={SlotTypesOption}
-                isloading={isSlotTypesLoading}
-                label="DDL-SLOT-TYPE"
-                placeholder="DDL-SLOT-TYPE"
+                name="courtId"
+                options={ClubCourtsOption}
+                isloading={isClubCourtLoading}
+                label="DDL-COURT-MANE"
+                placeholder="DDL-COURT-MANE"
                 touched={touched}
                 errors={errors}
+                disabled={values.clubId ? false : true}
               />
             </div>
             <div className="row row-cols-2">
@@ -156,6 +165,17 @@ const CourtSlotsForm = () => {
                 errors={errors}
                 type="number"
                 isSubmitting={isSubmitting}
+              />
+            </div>
+            <div className="row row-cols-2">
+              <CustomSelectField
+                name="slotTypeId"
+                options={SlotTypesOption}
+                isloading={isSlotTypesLoading}
+                label="DDL-SLOT-TYPE"
+                placeholder="DDL-SLOT-TYPE"
+                touched={touched}
+                errors={errors}
               />
             </div>
           </div>

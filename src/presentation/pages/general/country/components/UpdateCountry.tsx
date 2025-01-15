@@ -180,7 +180,7 @@ const CountryUpdateForm = () => {
       >
         <div className="row row-cols-md-1 row-cols-sm-1 row-cols-1">
           <div className="row">
-            <div className="row row-cols-md-3 border-info-subtle border-black">
+            {/* <div className="row row-cols-md-3 border-info-subtle border-black">
               <CustomInputField
                 name="rank"
                 placeholder="Country-RANK"
@@ -202,7 +202,7 @@ const CountryUpdateForm = () => {
                 isSubmitting={isSubmitting}
               />
             </div>
-            <hr />
+            <hr /> */}
             <div className="translation mt-5">
               <div className="d-flex mb-7">
                 {Languages.map((lang, index) => (

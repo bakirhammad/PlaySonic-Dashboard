@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useMemo, useRef } from "react";
 import {
   CustomButton,
   CustomCheckbox,
@@ -22,16 +22,24 @@ import PleaseWaitTxt from "@presentation/helpers/loading/PleaseWaitTxt";
 import { useLanguageStore } from "@infrastructure/storage/LanguageStore";
 import validationSchemas from "@presentation/helpers/validationSchemas";
 import CustomSelectField from "@presentation/components/forms/CustomSelectField";
-import { ICourtData } from "@domain/entities/Court/Court";
-import { CourtCommandInstance } from "@app/useCases/court";
-import { CourtUrlEnum } from "@domain/enums/URL/Court/CourtUrls/Court";
-import { useClubsDDL } from "@presentation/hooks/queries/DDL/Club/useClubsDDL";
+import { IReservationData } from "@domain/entities/Reservation/Reservation";
+import { ReservationCommandInstance } from "@app/useCases/reservation";
+import { ReservationUrlEnum } from "@domain/enums/URL/Reservation/reservationUrls/Reservation";
+import CustomTimePicker from "@presentation/components/forms/CustomTimePicker";
+import { ResarvationOptions } from "@presentation/helpers/DDL/ResarvationOptions";
+import { ReservationStatusOptionsOptions } from "@presentation/helpers/DDL/ReservationStatusOptions";
+import { useCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useCourtsDDL";
 import { useSlotTypesDDL } from "@presentation/hooks/queries/DDL/SlotTypes/useSlotTypesDDL";
+
 interface IProps {
-  CourtData: ICourtData;
+  ReservationData: IReservationData;
   isLoading: boolean;
 }
-export const UpdateCourtModalForm = ({ CourtData, isLoading }: IProps) => {
+
+export const UpdateReservationForm = ({
+  ReservationData,
+  isLoading,
+}: IProps) => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);
   const { setItemIdForUpdate } = useListView();
   const queryClient = useQueryClient();
@@ -39,31 +47,36 @@ export const UpdateCourtModalForm = ({ CourtData, isLoading }: IProps) => {
 
   const initialValues = useMemo(() => {
     return {
-      id: CourtData.id,
-      club: CourtData.clubId,
-      rank: CourtData.rank,
-      payload: CourtData.payload,
-      indoor: CourtData.indoor,
-      courtTypeId: CourtData.courtTypeId,
-      name: CourtData.name,
-      systemTypeId: CourtData.systemTypeId,
-      allowedSlotTypes: CourtData.allowedSlotTypes,
-      sportId: CourtData.sportId,
+      id: ReservationData.id,
+      courtId: ReservationData.courtId,
+      slotTypeId: ReservationData.slotTypeId,
+      startTime: ReservationData.startTime,
+      endTime: ReservationData.endTime,
+      status: ReservationData.status,
+      reservationTypeId: ReservationData.reservationTypeId,
+      levelMin: ReservationData.levelMin,
+      levelMax: ReservationData.levelMax,
+      isPublic: ReservationData.isPublic,
+      reservationDate: ReservationData.reservationDate,
+      slotsRemaining: ReservationData.slotsRemaining,
+      sportId: 1,
+      ownerID: "345ebbb9-924b-4359-845d-60860c5ed515",
     };
-  }, [CourtData]);
+  }, [ReservationData]);
 
-  const _CourtSchema = Object.assign({
-    club: validationSchemas.object,
-    rank: validationSchemas.number,
-    allowedSlotTypes: validationSchemas.object,
-    systemTypeId: validationSchemas.number,
-    sportId: validationSchemas.number,
-    courtTypeId: validationSchemas.number,
-    payload: Yup.string().required("Payload is required"),
-    name: Yup.string().required("Name is required"),
+  const _ReservationSchema = Object.assign({
+    courtId: validationSchemas.object,
+    slotTypeId: validationSchemas.object,
+    // startTime: Yup.string().required("Required"),
+    // endTime: Yup.string().required("Required"),
+    // reservationDate: Yup.string().required("Required"),
+    // levelMin: Yup.number().required("Required"),
+    // levelMax: Yup.number().required("Required"),
+    // reservationTypeId: validationSchemas.object,
+    // status: validationSchemas.object,
   });
 
-  const CourtSchema = Yup.object().shape(_CourtSchema);
+  const ReservationSchema = Yup.object().shape(_ReservationSchema);
   const handleSubmit = async (
     values: FormikValues,
     setSubmitting: (isSubmitting: boolean) => void
@@ -71,28 +84,30 @@ export const UpdateCourtModalForm = ({ CourtData, isLoading }: IProps) => {
     const formData = new FormData();
 
     formData.append("Id", String(initialValues.id));
-    formData.append("ClubId", values.club.value);
-    formData.append("Rank", values.rank);
-    formData.append("Indoor", values.indoor);
-    formData.append("CourtTypeId", values.courtTypeId);
-    formData.append("Name", values.name);
-    formData.append("SystemTypeId", values.systemTypeId);
-    formData.append("Payload", values.payload);
-    formData.append("AllowedSlotTypes", values.allowedSlotTypes.value);
+    formData.append("CourtId", values.courtId.value);
+    formData.append("SlotTypeId", values.slotTypeId.value);
+    formData.append("StartTime", values.startTime);
+    formData.append("EndTime", values.endTime);
+    formData.append("Status", values.status);
+    formData.append("ReservationTypeId", values.reservationTypeId);
+    formData.append("LevelMin", values.levelMin);
+    formData.append("LevelMax", values.levelMax);
+    formData.append("IsPublic", values.isPublic);
+    formData.append("ReservationDate", values.reservationDate);
     formData.append("SportId", values.sportId);
-
+    formData.append("OwnerID", values.ownerID);
     try {
-      const data = await CourtCommandInstance.updateCourt(
-        CourtUrlEnum.UpdateCourt,
+      const data = await ReservationCommandInstance.updateReservation(
+        ReservationUrlEnum.UpdateReservation,
         formData
       );
       if (data) {
-        CustomToast("Court updated successfully", "success", {
+        CustomToast("Reservation updated successfully", "success", {
           autoClose: 3000,
         });
         setItemIdForUpdate(undefined);
         queryClient.invalidateQueries({
-          queryKey: [QUERIES.CourtList],
+          queryKey: [QUERIES.ReservationList],
         });
       }
     } catch (error) {
@@ -120,19 +135,19 @@ export const UpdateCourtModalForm = ({ CourtData, isLoading }: IProps) => {
             },
             {}
           )}
-          validationSchema={CourtSchema}
+          validationSchema={ReservationSchema}
           onSubmit={(values, { setSubmitting }) => {
             handleSubmit(values, setSubmitting);
           }}
         >
-          <CourtUpdateForm />
+          <ReservationUpdateForm />
         </Formik>
       )}
     </>
   );
 };
 
-const CourtUpdateForm = () => {
+const ReservationUpdateForm = () => {
   const { setItemIdForUpdate } = useListView();
 
   const {
@@ -141,29 +156,10 @@ const CourtUpdateForm = () => {
     isSubmitting,
     isValid,
     values,
-    setFieldValue,
   }: FormikContextType<FormikValues> = useFormikContext();
   console.log("values", values);
-  const { isClubLoading, clubsOption } = useClubsDDL();
+  const { CourtsOption, isCourtLoading } = useCourtsDDL();
   const { SlotTypesOption, isSlotTypesLoading } = useSlotTypesDDL();
-
-  useEffect(() => {
-    clubsOption.forEach((elem) => {
-      if (elem.value === values.club) {
-        return setFieldValue("club", { value: elem.value, label: elem.label });
-      }
-    });
-
-    SlotTypesOption.forEach((elem) => {
-      if (elem.value === values.allowedSlotTypes) {
-        return setFieldValue("allowedSlotTypes", {
-          value: elem.value,
-          label: elem.label,
-        });
-      }
-    });
-  }, [clubsOption ,SlotTypesOption]);
-
   return (
     <>
       <Form
@@ -175,98 +171,94 @@ const CourtUpdateForm = () => {
         <div className="row row-cols-md-1 row-cols-sm-1 row-cols-1">
           <div className="row">
             <div className="row row-cols-2 1 row-cols-md-2">
-              <CustomInputField
-                name="name"
-                placeholder="COURT-MANE"
-                label="COURT-MANE"
-                as="input"
-                touched={touched}
-                errors={errors}
-                type="text"
-                isSubmitting={isSubmitting}
-              />
               <CustomSelectField
-                name="club"
-                options={clubsOption}
-                isloading={isClubLoading}
-                label="DDL-CLUB-NAME"
-                placeholder="DDL-CLUB-NAME"
+                name="courtId"
+                options={CourtsOption}
+                isloading={isCourtLoading}
+                label="DDL-Court-NAME"
+                placeholder="DDL-Court-NAME"
                 touched={touched}
                 errors={errors}
               />
-            </div>
-            <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
               <CustomSelectField
-                name="allowedSlotTypes"
+                name="slotTypeId"
                 options={SlotTypesOption}
                 isloading={isSlotTypesLoading}
-                label="COURT-ALLOWED-SLOT-TYPES"
-                placeholder="COURT-ALLOWED-SLOT-TYPES"
+                label="DDL-Slot-Type-NAME"
+                placeholder="DDL-Slot-Type-NAME"
                 touched={touched}
                 errors={errors}
-              />
-              <CustomInputField
-                name="payload"
-                placeholder="COURT-PAYLOAD"
-                label="COURT-PAYLOAD"
-                as="input"
-                touched={touched}
-                errors={errors}
-                type="text"
-                isSubmitting={isSubmitting}
               />
             </div>
 
             <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
-              <CustomInputField
-                name="courtTypeId"
-                placeholder="COURT-TYPE-ID"
-                label="COURT-TYPE-ID"
-                as="input"
+              <CustomSelectField
+                name="status"
+                options={ReservationStatusOptionsOptions}
+                label="DDL-Status"
+                placeholder="DDL-Status"
                 touched={touched}
                 errors={errors}
-                type="number"
-                isSubmitting={isSubmitting}
+                disabled={true}
               />
-              <CustomInputField
-                name="systemTypeId"
-                placeholder="COURT-SYSTEM-TYPE-ID"
-                label="COURT-SYSTEM-TYPE-ID"
-                as="input"
+              <CustomSelectField
+                name="reservationTypeId"
+                options={ResarvationOptions}
+                label="DDL-Reservaion-Type"
+                placeholder="DDL-Reservaion-Type"
                 touched={touched}
                 errors={errors}
-                type="number"
-                isSubmitting={isSubmitting}
+                disabled={true}
               />
             </div>
             <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
               <CustomInputField
-                name="rank"
-                placeholder="COURT-RANK"
-                label="COURT-RANK"
+                name="levelMin"
+                placeholder="Reservation-Level-Min"
+                label="Reservation-Level-Min"
                 as="input"
                 touched={touched}
                 errors={errors}
                 type="number"
-                step="0.5"
-                max={7}
-                min={1}
                 isSubmitting={isSubmitting}
               />
               <CustomInputField
-                name="sportId"
-                placeholder="COURT-SPORT-ID"
-                label="COURT-SPORT-ID"
+                name="levelMax"
+                placeholder="Reservation-Level-Max"
+                label="Reservation-Level-Max"
                 as="input"
                 touched={touched}
                 errors={errors}
                 type="number"
                 isSubmitting={isSubmitting}
+              />{" "}
+            </div>
+            <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
+              <CustomTimePicker
+                name={"startTime"}
+                label="Start-Time"
+                placeholder="Start-Time"
+                enableTime={true}
+                Mode="time"
+              />
+              <CustomTimePicker
+                name={"endTime"}
+                label="End-Time"
+                placeholder="End-Time"
+                enableTime={true}
+                Mode="time"
               />
             </div>
-            <div>
+            <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
+              <CustomTimePicker
+                name={"reservationDate"}
+                label="Reservation-Date"
+                placeholder="Reservation-Date"
+                enableTime={true}
+                Mode="single"
+              />
               <CustomCheckbox
-                labelTxt="COURT-INDOOR"
+                labelTxt="isPublic"
                 name={"indoor"}
                 touched={touched}
                 errors={errors}
@@ -296,4 +288,4 @@ const CourtUpdateForm = () => {
   );
 };
 
-export default UpdateCourtModalForm;
+export default UpdateReservationForm;

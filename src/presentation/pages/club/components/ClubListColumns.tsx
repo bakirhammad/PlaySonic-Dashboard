@@ -45,7 +45,7 @@ const ClubListColumns: ReadonlyArray<Column<IClubData>> = [
     ),
     id: "name",
     Cell: ({ ...props }) => (
-      <CustomCell data={props.data[props.row.index]?.clubInfoResponses[0]?.name} />
+      <CustomCell data={props.data[props.row.index]?.clubInfoResponses[0]?.name || "NA"} />
     ),
   },
   {

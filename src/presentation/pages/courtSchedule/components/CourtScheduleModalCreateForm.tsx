@@ -19,13 +19,14 @@ import { combineBits, QUERIES } from "@presentation/helpers";
 import CustomSelectField from "@presentation/components/forms/CustomSelectField";
 import { CourtScheduleCommandInstance } from "@app/useCases/courtSchedule";
 import { CourtScheduleUrlEnum } from "@domain/enums/URL/CourtSchedule/CourtScheduleUrls/CourtSchedule";
-import { useCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useCourtsDDL";
 import {
   DaysOptionsDDL,
   IDaysOptionsDDL,
 } from "@presentation/helpers/DDL/DaysOptions";
 import CustomTimePicker from "@presentation/components/forms/CustomTimePicker";
 import validationSchemas from "@presentation/helpers/validationSchemas";
+import { useClubsDDL } from "@presentation/hooks/queries/DDL/Club/useClubsDDL";
+import { useCourtBuClubDDL } from "@presentation/hooks/queries/DDL/Court/useCourtBuClubDDL";
 
 export const CourtScheduleModalCreateForm = () => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);
@@ -33,6 +34,7 @@ export const CourtScheduleModalCreateForm = () => {
   const queryClient = useQueryClient();
 
   const initialValues = Object.assign({
+    clubId: null,
     courtId: null,
     days: 0,
     startTime: "",
@@ -40,9 +42,9 @@ export const CourtScheduleModalCreateForm = () => {
   });
 
   const _CourtScheduleSchema = Object.assign({
-    courtId:validationSchemas.object,
+    courtId: validationSchemas.object,
     startTime: Yup.string().required("Start Time is Required"),
-    days: validationSchemas.message,
+    days: validationSchemas.array,
     endTime: Yup.string().required("End Time is Required"),
   });
 
@@ -110,8 +112,11 @@ const CourtScheduleForm = () => {
   }: FormikContextType<FormikValues> = useFormikContext();
 
   const { setItemIdForUpdate } = useListView();
-  console.log("ddd", values);
-  const { CourtsOption, isCourtLoading } = useCourtsDDL();
+console.log("ddd", values)
+  const { clubsOption, isClubLoading } = useClubsDDL();
+  const { ClubCourtsOption, isClubCourtLoading } = useCourtBuClubDDL(
+    values.clubId ? values.clubId.value : 0
+  );
 
   return (
     <>
@@ -125,23 +130,23 @@ const CourtScheduleForm = () => {
           <div className="row">
             <div className="row row-cols-2">
               <CustomSelectField
-                name="courtId"
-                options={CourtsOption}
-                isloading={isCourtLoading}
-                label="DDL-COURT-MANE"
-                placeholder="DDL-COURT-MANE"
+                name="clubId"
+                options={clubsOption}
+                isloading={isClubLoading}
+                label="DDL-CLUB-MANE"
+                placeholder="DDL-CLUB-MANE"
                 touched={touched}
                 errors={errors}
               />
               <CustomSelectField
-                name="days"
-                placeholder="DDL-DAYS"
-                label="SELECT-DAYS"
+                name="courtId"
+               options={ ClubCourtsOption}
+                isloading={isClubCourtLoading}
+                label="DDL-COURT-MANE"
+                placeholder="DDL-COURT-MANE"
                 touched={touched}
                 errors={errors}
-                isSubmitting={isSubmitting}
-                options={DaysOptionsDDL}
-                isMulti={true}
+                disabled={values.clubId ? false : true}
               />
             </div>
             <div className="row row-cols-2">
@@ -156,6 +161,18 @@ const CourtScheduleForm = () => {
                 label="End-Time"
                 placeholder="End-Time"
                 Mode="time"
+              />
+            </div>
+            <div className="row row-cols-2">
+              <CustomSelectField
+                name="days"
+                placeholder="DDL-DAYS"
+                label="SELECT-DAYS"
+                touched={touched}
+                errors={errors}
+                isSubmitting={isSubmitting}
+                options={DaysOptionsDDL}
+                isMulti={true}
               />
             </div>
           </div>

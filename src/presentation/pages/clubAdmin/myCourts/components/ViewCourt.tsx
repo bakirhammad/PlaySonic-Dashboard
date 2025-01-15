@@ -1,3 +1,4 @@
+import { CustomTable } from "@presentation/components/tables";
 import { CustomKTCard } from "@presentation/helpers/index";
 import { CustomTableToolbar } from "@presentation/components/subToolbar";
 import { useEffect, useMemo } from "react";
@@ -15,19 +16,22 @@ import {
   showConfirmationAlert,
   showDeletedAlert,
 } from "@presentation/components";
-import { CourtModalCreateForm } from "./components/CourtModalCreateForm";
-import { CourtCommandInstance, CourtQueryInstance } from "@app/useCases/court";
+import {
+  CourtCommandInstance,
+  CourtQueryByIdInstance,
+} from "@app/useCases/court";
 import { CourtUrlEnum } from "@domain/enums/URL/Court/CourtUrls/Court";
-import { CourtListColumns } from "./components/CourtListColumns";
-import CustomTemplate from "@presentation/components/CustomTemplate";
+import { CourtListColumns } from "./CourtListColumns";
+import { useParams } from "react-router-dom";
+import { CreateMyReservationForm } from "./CreateMyReservationForm";
 
-const MyCourts = () => {
-  const { updateData, query, setIsLoading, setError } = useQueryRequest();
-
+const ViewCourt = () => {
+  const { updateData, setIsLoading, setError } = useQueryRequest();
+  const { id } = useParams();
+  const courtId = Number(id);
   const columns = useMemo(() => CourtListColumns, []);
 
   const queryClient = useQueryClient();
-  const clubId = 7;
   const { itemIdForUpdate, setItemIdForUpdate, selected, clearSelected } =
     useListView();
   const {
@@ -36,23 +40,22 @@ const MyCourts = () => {
     isLoading,
     isFetching,
   } = useQuery({
-    queryKey: [QUERIES.CourtList, [query]],
+    queryKey: [QUERIES.CourtList, id],
     queryFn: () => {
-      const searchQuery = query ? `&${query}` : "";
-      return CourtQueryInstance.getCourtList(
-        `${CourtUrlEnum.GetCourtList + `clubId=${clubId}` + searchQuery}`
+      return CourtQueryByIdInstance.getCourtById(
+        CourtUrlEnum.GetCourtById,
+        courtId
       );
     },
   });
-
-
+  console.log(courtId, CourtData);
   useEffect(() => {
     updateData(CourtData);
     setIsLoading(isFetching || isLoading);
     setError(error as Error);
   }, [CourtData, isFetching, isLoading, error]);
 
-  const tableData = useMemo(() => CourtData?.data, [CourtData]);
+  const tableData = useMemo(() => (CourtData ? [CourtData] : []), [CourtData]);
   const handleDeleteSelected = async () => {
     const confirm = await showConfirmationAlert(`${selected.length} item`);
     if (confirm) {
@@ -76,7 +79,7 @@ const MyCourts = () => {
 
   return (
     <>
-      <CustomKTCard className="">
+      <CustomKTCard>
         <CustomTableToolbar
           addBtnAction={() => {
             setItemIdForUpdate(null);
@@ -86,11 +89,9 @@ const MyCourts = () => {
           // FilterComponent={<ClubFilter></ClubFilter>}
           onDeleteSelectedAll={() => handleDeleteSelected()}
           addBtn={true}
-          addName="ADD"
-          
+          addName="ADD-Reservation"
         />
-        <CustomTemplate courtData={tableData || []}/>
-        {/* <CustomTable columns={columns} data={tableData || []} /> */}
+        <CustomTable columns={columns} data={tableData || []} />
       </CustomKTCard>
       {itemIdForUpdate === null && (
         <CustomModal
@@ -98,20 +99,20 @@ const MyCourts = () => {
           modalTitle="Create-Club"
           onClick={() => setItemIdForUpdate(undefined)}
         >
-          <CourtModalCreateForm id={clubId} />
+          <CreateMyReservationForm courtId={CourtData?.id || 0} />
         </CustomModal>
       )}
     </>
   );
 };
 
-function MyCourtsWrapper() {
+function ViewCourtWrapper() {
   return (
     <QueryRequestProvider>
       <ListViewProvider>
-        <MyCourts />
+        <ViewCourt />
       </ListViewProvider>
     </QueryRequestProvider>
   );
 }
-export default MyCourtsWrapper;
+export default ViewCourtWrapper;

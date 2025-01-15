@@ -21,11 +21,9 @@ import { useQueryClient } from "react-query";
 import PleaseWaitTxt from "@presentation/helpers/loading/PleaseWaitTxt";
 import { useLanguageStore } from "@infrastructure/storage/LanguageStore";
 import validationSchemas from "@presentation/helpers/validationSchemas";
-import CustomSelectField from "@presentation/components/forms/CustomSelectField";
 import { ICourtData } from "@domain/entities/Court/Court";
 import { CourtCommandInstance } from "@app/useCases/court";
 import { CourtUrlEnum } from "@domain/enums/URL/Court/CourtUrls/Court";
-import { useClubsDDL } from "@presentation/hooks/queries/DDL/Club/useClubsDDL";
 
 interface IProps {
   CourtData: ICourtData;
@@ -54,7 +52,7 @@ export const UpdateCourtModalForm = ({ CourtData, isLoading }: IProps) => {
   }, [CourtData]);
 
   const _CourtSchema = Object.assign({
-    club: validationSchemas.object,
+    // club: validationSchemas.object,
     rank: validationSchemas.number,
     allowedSlotTypes: validationSchemas.number,
     systemTypeId: validationSchemas.number,
@@ -72,7 +70,7 @@ export const UpdateCourtModalForm = ({ CourtData, isLoading }: IProps) => {
     const formData = new FormData();
 
     formData.append("Id", String(initialValues.id));
-    formData.append("ClubId", values.club.value);
+    formData.append("ClubId", values.club);
     formData.append("Rank", values.rank);
     formData.append("Indoor", values.indoor);
     formData.append("CourtTypeId", values.courtTypeId);
@@ -144,7 +142,7 @@ const CourtUpdateForm = () => {
     values,
   }: FormikContextType<FormikValues> = useFormikContext();
   console.log("values", values);
-  const { isClubLoading, clubsOption } = useClubsDDL();
+  // const { isClubLoading, clubsOption } = useClubsDDL();
 
   return (
     <>
@@ -167,17 +165,6 @@ const CourtUpdateForm = () => {
                 type="text"
                 isSubmitting={isSubmitting}
               />
-              <CustomSelectField
-                name="club"
-                options={clubsOption}
-                isloading={isClubLoading}
-                label="DDL-CLUB-NAME"
-                placeholder="DDL-CLUB-NAME"
-                touched={touched}
-                errors={errors}
-              />
-            </div>
-            <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
               <CustomInputField
                 name="payload"
                 placeholder="COURT-PAYLOAD"
@@ -188,6 +175,8 @@ const CourtUpdateForm = () => {
                 type="text"
                 isSubmitting={isSubmitting}
               />
+            </div>
+            <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
               <CustomInputField
                 name="rank"
                 placeholder="COURT-RANK"
@@ -201,9 +190,6 @@ const CourtUpdateForm = () => {
                 min={1}
                 isSubmitting={isSubmitting}
               />
-            </div>
-
-            <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
               <CustomInputField
                 name="courtTypeId"
                 placeholder="COURT-TYPE-ID"
@@ -214,6 +200,9 @@ const CourtUpdateForm = () => {
                 type="number"
                 isSubmitting={isSubmitting}
               />
+            </div>
+
+            <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
               <CustomInputField
                 name="systemTypeId"
                 placeholder="COURT-SYSTEM-TYPE-ID"
@@ -224,8 +213,6 @@ const CourtUpdateForm = () => {
                 type="number"
                 isSubmitting={isSubmitting}
               />
-            </div>
-            <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
               <CustomInputField
                 name="allowedSlotTypes"
                 placeholder="COURT-ALLOWED-SLOT-TYPES"
@@ -236,6 +223,8 @@ const CourtUpdateForm = () => {
                 type="number"
                 isSubmitting={isSubmitting}
               />
+            </div>
+            <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
               <CustomInputField
                 name="sportId"
                 placeholder="COURT-SPORT-ID"

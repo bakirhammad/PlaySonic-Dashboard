@@ -94,7 +94,7 @@ const CountryList = () => {
       </CustomKTCard>
       {itemIdForUpdate === null && (
         <CustomModal
-          modalSize="xl"
+          modalSize="lg"
           modalTitle="Create-Country"
           onClick={() => setItemIdForUpdate(undefined)}
         >

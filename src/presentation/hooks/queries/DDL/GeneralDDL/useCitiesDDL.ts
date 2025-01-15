@@ -23,7 +23,7 @@ function useCitiesDDL() {
       const _CityOption = CityListRes?.data?.map((City) => {
         return {
           value: City.id,
-          label: City.translations[0]?.name,
+          label: City.translations[0]?.name || "NA",
         };
       });
 

@@ -10,13 +10,10 @@ import { useQueryClient, useMutation, useQuery } from "react-query";
 import { QUERIES } from "@presentation/helpers";
 import { useListView } from "@presentation/context/index";
 import { IReservationData } from "@domain/entities/Reservation/Reservation";
-import {
-  ReservationCommandInstance,
-  ReservationQueryByIdInstance,
-} from "@app/useCases/reservation";
+import { ReservationCommandInstance, ReservationQueryByIdInstance } from "@app/useCases/reservation";
 import { ReservationUrlEnum } from "@domain/enums/URL/Reservation/reservationUrls/Reservation";
 import UpdateReservationForm from "./UpdateReservationForm";
-import StatusApproval from "@presentation/pages/clubAdmin/myReservations/components/StatusApproval";
+import StatusApproval from "./StatusApproval";
 
 interface Props {
   id: number;
@@ -98,7 +95,7 @@ const ReservationActionCell: FC<Props> = ({ id, name }) => {
           setItemIdForUpdate(id);
         }}
         deletBtnOnClick={() => handleDelete()}
-        children={<StatusApproval id={id} />}
+        children={<StatusApproval id={id}/>}
       />
       {itemIdForUpdate === id && (
         <CustomModal

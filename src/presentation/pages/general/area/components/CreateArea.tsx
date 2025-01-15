@@ -33,8 +33,8 @@ export const CreateArea = () => {
 
   const initialValues = Object.assign(
     {
-      rank: null,
-      payload: null,
+      rank: 1,
+      payload: "New Area",
       cityId: null,
     },
     ...Languages.map((lang) => ({
@@ -44,8 +44,8 @@ export const CreateArea = () => {
 
   const _AreaSchema = Object.assign(
     {
-      rank: Yup.number().required("Rank is required"),
-      payload: Yup.string().required("Name is required"),
+      // rank: Yup.number().required("Rank is required"),
+      // payload: Yup.string().required("Name is required"),
       cityId: validationSchemas.object,
     },
     ...Languages.map((lang) => {
@@ -155,7 +155,7 @@ const AreaForm = () => {
         <div className="row row-cols-md-1 row-cols-sm-1 row-cols-1">
           <div className="row">
             <div className="row row-cols-3">
-              <CustomInputField
+              {/* <CustomInputField
                 name="rank"
                 placeholder="Country-RANK"
                 label="Country-RANK"
@@ -174,7 +174,7 @@ const AreaForm = () => {
                 errors={errors}
                 type="text"
                 isSubmitting={isSubmitting}
-              />
+              /> */}
               <CustomSelectField
                 name="cityId"
                 options={CityOption}

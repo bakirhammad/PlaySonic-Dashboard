@@ -20,7 +20,7 @@ import { ClubCommandInstance, ClubQueryInstance } from "@app/useCases/clubs";
 import { ClubUrlEnum } from "@domain/enums/URL/Clubs/ClubUrls/Club";
 import { ClubListColumns } from "./components/ClubListColumns";
 import { ClubModalCreateForm } from "./components/ClubModalCreateForm";
-
+import ClubFilter from "./components/ClubFilter";
 
 const ClubList = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
@@ -47,26 +47,23 @@ const ClubList = () => {
     },
   });
 
+  console.log("ClubData" , ClubData)
   useEffect(() => {
     updateData(ClubData);
     setIsLoading(isFetching || isLoading);
     setError(error as Error);
   }, [ClubData, isFetching, isLoading, error]);
 
-  const tableData = useMemo(
-    () => ClubData?.data,
-    [ClubData]
-  );
+  const tableData = useMemo(() => ClubData?.data, [ClubData]);
 
   const handleDeleteSelected = async () => {
     const confirm = await showConfirmationAlert(`${selected.length} item`);
     if (confirm) {
       try {
-        const data =
-          await ClubCommandInstance.multipleDeleteClub(
-            ClubUrlEnum.MultipleDeleteClub,
-            selected
-          );
+        const data = await ClubCommandInstance.multipleDeleteClub(
+          ClubUrlEnum.MultipleDeleteClub,
+          selected
+        );
         if (data) {
           showDeletedAlert(`${selected.length} item`);
           queryClient.invalidateQueries([QUERIES.ClubList]);
@@ -89,7 +86,7 @@ const ClubList = () => {
           }}
           searchPlaceholder="SEARCH"
           filterBtn={true}
-          // FilterComponent={<SightSeeingTourFilter/>}
+          FilterComponent={<ClubFilter />}
           onDeleteSelectedAll={() => handleDeleteSelected()}
           addBtn={true}
           addName="ADD"

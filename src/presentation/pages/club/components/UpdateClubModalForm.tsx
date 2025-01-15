@@ -1,4 +1,4 @@
-import { Fragment, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import {
   CustomButton,
   CustomInputField,
@@ -45,6 +45,8 @@ export const UpdateClubModalForm = ({ ClubData, isLoading }: IProps) => {
   const queryClient = useQueryClient();
   const { Languages } = useLanguageStore();
 
+  const fullLocationArray = ClubData.location.slice(7, 10).split(" ");
+console.log(ClubData, "000000000000000000000000000")
   const initialValues = useMemo(() => {
     const translations = Languages.reduce<{ [key: string]: string }>(
       (acc, lang) => {
@@ -55,8 +57,8 @@ export const UpdateClubModalForm = ({ ClubData, isLoading }: IProps) => {
       {}
     );
     ClubData.clubInfoResponses.forEach((lang) => {
-      translations[`name${lang.langId}`] = lang.name;
-      translations[`description${lang.langId}`] = lang.description;
+      translations[`name${lang.languageId}`] = lang.name;
+      translations[`description${lang.languageId}`] = lang.description;
     });
 
     return {
@@ -68,17 +70,19 @@ export const UpdateClubModalForm = ({ ClubData, isLoading }: IProps) => {
       website: ClubData.website,
       features: ClubData.features,
       payload: ClubData.payload,
-      lat: ClubData.lat,
-      lng: ClubData.lng,
+      lat:0,
+      lng:0,
       ...translations,
     };
-  }, [ClubData, Languages]);
+  }, [ClubData, Languages, fullLocationArray]);
 
   const _ClubSchema = Object.assign(
     {
       country: validationSchemas.object,
       city: validationSchemas.object,
       area: validationSchemas.object,
+      lat: Yup.number(),
+      lng: Yup.number(),
     },
     ...Languages.map((lang) => {
       return lang.id === 2
@@ -196,6 +200,7 @@ const ClubUpdateForm = () => {
     isSubmitting,
     isValid,
     values,
+    setFieldValue,
   }: FormikContextType<FormikValues> = useFormikContext();
   console.log("values", values);
 
@@ -206,6 +211,33 @@ const ClubUpdateForm = () => {
   const { CityOption, isCityLoading } = useCitiesDDL();
   const { AreaOption, isAreaLoading } = useAreasDDL();
 
+  useEffect(() => {
+    CountryOption.forEach((elem) => {
+      if (elem.value === values.country) {
+        return setFieldValue("country", {
+          value: elem.value,
+          label: elem.label,
+        });
+      }
+    });
+
+    CityOption.forEach((elem) => {
+      if (elem.value === values.city) {
+        return setFieldValue("city", {
+          value: elem.value,
+          label: elem.label,
+        });
+      }
+    });
+    AreaOption.forEach((elem) => {
+      if (elem.value === values.area) {
+        return setFieldValue("area", {
+          value: elem.value,
+          label: elem.label,
+        });
+      }
+    });
+  }, [CountryOption, CityOption, AreaOption]);
   return (
     <>
       <Form

@@ -1,14 +1,12 @@
 import { FC } from "react";
 import { PageLink } from "@presentation/layout/core";
 import { DashboardRoute } from "./DashboardRoute";
-import { SightseeingRoute } from "./SightSeeingRoute";
 import { DirectClientsRouter } from "./DirectClients";
 import { ClubRoute } from "./ClubRoute";
 import { CourtRoute } from "./CourtRoute";
 import { GeneralRoute } from "./GeneralRoute";
 import { ReservationRoute } from "./ReservationRoute";
 import { ClubAdminRoutes } from "./ClubAdminRoutes";
-
 
 export interface Route {
   path: string;
@@ -27,7 +25,6 @@ export interface Route {
 const routes: Route[] = [
   DashboardRoute,
   DirectClientsRouter,
-  SightseeingRoute,
   ClubRoute,
   CourtRoute,
   GeneralRoute,

@@ -3,6 +3,8 @@ import { SidebarMenuAdmin } from "./SidebarMenuAdmin";
 import { SidebarMenuClubAdmins } from "./SidebarMenuClubAdmins";
 
 const SidebarMenuMain = () => {
+  const loginedUser = ["subAsdmin", "suberAdmin"];
+
   return (
     <>
       <SidebarMenuItem
@@ -40,8 +42,8 @@ const SidebarMenuMain = () => {
 
       {/* .. >>>>>  */}
 
-      <SidebarMenuAdmin />
-      <SidebarMenuClubAdmins />
+      {loginedUser.includes("suberAdmin") && <SidebarMenuAdmin />}
+      {loginedUser.includes("subAdmin") && <SidebarMenuClubAdmins />}
     </>
   );
 };

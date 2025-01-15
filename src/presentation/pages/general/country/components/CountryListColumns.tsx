@@ -44,20 +44,20 @@ const CountryListColumns: ReadonlyArray<Column<ICountryData>> = [
       <CustomCell data={props.data[props.row.index]?.translations[0]?.name} />
     ),
   },
-  {
-    Header: (props) => (
-      <CustomHeaderCell
-        tableProps={props}
-        title="SIDEBAR-CLUB-PAYLOAD"
-        enableSorting={false}
-        className="min-w-125px"
-      />
-    ),
-    id: "payload",
-    Cell: ({ ...props }) => (
-      <CustomCell data={props.data[props.row.index]?.payload} />
-    ),
-  },
+  // {
+  //   Header: (props) => (
+  //     <CustomHeaderCell
+  //       tableProps={props}
+  //       title="SIDEBAR-CLUB-PAYLOAD"
+  //       enableSorting={false}
+  //       className="min-w-125px"
+  //     />
+  //   ),
+  //   id: "payload",
+  //   Cell: ({ ...props }) => (
+  //     <CustomCell data={props.data[props.row.index]?.payload} />
+  //   ),
+  // },
   {
     Header: (props) => (
       <CustomHeaderCell

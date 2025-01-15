@@ -14,13 +14,6 @@ const ClubRoute: Route = {
   role: ["admin"],
   breadcrumbs: [],
   children: [
-    // {
-    //   path: "",
-    //   title: "SIGHT-SEEING-PAGE-TITLE",
-    //   component: SightSeeingPannelMain,
-    //   role: [],
-    //   breadcrumbs: SightSeeingBreadcrumbs,
-    // },
     {
       path: "clublist",
       title: "SIDEBAR-CLUB",

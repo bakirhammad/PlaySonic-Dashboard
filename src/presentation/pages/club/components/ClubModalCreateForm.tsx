@@ -46,7 +46,7 @@ export const ClubModalCreateForm = () => {
       phone: "",
       website: "",
       features: 0,
-      payload: "",
+      payload: "New Club",
       lat: 0,
       lng: 0,
     },
@@ -260,7 +260,7 @@ const ClubForm = () => {
                 isSubmitting={isSubmitting}
               />
 
-              <CustomInputField
+              {/* <CustomInputField
                 name="payload"
                 placeholder="CLUB-PAYLOAD"
                 label="CLUB-PAYLOAD"
@@ -269,7 +269,7 @@ const ClubForm = () => {
                 errors={errors}
                 type="text"
                 isSubmitting={isSubmitting}
-              />
+              /> */}
 
               <CustomInputField
                 name="website"

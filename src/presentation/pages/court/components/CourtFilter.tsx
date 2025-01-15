@@ -1,8 +1,8 @@
 import { useEffect } from "react";
+import * as Yup from "yup";
 import { MenuComponent } from "@assets/ts/components";
 import { CustomKTIcon, initialQueryState } from "@presentation/helpers";
 import { useQueryRequest } from "@presentation/context";
-import * as Yup from "yup";
 import { useLocaleFormate } from "@presentation/hooks";
 import {
   Form,
@@ -14,23 +14,21 @@ import {
 import { CustomButton } from "@presentation/components";
 import moment from "moment";
 import CustomSelectField from "@presentation/components/forms/CustomSelectField";
-import { useCitiesDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useCitiesDDL";
-import { useAreasDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useAreasDDL";
+import { useClubsDDL } from "@presentation/hooks/queries/DDL/Club/useClubsDDL";
 
-interface IReservationFilter {
-  cityId: { value: number; label: string } | null;
-  areaId: { value: number; label: string } | null;
+interface IClibFilter {
+  clubId: { value: number; label: string } | null;
 }
+
 const validationSchema = Yup.object().shape({
-  // reservationDate: Yup.date(),
+  // clubId: Yup.number(),
 });
 
-const ClubFilter = () => {
+const CourtFilter = () => {
   const { updateState } = useQueryRequest();
 
-  const initialValues: IReservationFilter = {
-    cityId: null,
-    areaId: null,
+  const initialValues: IClibFilter = {
+    clubId: null,
   };
 
   useEffect(() => {
@@ -40,8 +38,7 @@ const ClubFilter = () => {
   const filterData = (values: typeof initialValues) => {
     updateState({
       filter: {
-        cityId: values.cityId?.value,
-        areaId: values.areaId?.value,
+        clubId: values.clubId?.value,
       },
       ...initialQueryState,
     });
@@ -56,13 +53,18 @@ const ClubFilter = () => {
         setSubmitting(false);
       }}
     >
-      <ClubFilterWrapper />
+      <DailyFlightsFilterWrapper />
     </Formik>
   );
 };
-const ClubFilterWrapper = () => {
-  const { setFieldValue, resetForm, values }: FormikContextType<FormikValues> =
-    useFormikContext();
+const DailyFlightsFilterWrapper = () => {
+  const {
+    errors,
+    touched,
+    setFieldValue,
+    resetForm,
+    values,
+  }: FormikContextType<FormikValues> = useFormikContext();
   const { updateState, isLoading } = useQueryRequest();
 
   const resetData = (resetForm: () => void) => {
@@ -78,8 +80,8 @@ const ClubFilterWrapper = () => {
     }
   }, [values.reservationDate, setFieldValue]);
 
-  const { CityOption, isCityLoading } = useCitiesDDL();
-  const { AreaOption, isAreaLoading } = useAreasDDL();
+  const { isClubLoading, clubsOption } = useClubsDDL();
+
   return (
     <>
       <button
@@ -93,7 +95,7 @@ const ClubFilterWrapper = () => {
         {useLocaleFormate("FILTER")}
       </button>
       <div
-        className="menu menu-sub menu-sub-dropdown p-6 w-300px w-md-350px"
+        className="menu menu-sub menu-sub-dropdown p-6 w-300px w-md-400px"
         data-kt-menu="true"
       >
         <>
@@ -104,23 +106,15 @@ const ClubFilterWrapper = () => {
           >
             <div className="row row-cols-1">
               <CustomSelectField
-                name="cityId"
-                options={CityOption}
-                isloading={isCityLoading}
-                label="DDL-CITY"
-                placeholder="DDL-SELECT-CITY"
-                labelRequired={false}
-              />
-              <CustomSelectField
-                name="areaId"
-                options={AreaOption}
-                isloading={isAreaLoading}
-                label="DDL-AREA"
-                labelRequired={false}
-                placeholder="DDL-SELECT-AREA"
+                name="clubId"
+                options={clubsOption}
+                isloading={isClubLoading}
+                label="DDL-CLUB-NAME"
+                placeholder="DDL-CLUB-NAME"
+                touched={touched}
+                errors={errors}
               />
             </div>
-            <div className="row row-cols-2"></div>
             {/* <CustomCheckbox
               labelTxt="Include_Return"
               labelRequired={false}
@@ -152,4 +146,4 @@ const ClubFilterWrapper = () => {
     </>
   );
 };
-export default ClubFilter;
+export default CourtFilter;

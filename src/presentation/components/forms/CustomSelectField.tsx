@@ -77,7 +77,10 @@ const CustomSelectField: FC<InputFieldProps> = ({
           } else if (option.find((ele: any) => ele.value === "allFiltered")) {
             const uniqueOptions = new Set(form.values[name] || []);
 
-            const searchTerm = inputValue.toLowerCase();
+            const searchTerm =
+              typeof inputValue === "string"
+                ? inputValue.toLowerCase()
+                : inputValue;
             options
               .filter((option) =>
                 typeof option.label === "string"
@@ -139,12 +142,13 @@ const CustomSelectField: FC<InputFieldProps> = ({
                     if (option.value === "all") {
                       return false;
                     }
-                    return (
-                      option.label
-                        .toLowerCase()
-                        .includes(inputValue.toLowerCase()) ||
-                      option.value === "allFiltered"
-                    );
+                    return typeof option.label === "string" &&
+                      typeof inputValue === "string"
+                      ? option.label
+                          .toLowerCase()
+                          .includes(inputValue.toLowerCase()) ||
+                          option.value === "allFiltered"
+                      : option.label || option.value === "allFiltered";
                   }}
                   closeMenuOnSelect={closeMenuOnSelect}
                   isLoading={isloading}

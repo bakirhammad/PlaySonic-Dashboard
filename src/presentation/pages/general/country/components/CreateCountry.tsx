@@ -30,8 +30,8 @@ export const CreateCountry = () => {
 
   const initialValues = Object.assign(
     {
-      rank: null,
-      payload: null,
+      rank: 1,
+      payload: "New Country",
     },
     ...Languages.map((lang) => ({
       [`name${lang?.id}`]: "",
@@ -40,8 +40,8 @@ export const CreateCountry = () => {
 
   const _CountrySchema = Object.assign(
     {
-      rank: Yup.number().required("Rank is required"),
-      payload: Yup.string().required("Name is required"),
+      // rank: Yup.number().required("Rank is required"),
+      // payload: Yup.string().required("Name is required"),
     },
     ...Languages.map((lang) => {
       return lang.id === 2
@@ -144,7 +144,7 @@ const CountryForm = () => {
       >
         <div className="row row-cols-md-1 row-cols-sm-1 row-cols-1">
           <div className="row">
-            <div className="row row-cols-md-3 border-info-subtle border-black">
+            {/* <div className="row row-cols-md-3 border-info-subtle border-black">
               <CustomInputField
                 name="rank"
                 placeholder="Country-RANK"
@@ -166,7 +166,7 @@ const CountryForm = () => {
                 isSubmitting={isSubmitting}
               />
             </div>
-            <hr />
+            <hr /> */}
             <div className="translation mt-5">
               <div className="d-flex mb-7">
                 {Languages.map((lang, index) => (

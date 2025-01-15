@@ -46,13 +46,12 @@ const CourtSchedule = () => {
     },
   });
 
-  console.log(CourtScheduleData, "schadual");
   useEffect(() => {
     updateData(CourtScheduleData);
     setIsLoading(isFetching || isLoading);
     setError(error as Error);
   }, [CourtScheduleData, isFetching, isLoading, error]);
-
+  
   const tableData = useMemo(() => CourtScheduleData?.data, [CourtScheduleData]);
 
   const handleDeleteSelected = async () => {

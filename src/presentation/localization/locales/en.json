@@ -203,7 +203,7 @@
   "SIDEBAR-RESERVATION-LEVEL-MIN":"Level Min",
   "SIDEBAR-RESERVATION-RESERVATION-TYPE-ID": "Reservaion Type",
   "SIDEBAR-RESERVATION-STATUS": "Status",
-  "SIDEBAR-RESERVATION-OWNER-ID":"Owner",
+  "SIDEBAR-RESERVATION-OWNER-NAME":"Owner Name",
   "SIDEBAR-RESERVATION-END-TIME":"End Time",
   "SIDEBAR-RESERVATION-START-TIME":"Start Time",
   "SIDEBAR-RESERVATION-SLOT-TYPE-ID": "Slot Type",
@@ -221,7 +221,22 @@
   "Reservation-Date": "Reservation Date",
   "isPublic": "Indoor",
   "SIDEBAR-My-Courts" : "My Courts",
-  "SIDEBAR-My-Reservations" : "My Reservations"
+  "SIDEBAR-My-Reservations" : "My Reservations",
+  "SIDEBAR-Court":"Court",
+  "ADD-Reservation": "Add Reservation",
+  "ADD" : "Add",
+  "PAGE_SIZE": "Page Size",
+  "10": "10",
+  "50": "50",
+  "100":"100",
+  "DDL-CITY": "City",
+  "DDL-SELECT-CITY" :"Select City",
+  "DDL-SELECT-AREA" : "Select Area",
+  "STATUS-APPROVAL": "Status Approval",
+  "DDL-COURT":"Court",
+  "Create-Country":"Create Country",
+  "DDL-CLUB-MANE":"Club Name"
+
 
 
 

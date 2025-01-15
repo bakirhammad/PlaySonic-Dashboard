@@ -24,7 +24,7 @@ const SidebarMenuAdmin = () => {
       >
         <SidebarCourtMenuItems />
       </SidebarMenuItemWithSub>
-
+      
       <SidebarMenuItemWithSub
         to="/apps/reservation"
         title={"Reservation"}
@@ -41,7 +41,7 @@ const SidebarMenuAdmin = () => {
         fontIcon="bi-people-fill"
       >
         <SidebarGeneralMenuItems />
-      </SidebarMenuItemWithSub> 
+      </SidebarMenuItemWithSub>
     </>
   );
 };

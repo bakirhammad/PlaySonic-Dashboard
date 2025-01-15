@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import {
   CustomButton,
   CustomListLoading,
@@ -29,6 +29,8 @@ import {
 } from "@presentation/helpers/DDL/DaysOptions";
 import { useCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useCourtsDDL";
 import CustomTimePicker from "@presentation/components/forms/CustomTimePicker";
+import { useCourtBuClubDDL } from "@presentation/hooks/queries/DDL/Court/useCourtBuClubDDL";
+import { useClubsDDL } from "@presentation/hooks/queries/DDL/Club/useClubsDDL";
 
 interface IProps {
   CourtScheduleData: ICourtScheduleData;
@@ -47,6 +49,7 @@ export const UpdateCourtScheduleModalForm = ({
   const initialValues = useMemo(() => {
     return {
       id: CourtScheduleData.id,
+      clubId: 18,
       courtId: CourtScheduleData.courtId,
       days: CourtScheduleData.days,
       startTime: CourtScheduleData.startTime,
@@ -55,7 +58,7 @@ export const UpdateCourtScheduleModalForm = ({
   }, [CourtScheduleData]);
 
   const _CourtScheduleSchema = Object.assign({
-    days: validationSchemas.message,
+    days: validationSchemas.array,
     courtId: validationSchemas.object,
     startTime: Yup.string().required("Start Time is Required"),
     endTime: Yup.string().required("End Time is Required"),
@@ -135,12 +138,33 @@ const CourtScheduleUpdateForm = () => {
     isSubmitting,
     isValid,
     values,
+    setFieldValue,
   }: FormikContextType<FormikValues> = useFormikContext();
   console.log("values", values);
 
-  const { CourtsOption, isCourtLoading } = useCourtsDDL();
-
-  console.log("values", values);
+  const { CourtsOption } = useCourtsDDL();
+  const { clubsOption, isClubLoading } = useClubsDDL();
+  const { ClubCourtsOption, isClubCourtLoading } = useCourtBuClubDDL(
+    values.clubId.value
+  );
+  useEffect(() => {
+    clubsOption.forEach((elem) => {
+      if (elem.value === values.clubId) {
+        return setFieldValue("clubId", {
+          value: elem.value,
+          label: elem.label,
+        });
+      }
+    });
+    CourtsOption.forEach((elem) => {
+      if (elem.value === values.courtId) {
+        return setFieldValue("courtId", {
+          value: elem.value,
+          label: elem.label,
+        });
+      }
+    });
+  }, [CourtsOption, clubsOption]);
 
   return (
     <>
@@ -154,23 +178,22 @@ const CourtScheduleUpdateForm = () => {
           <div className="row">
             <div className="row row-cols-2">
               <CustomSelectField
-                name="courtId"
-                options={CourtsOption}
-                isloading={isCourtLoading}
-                label="DDL-COURT-MANE"
-                placeholder="DDL-COURT-MANE"
+                name="clubId"
+                options={clubsOption}
+                isloading={isClubLoading}
+                label="DDL-CLUB-MANE"
+                placeholder="DDL-CLUB-MANE"
                 touched={touched}
                 errors={errors}
               />
               <CustomSelectField
-                name="days"
-                placeholder="DDL-DAYS"
-                label="SELECT-DAYS"
+                name="courtId"
+                options={ClubCourtsOption}
+                isloading={isClubCourtLoading}
+                label="DDL-COURT-MANE"
+                placeholder="DDL-COURT-MANE"
                 touched={touched}
                 errors={errors}
-                isSubmitting={isSubmitting}
-                options={DaysOptionsDDL}
-                isMulti={true}
               />
             </div>
             <div className="row row-cols-2">
@@ -185,6 +208,18 @@ const CourtScheduleUpdateForm = () => {
                 label="End-Time"
                 placeholder="End-Time"
                 Mode="time"
+              />
+            </div>
+            <div className="row row-cols-2">
+              <CustomSelectField
+                name="days"
+                placeholder="DDL-DAYS"
+                label="SELECT-DAYS"
+                touched={touched}
+                errors={errors}
+                isSubmitting={isSubmitting}
+                options={DaysOptionsDDL}
+                isMulti={true}
               />
             </div>
           </div>

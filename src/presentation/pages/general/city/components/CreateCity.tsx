@@ -19,7 +19,6 @@ import { useQueryClient } from "react-query";
 import { QUERIES } from "@presentation/helpers";
 import { useLanguageStore } from "@infrastructure/storage/LanguageStore";
 import clsx from "clsx";
-import CustomEditor from "@presentation/components/forms/CustomEditor";
 import CustomSelectField from "@presentation/components/forms/CustomSelectField";
 import validationSchemas from "@presentation/helpers/validationSchemas";
 import { CityCommandInstance } from "@app/useCases/general/city/commands/CityCommand";
@@ -34,20 +33,20 @@ export const CreateCity = () => {
 
   const initialValues = Object.assign(
     {
-      rank: null,
-      payload: null,
+      rank: 1,
+      payload: "New City",
       countryId: null,
     },
     ...Languages.map((lang) => ({
       [`name${lang?.id}`]: "",
-      [`description${lang?.id}`]: "",
+      [`description${lang?.id}`]: "NA",
     }))
   );
 
   const _CitySchema = Object.assign(
     {
-      rank: Yup.number().required("Rank is required"),
-      payload: Yup.string().required("Name is required"),
+      // rank: Yup.number().required("Rank is required"),
+      // payload: Yup.string().required("Name is required"),
       countryId: validationSchemas.object,
     },
     ...Languages.map((lang) => {
@@ -58,13 +57,18 @@ export const CreateCity = () => {
             ),
           }
         : {
-            [`name${lang?.id}`]: Yup.string().when([`description${lang.id}`], {
-              is: (descriptionVal: string) =>
-                descriptionVal && descriptionVal.trim() !== "",
-              then: (schema) => schema.required("This field is required"),
-              otherwise: (schema) => schema,
-            }),
+            [`name${lang?.id}`]: Yup.string().required(
+              "This field is required"
+            ),
           };
+      // : {
+      //     [`name${lang?.id}`]: Yup.string().when([`description${lang.id}`], {
+      //       is: (descriptionVal: string) =>
+      //         descriptionVal && descriptionVal.trim() !== "",
+      //       then: (schema) => schema.required("This field is required"),
+      //       otherwise: (schema) => schema,
+      //     }),
+      //   };
     })
   );
 
@@ -165,7 +169,7 @@ const CityForm = () => {
         <div className="row row-cols-md-1 row-cols-sm-1 row-cols-1">
           <div className="row">
             <div className="row row-cols-3">
-              <CustomInputField
+              {/* <CustomInputField
                 name="rank"
                 placeholder="Country-RANK"
                 label="Country-RANK"
@@ -175,7 +179,7 @@ const CityForm = () => {
                 type="number"
                 isSubmitting={isSubmitting}
               />
-              <CustomInputField
+               <CustomInputField
                 name="payload"
                 placeholder="Country-PAYLOAD"
                 label="Country-PAYLOAD"
@@ -184,7 +188,7 @@ const CityForm = () => {
                 errors={errors}
                 type="text"
                 isSubmitting={isSubmitting}
-              />
+              /> */}
               <CustomSelectField
                 name="countryId"
                 options={CountryOption}
@@ -234,12 +238,12 @@ const CityForm = () => {
                           labelRequired={languageInput === 2 ? true : false}
                         />
                       </div>
-                      <CustomEditor
+                      {/* <CustomEditor
                         key={lang.prefix + lang.id + "editor"}
                         name={`description${lang?.id}`}
                         labelRequired={languageInput === 2 ? true : false}
                         label={"City-DISSCRIPTION"}
-                      />
+                      /> */}
                     </Fragment>
                   )
               )}
