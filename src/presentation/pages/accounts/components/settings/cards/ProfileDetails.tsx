@@ -59,11 +59,8 @@ const profileDetailsSchema = Yup.object().shape({
 
 const ProfileDetails: FC = () => {
   const { currentUser } = useAuthStore();
-  console.log({ currentUser });
   const UserData = currentUser?.user;
-
   const queryClient = useQueryClient();
-
   const initialValues = useMemo(
     () => ({
       Img: UserData?.img,

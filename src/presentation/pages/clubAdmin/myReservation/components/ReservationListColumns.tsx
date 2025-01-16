@@ -12,7 +12,6 @@ import CourtNameCell from "@presentation/helpers/cells/CourtNameCell";
 import SlotTypeNameCell from "@presentation/helpers/cells/SlotTypeNameCell";
 import { ReservationTypeEnum } from "@domain/enums/reservationType/ReservationTypeEnum";
 import { ReservationStatusEnum } from "@domain/enums/reservationStatus/ReservationStatusEnum";
-import StatusApproval from "./StatusApproval";
 
 const ReservationListColumns: ReadonlyArray<Column<IReservationData>> = [
   {

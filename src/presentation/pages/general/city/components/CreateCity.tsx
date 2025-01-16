@@ -154,8 +154,6 @@ const CityForm = () => {
 
   const { Languages } = useLanguageStore();
   const [languageInput, setLanguageInput] = useState(2);
-
-  console.log("ddd", values);
   const { CountryOption, isCountryLoading } = useCountriesDDL();
 
   return (

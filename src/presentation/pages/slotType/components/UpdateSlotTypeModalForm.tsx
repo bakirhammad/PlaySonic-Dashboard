@@ -107,11 +107,7 @@ const SlotTypeUpdateForm = () => {
     touched,
     isSubmitting,
     isValid,
-    values,
   }: FormikContextType<FormikValues> = useFormikContext();
-  console.log("values", values);
-
-  console.log("values", values);
 
   return (
     <>

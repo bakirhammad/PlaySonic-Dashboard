@@ -46,7 +46,6 @@ export const UpdateClubModalForm = ({ ClubData, isLoading }: IProps) => {
   const { Languages } = useLanguageStore();
 
   const fullLocationArray = ClubData.location.slice(7, 10).split(" ");
-console.log(ClubData, "000000000000000000000000000")
   const initialValues = useMemo(() => {
     const translations = Languages.reduce<{ [key: string]: string }>(
       (acc, lang) => {
@@ -202,11 +201,8 @@ const ClubUpdateForm = () => {
     values,
     setFieldValue,
   }: FormikContextType<FormikValues> = useFormikContext();
-  console.log("values", values);
-
   const { Languages } = useLanguageStore();
   const [languageInput, setLanguageInput] = useState(2);
-  console.log("values", values);
   const { CountryOption, isCountryLoading } = useCountriesDDL();
   const { CityOption, isCityLoading } = useCitiesDDL();
   const { AreaOption, isAreaLoading } = useAreasDDL();

@@ -1,16 +1,28 @@
-import { ActionItem, CustomButton } from "@presentation/components";
-import { FC, useState } from "react";
+import {
+  ActionItem,
+  CustomButton,
+  CustomToast,
+} from "@presentation/components";
+import { CustomComfirmationAlert } from "@presentation/components/alerts/CustomComfirmationAlert";
+import { FC } from "react";
 
 interface IStatusApproval {
   id: number;
 }
 const StatusApproval: FC<IStatusApproval> = ({ id }) => {
-  const [statusId, setStatusId] = useState("");
-
   const handleSubmit = async (statusId: number) => {
-    // try{
-    // }catch{
-    // }
+    try {
+      const confirmAction = await CustomComfirmationAlert(
+        "Are You Sure?",
+        "Yes"
+      );
+
+      if (confirmAction) {
+        CustomToast(`Success`, "success");
+      }
+    } catch {
+      console.log("Error");
+    }
   };
   return (
     <div className="d-flex tw-flex-col ">

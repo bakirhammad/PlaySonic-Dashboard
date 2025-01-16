@@ -98,7 +98,6 @@ const SignInMethod: FC = () => {
               `Username=${UserData?.userName}&` +
               `Password=${values.currentPassword}`
           );
-        console.log("isOldPasswordCorrect", isOldPasswordCorrect);
 
         if (isOldPasswordCorrect?.error) {
           formik2.setFieldError("currentPassword", isOldPasswordCorrect?.error);

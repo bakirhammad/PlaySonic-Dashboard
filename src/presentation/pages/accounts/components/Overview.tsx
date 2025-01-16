@@ -16,7 +16,6 @@ export function Overview() {
   const Country = CountriesOption.find(
     (country) => country.value === currentUser?.user.countryId
   );
-  console.log("CountryName", Country);
 
   return (
     <Content>

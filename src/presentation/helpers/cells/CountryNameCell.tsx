@@ -12,7 +12,7 @@ const CountryNameCell: FC<ICountryName> = ({ countryId }) => {
       return elem.label || "NA";
     }
   });
-  console.log(CountryOption);
+
   return countryName;
 };
 

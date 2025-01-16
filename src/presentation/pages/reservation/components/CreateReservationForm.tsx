@@ -125,10 +125,8 @@ const ReservationForm = () => {
     touched,
     isSubmitting,
     isValid,
-    values,
   }: FormikContextType<FormikValues> = useFormikContext();
 
-  console.log("resarvaiton :", values);
   const { setItemIdForUpdate } = useListView();
   const { CourtsOption, isCourtLoading } = useCourtsDDL();
   const { SlotTypesOption, isSlotTypesLoading } = useSlotTypesDDL();

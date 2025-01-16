@@ -47,7 +47,6 @@ const ClubList = () => {
     },
   });
 
-  console.log("ClubData" , ClubData)
   useEffect(() => {
     updateData(ClubData);
     setIsLoading(isFetching || isLoading);

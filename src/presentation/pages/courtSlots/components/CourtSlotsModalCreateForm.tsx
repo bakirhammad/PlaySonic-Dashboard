@@ -22,7 +22,7 @@ import { CourtSlotsUrlEnum } from "@domain/enums/URL/courtSlots/courtSlotsUrls/C
 import CustomSelectField from "@presentation/components/forms/CustomSelectField";
 import { useSlotTypesDDL } from "@presentation/hooks/queries/DDL/SlotTypes/useSlotTypesDDL";
 import validationSchemas from "@presentation/helpers/validationSchemas";
-import { useCourtBuClubDDL } from "@presentation/hooks/queries/DDL/Court/useCourtBuClubDDL";
+import { useClubCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useClubCourtsDDL";
 import { useClubsDDL } from "@presentation/hooks/queries/DDL/Club/useClubsDDL";
 
 export const CourtSlotsModalCreateForm = () => {
@@ -105,13 +105,12 @@ const CourtSlotsForm = () => {
   }: FormikContextType<FormikValues> = useFormikContext();
 
   const { setItemIdForUpdate } = useListView();
-  console.log("ddd", values);
 
   const { SlotTypesOption, isSlotTypesLoading } = useSlotTypesDDL();
 
   const { clubsOption, isClubLoading } = useClubsDDL();
 
-  const { ClubCourtsOption, isClubCourtLoading } = useCourtBuClubDDL(
+  const { ClubCourtsOption, isClubCourtLoading } = useClubCourtsDDL(
     values.clubId ? values.clubId.value : 0
   );
   return (

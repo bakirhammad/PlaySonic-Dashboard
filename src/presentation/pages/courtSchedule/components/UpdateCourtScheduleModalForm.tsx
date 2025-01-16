@@ -29,7 +29,7 @@ import {
 } from "@presentation/helpers/DDL/DaysOptions";
 import { useCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useCourtsDDL";
 import CustomTimePicker from "@presentation/components/forms/CustomTimePicker";
-import { useCourtBuClubDDL } from "@presentation/hooks/queries/DDL/Court/useCourtBuClubDDL";
+import { useClubCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useClubCourtsDDL";
 import { useClubsDDL } from "@presentation/hooks/queries/DDL/Club/useClubsDDL";
 
 interface IProps {
@@ -140,11 +140,10 @@ const CourtScheduleUpdateForm = () => {
     values,
     setFieldValue,
   }: FormikContextType<FormikValues> = useFormikContext();
-  console.log("values", values);
 
   const { CourtsOption } = useCourtsDDL();
   const { clubsOption, isClubLoading } = useClubsDDL();
-  const { ClubCourtsOption, isClubCourtLoading } = useCourtBuClubDDL(
+  const { ClubCourtsOption, isClubCourtLoading } = useClubCourtsDDL(
     values.clubId.value
   );
   useEffect(() => {

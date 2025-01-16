@@ -46,7 +46,6 @@ const SlotType = () => {
     },
   });
 
-  console.log(SlotTypeData, "schadual");
   useEffect(() => {
     updateData(SlotTypeData);
     setIsLoading(isFetching || isLoading);

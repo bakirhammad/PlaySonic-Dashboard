@@ -3,7 +3,7 @@ import { SidebarMenuAdmin } from "./SidebarMenuAdmin";
 import { SidebarMenuClubAdmins } from "./SidebarMenuClubAdmins";
 
 const SidebarMenuMain = () => {
-  const loginedUser = ["subAsdmin", "suberAdmin"];
+  const loginedUser = ["subAdmin", "suberAdmin"];
 
   return (
     <>

@@ -163,12 +163,8 @@ const CountryUpdateForm = () => {
     isValid,
     values,
   }: FormikContextType<FormikValues> = useFormikContext();
-  console.log("UpdateCpuntyvalues", values);
-
   const { Languages } = useLanguageStore();
   const [languageInput, setLanguageInput] = useState(2);
-
-  console.log("values", values);
 
   return (
     <>

@@ -86,11 +86,9 @@ const SlotTypeForm = () => {
     touched,
     isSubmitting,
     isValid,
-    values,
   }: FormikContextType<FormikValues> = useFormikContext();
 
   const { setItemIdForUpdate } = useListView();
-  console.log("ddd", values);
 
   return (
     <>

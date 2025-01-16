@@ -26,7 +26,7 @@ import { useCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useCourtsDDL
 import { useSlotTypesDDL } from "@presentation/hooks/queries/DDL/SlotTypes/useSlotTypesDDL";
 import validationSchemas from "@presentation/helpers/validationSchemas";
 import { useClubsDDL } from "@presentation/hooks/queries/DDL/Club/useClubsDDL";
-import { useCourtBuClubDDL } from "@presentation/hooks/queries/DDL/Court/useCourtBuClubDDL";
+import { useClubCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useClubCourtsDDL";
 
 interface IProps {
   CourtSlotsData: ICourtSlotsData;
@@ -129,7 +129,7 @@ const CourtSlotsUpdateForm = () => {
   const { CourtsOption } = useCourtsDDL();
   const { SlotTypesOption, isSlotTypesLoading } = useSlotTypesDDL();
   const { clubsOption, isClubLoading } = useClubsDDL();
-  const { ClubCourtsOption, isClubCourtLoading } = useCourtBuClubDDL(
+  const { ClubCourtsOption, isClubCourtLoading } = useClubCourtsDDL(
     values.clubId.value
   );
   useEffect(() => {

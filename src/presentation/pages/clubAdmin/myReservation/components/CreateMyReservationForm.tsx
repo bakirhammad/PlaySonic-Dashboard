@@ -80,7 +80,6 @@ export const CreateReservationForm = () => {
     formData.append("ReservationDate", values.reservationDate);
     formData.append("SportId", values.sportId);
     formData.append("OwnerID", values.ownerID);
-console.log("formData", formData)
     try {
       const data = await ReservationCommandInstance.createReservation(
         ReservationUrlEnum.CreateReservation,
@@ -128,7 +127,6 @@ const ReservationForm = () => {
     values,
   }: FormikContextType<FormikValues> = useFormikContext();
 
-  console.log("resarvaiton :", values);
   const { setItemIdForUpdate } = useListView();
   const { CourtsOption, isCourtLoading } = useCourtsDDL();
   const { SlotTypesOption, isSlotTypesLoading } = useSlotTypesDDL();

@@ -26,7 +26,7 @@ import {
 import CustomTimePicker from "@presentation/components/forms/CustomTimePicker";
 import validationSchemas from "@presentation/helpers/validationSchemas";
 import { useClubsDDL } from "@presentation/hooks/queries/DDL/Club/useClubsDDL";
-import { useCourtBuClubDDL } from "@presentation/hooks/queries/DDL/Court/useCourtBuClubDDL";
+import { useClubCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useClubCourtsDDL";
 
 export const CourtScheduleModalCreateForm = () => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);
@@ -112,9 +112,8 @@ const CourtScheduleForm = () => {
   }: FormikContextType<FormikValues> = useFormikContext();
 
   const { setItemIdForUpdate } = useListView();
-console.log("ddd", values)
   const { clubsOption, isClubLoading } = useClubsDDL();
-  const { ClubCourtsOption, isClubCourtLoading } = useCourtBuClubDDL(
+  const { ClubCourtsOption, isClubCourtLoading } = useClubCourtsDDL(
     values.clubId ? values.clubId.value : 0
   );
 

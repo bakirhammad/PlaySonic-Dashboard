@@ -16,55 +16,57 @@ import {
   showConfirmationAlert,
   showDeletedAlert,
 } from "@presentation/components";
-import { CourtSlotsUrlEnum } from "@domain/enums/URL/courtSlots/courtSlotsUrls/CourtSlots";
-import { CourtSlotsCommandInstance, CourtSlotsQueryInstance } from "@app/useCases/courtSlot";
-import { CourtSlotsListColumns } from "./components/CourtSlotsListColumns";
-import { CourtSlotsModalCreateForm } from "./components/CourtSlotsModalCreateForm";
+import { ClubCommandInstance } from "@app/useCases/clubs";
+import { ClubUrlEnum } from "@domain/enums/URL/Clubs/ClubUrls/Club";
+import { ReservationQueryInstance } from "@app/useCases/reservation";
+import { ReservationUrlEnum } from "@domain/enums/URL/Reservation/reservationUrls/Reservation";
+import { ReservationListColumns } from "./components/ReservationListColumns";
+import { CreateReservationForm } from "./components/CreateMyReservationForm";
+import ReservaionFilter from "./components/ReservaionFilter";
 
-const CourtSlots = () => {
+const MyReservations = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
 
-  const columns = useMemo(() => CourtSlotsListColumns, []);
+  const columns = useMemo(() => ReservationListColumns, []);
 
   const queryClient = useQueryClient();
 
   const { itemIdForUpdate, setItemIdForUpdate, selected, clearSelected } =
     useListView();
   const {
-    data: CourtSlotsData,
+    data: ReservationData,
     error,
     isLoading,
     isFetching,
   } = useQuery({
-    queryKey: [QUERIES.CourtSlotsList, [query]],
-
+    queryKey: [QUERIES.ReservationList, [query]],
     queryFn: () => {
       const searchQuery = query ? `&${query}` : "";
-      return CourtSlotsQueryInstance.getCourtSlotsList(
-        `${CourtSlotsUrlEnum.GetCourtSlotsList + searchQuery}`
+      return ReservationQueryInstance.getReservationList(
+        `${ReservationUrlEnum.GetReservationList + searchQuery}`
       );
     },
   });
 
   useEffect(() => {
-    updateData(CourtSlotsData);
+    updateData(ReservationData);
     setIsLoading(isFetching || isLoading);
     setError(error as Error);
-  }, [CourtSlotsData, isFetching, isLoading, error]);
+  }, [ReservationData, isFetching, isLoading, error]);
 
-  const tableData = useMemo(() => CourtSlotsData?.data, [CourtSlotsData]);
+  const tableData = useMemo(() => ReservationData?.data, [ReservationData]);
 
   const handleDeleteSelected = async () => {
     const confirm = await showConfirmationAlert(`${selected.length} item`);
     if (confirm) {
       try {
-        const data = await CourtSlotsCommandInstance.multipleDeleteCourtSlots(
-          CourtSlotsUrlEnum.MultipleDeleteCourtSlots,
+        const data = await ClubCommandInstance.multipleDeleteClub(
+          ClubUrlEnum.MultipleDeleteClub,
           selected
         );
         if (data) {
           showDeletedAlert(`${selected.length} item`);
-          queryClient.invalidateQueries([QUERIES.CourtSlotsList]);
+          queryClient.invalidateQueries([QUERIES.ClubList]);
           clearSelected();
           CustomToast(`Deleted successfully`, "success");
         }
@@ -84,9 +86,9 @@ const CourtSlots = () => {
           }}
           searchPlaceholder="SEARCH"
           filterBtn={true}
-          // FilterComponent={<CourtSlotsFilter></CourtSlotsFilter>}
+           FilterComponent={<ReservaionFilter/>}
           onDeleteSelectedAll={() => handleDeleteSelected()}
-          addBtn={true}
+          addBtn={false}
           addName="ADD"
         />
         <CustomTable columns={columns} data={tableData || []} />
@@ -94,23 +96,23 @@ const CourtSlots = () => {
       {itemIdForUpdate === null && (
         <CustomModal
           modalSize="xl"
-          modalTitle="Create-Slot-Type"
+          modalTitle="Create-Club"
           onClick={() => setItemIdForUpdate(undefined)}
         >
-          <CourtSlotsModalCreateForm />
+          <CreateReservationForm />
         </CustomModal>
       )}
     </>
   );
 };
 
-function CourtSlotsListWrapper() {
+function MyReservationsWrapper() {
   return (
     <QueryRequestProvider>
       <ListViewProvider>
-        <CourtSlots />
+        <MyReservations />
       </ListViewProvider>
     </QueryRequestProvider>
   );
 }
-export default CourtSlotsListWrapper;
+export default MyReservationsWrapper;

@@ -48,7 +48,6 @@ const ViewCourt = () => {
       );
     },
   });
-  console.log(courtId, CourtData);
   useEffect(() => {
     updateData(CourtData);
     setIsLoading(isFetching || isLoading);

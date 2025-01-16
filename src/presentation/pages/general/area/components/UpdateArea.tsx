@@ -168,8 +168,6 @@ const AreaUpdateForm = () => {
     isValid,
     values,
   }: FormikContextType<FormikValues> = useFormikContext();
-  console.log("values", values);
-
   const { Languages } = useLanguageStore();
   const [languageInput, setLanguageInput] = useState(2);
   const { CityOption, isCityLoading } = useCitiesDDL();

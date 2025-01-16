@@ -221,7 +221,16 @@
   "STATUS-APPROVAL": "Status Approval",
   "DDL-COURT":"الملعب",
   "Create-Country":"Create Country",
-  "DDL-CLUB-MANE":"اسم النادي"
+  "DDL-CLUB-MANE":"اسم النادي",
+  "SELECT_TO_DATE": "Select To Date",
+  "To-Date":"To Date",
+  "Select From Date": "Select From Date",
+  "From-Date":"From Date",
+   "DDL-CHOOSE-COURT": "Choose Court",
+  "DDL-COURT-NAME":"Court Name",
+  "Reject": "رفض",
+  "Approve":"موافقة"
+
 
 
 

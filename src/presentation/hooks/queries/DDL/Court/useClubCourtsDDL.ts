@@ -6,7 +6,7 @@ import { CourtUrlEnum } from "@domain/enums/URL/Court/CourtUrls/Court";
 import { useCallback, useEffect, useState } from "react";
 
 
-const useCourtBuClubDDL = (id: number) => {
+const useClubCourtsDDL = (id: number) => {
   const [ClubCourtsList, setCourts] = useState<ICourtBody>();
   const [ClubCourtsOption, setCourtsOption] = useState<IDDlOption[]>([]);
   const [isLoading, setIsLoadingCourts] = useState<boolean>(false);
@@ -56,4 +56,4 @@ const useCourtBuClubDDL = (id: number) => {
   return { ClubCourtsList, isClubCourtLoading: isLoading, ClubCourtsOption };
 }
 
-export { useCourtBuClubDDL };
+export { useClubCourtsDDL };

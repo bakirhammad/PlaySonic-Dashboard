@@ -143,7 +143,6 @@ const CourtUpdateForm = () => {
     values,
     setFieldValue,
   }: FormikContextType<FormikValues> = useFormikContext();
-  console.log("values", values);
   const { isClubLoading, clubsOption } = useClubsDDL();
   const { SlotTypesOption, isSlotTypesLoading } = useSlotTypesDDL();
 

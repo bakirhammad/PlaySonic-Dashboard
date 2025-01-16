@@ -140,8 +140,6 @@ const AreaForm = () => {
 
   const { Languages } = useLanguageStore();
   const [languageInput, setLanguageInput] = useState(2);
-
-  console.log("ddd", values);
   const { CityOption, isCityLoading } = useCitiesDDL();
 
   return (

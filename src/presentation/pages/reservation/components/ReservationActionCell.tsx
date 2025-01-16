@@ -16,7 +16,7 @@ import {
 } from "@app/useCases/reservation";
 import { ReservationUrlEnum } from "@domain/enums/URL/Reservation/reservationUrls/Reservation";
 import UpdateReservationForm from "./UpdateReservationForm";
-import StatusApproval from "@presentation/pages/clubAdmin/myReservations/components/StatusApproval";
+import StatusApproval from "@presentation/pages/clubAdmin/myReservation/components/StatusApproval";
 
 interface Props {
   id: number;
