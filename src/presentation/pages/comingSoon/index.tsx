@@ -15,18 +15,18 @@ const ComingSoon = () => {
   const navigate = useNavigate();
   return (
     <div>
-      <div
+      {/* <div
         className="d-flex justify-items-center align-items-center"
         style={{ pointerEvents: "none" }}
       >
         <Lottie options={defaultOptions} height={400} width={400} />
-      </div>
+      </div> */}
       <div className="d-flex justify-items-center align-items-center flex-column">
         <h1 className="coming-soon-title text-center">Coming Soon 😊</h1>
         <Link to={"/"}>
           <button
             onClick={() => {
-              navigate(-1);
+              navigate("/app");
             }}
             className="btn mt-6"
           >

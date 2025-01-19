@@ -243,7 +243,9 @@
   "DDL-CHOOSE-COURT": "Choose Court",
   "DDL-COURT-NAME":"Court Name",
   "Reject": "Reject",
-  "Approve":"Approve"
+  "Approve":"Approve",
+  "Create-Reservation": "Create Reservation",
+  "SIDEBAR-REGISTER":"Register User"
 
 
 

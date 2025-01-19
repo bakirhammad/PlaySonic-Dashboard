@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import {
   CustomButton,
   CustomCheckbox,
@@ -10,89 +10,99 @@ import { useListView } from "@presentation/context";
 import {
   Form,
   Formik,
-  FormikProps,
-  useFormikContext,
-  FormikValues,
   FormikContextType,
+  FormikProps,
+  FormikValues,
+  useFormikContext,
 } from "formik";
 import * as Yup from "yup";
-import { useQueryClient } from "react-query";
 import { QUERIES } from "@presentation/helpers";
-import CustomSelectField from "@presentation/components/forms/CustomSelectField";
+import { useQueryClient } from "react-query";
+import PleaseWaitTxt from "@presentation/helpers/loading/PleaseWaitTxt";
+import { useLanguageStore } from "@infrastructure/storage/LanguageStore";
 import validationSchemas from "@presentation/helpers/validationSchemas";
+import CustomSelectField from "@presentation/components/forms/CustomSelectField";
+import { IReservationData } from "@domain/entities/Reservation/Reservation";
 import { ReservationCommandInstance } from "@app/useCases/reservation";
 import { ReservationUrlEnum } from "@domain/enums/URL/Reservation/reservationUrls/Reservation";
-import { useCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useCourtsDDL";
-import { ReservationStatusOptionsOptions } from "@presentation/helpers/DDL/ReservationStatusOptions";
 import CustomTimePicker from "@presentation/components/forms/CustomTimePicker";
-import { useSlotTypesDDL } from "@presentation/hooks/queries/DDL/SlotTypes/useSlotTypesDDL";
 import { ResarvationOptions } from "@presentation/helpers/DDL/ResarvationOptions";
+import { ReservationStatusOptionsOptions } from "@presentation/helpers/DDL/ReservationStatusOptions";
+import { useCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useCourtsDDL";
+import { useSlotTypesDDL } from "@presentation/hooks/queries/DDL/SlotTypes/useSlotTypesDDL";
 
-export const CreateReservationForm = () => {
+interface IProps {
+  ReservationData: IReservationData;
+  isLoading: boolean;
+}
+
+export const CalenderUpdateReservationForm = ({
+  ReservationData,
+  isLoading,
+}: IProps) => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);
   const { setItemIdForUpdate } = useListView();
   const queryClient = useQueryClient();
+  const { Languages } = useLanguageStore();
 
-  const initialValues = Object.assign({
-    courtId: null,
-    slotTypeId: null,
-    startTime: null,
-    endTime: null,
-    status: { value: 1, label: "New" },
-    reservationTypeId: { value: 4, label: "Book Court" },
-    levelMin: null,
-    levelMax: null,
-    isPublic: false,
-    reservationDate: null,
-    slotsRemaining: null,
-    sportId: 1,
-    ownerID: "345ebbb9-924b-4359-845d-60860c5ed515",
-  });
+  const initialValues = useMemo(() => {
+    return {
+      id: ReservationData.id,
+      courtId: ReservationData.courtId,
+      slotTypeId: ReservationData.slotTypeId,
+      startTime: ReservationData.startTime,
+      endTime: ReservationData.endTime,
+      status: ReservationData.status,
+      reservationTypeId: ReservationData.reservationTypeId,
+      levelMin: ReservationData.levelMin,
+      levelMax: ReservationData.levelMax,
+      isPublic: ReservationData.isPublic,
+      reservationDate: ReservationData.reservationDate,
+      slotsRemaining: ReservationData.slotsRemaining,
+      sportId: 1,
+      ownerID: "345ebbb9-924b-4359-845d-60860c5ed515",
+    };
+  }, [ReservationData]);
 
   const _ReservationSchema = Object.assign({
     courtId: validationSchemas.object,
     slotTypeId: validationSchemas.object,
-    startTime: Yup.string().required("Required"),
-    endTime: validationSchemas.Date.when("startTime", {
-      is: (startTime: string) => startTime !== null,
-      then: (schema) =>
-        schema.min(Yup.ref("startTime"), "To Date can't be before From Date"),
-      otherwise: (schema) => schema,
-    }),
-    reservationDate: Yup.string().required("Required"),
-    levelMin: Yup.number().required("Required"),
-    levelMax: Yup.number().required("Required"),
-    reservationTypeId: validationSchemas.object,
-    status: validationSchemas.object,
+    // startTime: Yup.string().required("Required"),
+    // endTime: Yup.string().required("Required"),
+    // reservationDate: Yup.string().required("Required"),
+    // levelMin: Yup.number().required("Required"),
+    // levelMax: Yup.number().required("Required"),
+    // reservationTypeId: validationSchemas.object,
+    // status: validationSchemas.object,
   });
 
   const ReservationSchema = Yup.object().shape(_ReservationSchema);
-
   const handleSubmit = async (
     values: FormikValues,
     setSubmitting: (isSubmitting: boolean) => void
   ) => {
     const formData = new FormData();
+
+    formData.append("Id", String(initialValues.id));
     formData.append("CourtId", values.courtId.value);
     formData.append("SlotTypeId", values.slotTypeId.value);
     formData.append("StartTime", values.startTime);
     formData.append("EndTime", values.endTime);
-    formData.append("Status", values.status.value);
-    formData.append("ReservationTypeId", values.reservationTypeId.value);
+    formData.append("Status", values.status);
+    formData.append("ReservationTypeId", values.reservationTypeId);
     formData.append("LevelMin", values.levelMin);
     formData.append("LevelMax", values.levelMax);
     formData.append("IsPublic", values.isPublic);
     formData.append("ReservationDate", values.reservationDate);
     formData.append("SportId", values.sportId);
     formData.append("OwnerID", values.ownerID);
-
     try {
-      const data = await ReservationCommandInstance.createReservation(
-        ReservationUrlEnum.CreateReservation,
+      const data = await ReservationCommandInstance.updateReservation(
+        ReservationUrlEnum.UpdateReservation,
         formData
       );
       if (data) {
-        CustomToast("Reservation is created successfully", "success", {
+        CustomToast("Reservation updated successfully", "success", {
           autoClose: 3000,
         });
         setItemIdForUpdate(undefined);
@@ -103,7 +113,7 @@ export const CreateReservationForm = () => {
     } catch (error) {
       if (error instanceof Error) {
         CustomToast(error.message, "error", { autoClose: 6000 });
-        console.error("Error Create form:", error);
+        console.error("Error submitting form:", error);
       }
     } finally {
       setSubmitting(false);
@@ -111,29 +121,41 @@ export const CreateReservationForm = () => {
   };
 
   return (
-    <Formik
-      innerRef={formikRef}
-      initialValues={initialValues}
-      validationSchema={ReservationSchema}
-      onSubmit={(values, { setSubmitting }) => {
-        handleSubmit(values, setSubmitting);
-      }}
-    >
-      <ReservationForm />
-    </Formik>
+    <>
+      {isLoading ? (
+        <PleaseWaitTxt />
+      ) : (
+        <Formik
+          innerRef={formikRef}
+          initialValues={initialValues}
+          initialTouched={Languages.reduce<{ [key: string]: boolean }>(
+            (acc, lang) => {
+              if (lang.id !== 2) acc[`name${lang.id}`] = true;
+              return acc;
+            },
+            {}
+          )}
+          validationSchema={ReservationSchema}
+          onSubmit={(values, { setSubmitting }) => {
+            handleSubmit(values, setSubmitting);
+          }}
+        >
+          <ReservationUpdateForm />
+        </Formik>
+      )}
+    </>
   );
 };
 
-const ReservationForm = () => {
+const ReservationUpdateForm = () => {
+  const { setItemIdForUpdate } = useListView();
+
   const {
     errors,
     touched,
     isSubmitting,
     isValid,
-    values
   }: FormikContextType<FormikValues> = useFormikContext();
-
-  const { setItemIdForUpdate } = useListView();
   const { CourtsOption, isCourtLoading } = useCourtsDDL();
   const { SlotTypesOption, isSlotTypesLoading } = useSlotTypesDDL();
   return (
@@ -223,7 +245,6 @@ const ReservationForm = () => {
                 placeholder="End-Time"
                 enableTime={true}
                 Mode="time"
-                minTime={values.startTime}
               />
             </div>
             <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
@@ -231,7 +252,7 @@ const ReservationForm = () => {
                 name={"reservationDate"}
                 label="Reservation-Date"
                 placeholder="Reservation-Date"
-                enableTime={false}
+                enableTime={true}
                 Mode="single"
               />
               <CustomCheckbox
@@ -251,6 +272,7 @@ const ReservationForm = () => {
             className="btn btn-light me-3"
             disabled={isSubmitting}
           />
+
           <CustomButton
             type="submit"
             className="btn btn-primary"
@@ -263,3 +285,5 @@ const ReservationForm = () => {
     </>
   );
 };
+
+export default CalenderUpdateReservationForm;

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { FC, useRef } from "react";
 import {
   CustomButton,
   CustomCheckbox,
@@ -22,43 +22,47 @@ import CustomSelectField from "@presentation/components/forms/CustomSelectField"
 import validationSchemas from "@presentation/helpers/validationSchemas";
 import { ReservationCommandInstance } from "@app/useCases/reservation";
 import { ReservationUrlEnum } from "@domain/enums/URL/Reservation/reservationUrls/Reservation";
-import { useCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useCourtsDDL";
 import { ReservationStatusOptionsOptions } from "@presentation/helpers/DDL/ReservationStatusOptions";
 import CustomTimePicker from "@presentation/components/forms/CustomTimePicker";
 import { useSlotTypesDDL } from "@presentation/hooks/queries/DDL/SlotTypes/useSlotTypesDDL";
 import { ResarvationOptions } from "@presentation/helpers/DDL/ResarvationOptions";
 
-export const CreateReservationForm = () => {
+interface ICourtId {
+  courtId: number;
+  startTime: string;
+  reservationDate: string;
+}
+export const CalenderCreateMyReservationForm: FC<ICourtId> = ({
+  courtId,
+  reservationDate,
+  startTime,
+}) => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);
   const { setItemIdForUpdate } = useListView();
   const queryClient = useQueryClient();
 
   const initialValues = Object.assign({
-    courtId: null,
+    courtId: courtId,
+    playSonicId: 0,
     slotTypeId: null,
-    startTime: null,
+    startTime: startTime,
     endTime: null,
     status: { value: 1, label: "New" },
     reservationTypeId: { value: 4, label: "Book Court" },
     levelMin: null,
     levelMax: null,
     isPublic: false,
-    reservationDate: null,
+    reservationDate: reservationDate,
     slotsRemaining: null,
     sportId: 1,
     ownerID: "345ebbb9-924b-4359-845d-60860c5ed515",
   });
 
   const _ReservationSchema = Object.assign({
-    courtId: validationSchemas.object,
+    // courtId: validationSchemas.object,
     slotTypeId: validationSchemas.object,
     startTime: Yup.string().required("Required"),
-    endTime: validationSchemas.Date.when("startTime", {
-      is: (startTime: string) => startTime !== null,
-      then: (schema) =>
-        schema.min(Yup.ref("startTime"), "To Date can't be before From Date"),
-      otherwise: (schema) => schema,
-    }),
+    endTime: Yup.string().required("Required"),
     reservationDate: Yup.string().required("Required"),
     levelMin: Yup.number().required("Required"),
     levelMax: Yup.number().required("Required"),
@@ -73,7 +77,7 @@ export const CreateReservationForm = () => {
     setSubmitting: (isSubmitting: boolean) => void
   ) => {
     const formData = new FormData();
-    formData.append("CourtId", values.courtId.value);
+    formData.append("CourtId", values.courtId);
     formData.append("SlotTypeId", values.slotTypeId.value);
     formData.append("StartTime", values.startTime);
     formData.append("EndTime", values.endTime);
@@ -130,11 +134,10 @@ const ReservationForm = () => {
     touched,
     isSubmitting,
     isValid,
-    values
+    values,
   }: FormikContextType<FormikValues> = useFormikContext();
 
   const { setItemIdForUpdate } = useListView();
-  const { CourtsOption, isCourtLoading } = useCourtsDDL();
   const { SlotTypesOption, isSlotTypesLoading } = useSlotTypesDDL();
   return (
     <>
@@ -148,15 +151,6 @@ const ReservationForm = () => {
           <div className="row">
             <div className="row row-cols-2 1 row-cols-md-2">
               <CustomSelectField
-                name="courtId"
-                options={CourtsOption}
-                isloading={isCourtLoading}
-                label="DDL-Court-NAME"
-                placeholder="DDL-Court-NAME"
-                touched={touched}
-                errors={errors}
-              />
-              <CustomSelectField
                 name="slotTypeId"
                 options={SlotTypesOption}
                 isloading={isSlotTypesLoading}
@@ -165,8 +159,31 @@ const ReservationForm = () => {
                 touched={touched}
                 errors={errors}
               />
+              <CustomTimePicker
+                name={"reservationDate"}
+                label="Reservation-Date"
+                placeholder="Reservation-Date"
+                enableTime={false}
+                Mode="single"
+              />
             </div>
-
+            <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
+              <CustomTimePicker
+                name={"startTime"}
+                label="Start-Time"
+                placeholder="Start-Time"
+                enableTime={true}
+                Mode="time"
+              />
+              <CustomTimePicker
+                name={"endTime"}
+                label="End-Time"
+                placeholder="End-Time"
+                enableTime={true}
+                Mode="time"
+                minTime={values.startTime}
+              />
+            </div>
             <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
               <CustomSelectField
                 name="status"
@@ -209,30 +226,17 @@ const ReservationForm = () => {
                 isSubmitting={isSubmitting}
               />{" "}
             </div>
+
             <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
-              <CustomTimePicker
-                name={"startTime"}
-                label="Start-Time"
-                placeholder="Start-Time"
-                enableTime={true}
-                Mode="time"
-              />
-              <CustomTimePicker
-                name={"endTime"}
-                label="End-Time"
-                placeholder="End-Time"
-                enableTime={true}
-                Mode="time"
-                minTime={values.startTime}
-              />
-            </div>
-            <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
-              <CustomTimePicker
-                name={"reservationDate"}
-                label="Reservation-Date"
-                placeholder="Reservation-Date"
-                enableTime={false}
-                Mode="single"
+              <CustomInputField
+                name="playSonicId"
+                placeholder="PlaySonicId"
+                label="PlaySonicId"
+                as="input"
+                touched={touched}
+                errors={errors}
+                type="number"
+                isSubmitting={isSubmitting}
               />
               <CustomCheckbox
                 labelTxt="isPublic"

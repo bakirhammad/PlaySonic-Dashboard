@@ -16,10 +16,14 @@ import { IDDlOption } from "@domain/entities";
 import { ReservationQueryInstance } from "@app/useCases/reservation";
 import { ReservationUrlEnum } from "@domain/enums/URL/Reservation/reservationUrls/Reservation";
 import { useClubCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useClubCourtsDDL";
+import CustomTimePicker from "@presentation/components/forms/CustomTimePicker";
 
 export default function MyReservations() {
   const [applyFilter, setApplyFilter] = useState(false);
   const [searchQuery, setSearchQuery] = useState<string>();
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [courtId , setCourtId ] = useState<any>()
 
   const clubId = 7;
 
@@ -38,23 +42,27 @@ export default function MyReservations() {
   });
 
   const initialValues = {
-    // fromDate: "",
-    // toDate: "",
+    fromDate: "",
+    toDate: "",
     court: null as IDDlOption | null,
   };
 
   const filterSchema = Yup.object().shape({
-    // fromDate: validationSchemas.Date,
-    // toDate: validationSchemas.Date.when("fromDate", {
-    //   is: (fromDate: string) => fromDate !== null,
-    //   then: (schema) =>
-    //     schema.min(Yup.ref("fromDate"), "To Date can't be before From Date"),
-    //   otherwise: (schema) => schema,
-    // }),
+    fromDate: validationSchemas.Date,
+    toDate: validationSchemas.Date.when("fromDate", {
+      is: (fromDate: string) => fromDate !== null,
+      then: (schema) =>
+        schema.min(Yup.ref("fromDate"), "To Date can't be before From Date"),
+      otherwise: (schema) => schema,
+    }),
     court: validationSchemas.object,
   });
 
-  console.log("ddd", ReservationData);
+  // return all non cancelled reservations.
+  const filteredData = ReservationData?.data.filter((data)=>{
+    return data.status !== 16
+  })
+
   const handleSubmit = (values: typeof initialValues) => {
     const query = stringifyRequestQuery({
       filter: {
@@ -63,6 +71,9 @@ export default function MyReservations() {
     });
     setSearchQuery(query);
     setApplyFilter(true);
+    setStartTime(values.fromDate);
+    setEndTime(values.toDate);
+    setCourtId(values.court?.value)
   };
   const queryClient = useQueryClient();
 
@@ -80,7 +91,7 @@ export default function MyReservations() {
           {({ resetForm, values }) => (
             <Form>
               <div className="row row-cols-2 align-items-center flex-wrap  border border-2  p-2 rounded mb-5">
-                {/* <CustomTimePicker
+                <CustomTimePicker
                   label="From-Date"
                   name="fromDate"
                   placeholder="Select From Date"
@@ -90,7 +101,7 @@ export default function MyReservations() {
                   name="toDate"
                   placeholder="SELECT_TO_DATE"
                   minDate={values.fromDate}
-                /> */}
+                />
                 <CustomSelectField
                   name="court"
                   options={ClubCourtsOption}
@@ -126,7 +137,12 @@ export default function MyReservations() {
           )}
         </Formik>
         {ReservationData?.data && !isLoading && !isFetching && (
-          <Calendar ReservationData={ReservationData?.data} />
+          <Calendar
+            ReservationData={filteredData || []}
+            startTime={startTime}
+            endTime={endTime}
+            courtId={courtId}
+          />
         )}
 
         {(isLoading || isFetching) && <PleaseWaitTxt />}

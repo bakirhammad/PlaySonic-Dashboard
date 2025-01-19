@@ -229,7 +229,11 @@
    "DDL-CHOOSE-COURT": "Choose Court",
   "DDL-COURT-NAME":"Court Name",
   "Reject": "رفض",
-  "Approve":"موافقة"
+  "Approve":"موافقة",
+  "Create-Reservation": "Create Reservation",
+  "SIDEBAR-REGISTER":"Resgister User"
+
+
 
 
 
