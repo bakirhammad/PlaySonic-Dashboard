@@ -30,24 +30,6 @@ const useClubCourtsDDL = (id: number) => {
     } finally {
       setIsLoadingCourts(false);
     }
-    try {
-      setIsLoadingCourts(true);
-      const CourtsListRes = await CourtQueryInstance.getCourtList(
-        CourtUrlEnum.GetCourtList + `clubId=${id}`
-      );
-      const _CourtsOption = CourtsListRes?.data?.map((Court) => {
-        return {
-          value: Court.id,
-          label: Court.name,
-        };
-      });
-      setCourtsOption(_CourtsOption?.length ? _CourtsOption : []);
-      setCourts(CourtsListRes);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoadingCourts(false);
-    }
   }, [id]);
 
   useEffect(() => {

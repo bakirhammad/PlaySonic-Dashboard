@@ -231,7 +231,18 @@
   "Reject": "رفض",
   "Approve":"موافقة",
   "Create-Reservation": "Create Reservation",
-  "SIDEBAR-REGISTER":"Resgister User"
+  "SIDEBAR-REGISTER":"Resgister User",
+    "User-Name":"الاسم",
+  "USER-PHONE": "رقم الهاتف",
+  "PlaySonicId":"Play Sonic ID",
+  "Add" :"Add",
+  "Create New" :"Create New",
+  "DDL-Owner": "User Name",
+  "Create-New-User": "Create New User",
+  "CHOOSE-permission":"Choose Permissions"
+
+
+
 
 
 

@@ -106,12 +106,16 @@ const Calendar = ({
           modalSize={"xl"}
           onClick={() => setIsModalOpen(false)}
         >
-          <CustomTable columns={columns} data={reservationPerDay || []} />
+          <CustomTable
+            withPagination={false}
+            columns={columns}
+            data={reservationPerDay || []}
+          />
         </CustomModal>
       )}
       {isReservationModal && (
         <CustomModal
-          modalTitle="Create Reservation"
+          modalTitle="Create-Reservation"
           modalSize={"xl"}
           onClick={() => setIsReservationModal(false)}
         >

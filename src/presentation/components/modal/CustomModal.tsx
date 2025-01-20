@@ -41,6 +41,7 @@ export const CustomModal: FC<Props & WithChildren> = ({
       }
     `}
       </style>
+  
       <div
         className="modal fade show d-block"
         data-bs-backdrop="static"

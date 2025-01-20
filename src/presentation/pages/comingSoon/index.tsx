@@ -14,26 +14,18 @@ const ComingSoon = () => {
   };
   const navigate = useNavigate();
   return (
-    <div>
-      {/* <div
-        className="d-flex justify-items-center align-items-center"
-        style={{ pointerEvents: "none" }}
-      >
-        <Lottie options={defaultOptions} height={400} width={400} />
-      </div> */}
-      <div className="d-flex justify-items-center align-items-center flex-column">
-        <h1 className="coming-soon-title text-center">Coming Soon 😊</h1>
-        <Link to={"/"}>
-          <button
-            onClick={() => {
-              navigate("/app");
-            }}
-            className="btn mt-6"
-          >
-            🔙 Back
-          </button>
-        </Link>
-      </div>
+    <div className="d-flex tw-flex-col tw-justify-center tw-items-center tw-h-full tw-text-center">
+      <h1 className="coming-soon-title">Coming Soon 😊</h1>
+      <Link to={"/"}>
+        <button
+          onClick={() => {
+            navigate("/app");
+          }}
+          className="btn mt-6"
+        >
+          🔙 Back
+        </button>
+      </Link>
     </div>
   );
 };

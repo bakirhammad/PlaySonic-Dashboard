@@ -31,7 +31,7 @@ interface InputFieldProps {
   isMulti?: boolean;
   closeMenuOnSelect?: boolean;
   isloading?: boolean;
-  options: IDDlOption[] | IDDlOptionClub[] | IDDlOptionSlotType[];
+  options: IDDlOption[] | IDDlOptionClub[] | IDDlOptionSlotType[] | [];
   disabled?: boolean;
   isOptionDisabled?: (option: any) => boolean;
 }

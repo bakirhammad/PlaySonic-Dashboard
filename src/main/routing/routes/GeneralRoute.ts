@@ -13,6 +13,11 @@ const AreaListWrapper = lazy(
   () => import("@presentation/pages/general/area")
 );
 
+const RegisterWrapper = lazy(
+  () => import("@presentation/pages/register")
+);
+
+
 const GeneralRoute: Route = {
   path: "/apps/general",
   title: "",
@@ -38,6 +43,13 @@ const GeneralRoute: Route = {
       path: "arealist",
       title: "SIDEBAR-Area",
       component: AreaListWrapper,
+      role: [],
+      breadcrumbs: [],
+    },
+    {
+      path: "register",
+      title: "SIDEBAR-REGISTER",
+      component: RegisterWrapper,
       role: [],
       breadcrumbs: [],
     },

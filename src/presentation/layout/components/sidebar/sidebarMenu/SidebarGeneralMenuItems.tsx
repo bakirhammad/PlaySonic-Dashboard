@@ -14,12 +14,12 @@ const SidebarGeneralMenuItems: FC = () => {
         title={"SIDEBAR-Cities"}
         hasBullet={true}
       />
-        <SidebarMenuItem
+      <SidebarMenuItem
         to="/apps/general/arealist"
         title="SIDEBAR-Area"
         hasBullet={true}
       />
-           <SidebarMenuItem
+      <SidebarMenuItem
         to="/apps/general/register"
         title="SIDEBAR-REGISTER"
         hasBullet={true}

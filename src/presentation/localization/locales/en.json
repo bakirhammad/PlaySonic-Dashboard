@@ -245,7 +245,15 @@
   "Reject": "Reject",
   "Approve":"Approve",
   "Create-Reservation": "Create Reservation",
-  "SIDEBAR-REGISTER":"Register User"
+  "SIDEBAR-REGISTER":"Register User",
+  "User-Name":"Name",
+  "USER-PHONE": "Phone Number",
+  "PlaySonicId":"Play Sonic ID",
+  "Add" :"Add",
+  "Create New" :"Create New",
+  "DDL-Owner": "User Name",
+  "Create-New-User": "Create New User",
+  "CHOOSE-permission":"Choose Permissions"
 
 
 
