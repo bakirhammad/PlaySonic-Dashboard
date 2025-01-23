@@ -53,12 +53,7 @@ export const CreateReservationForm = () => {
     courtId: validationSchemas.object,
     slotTypeId: validationSchemas.object,
     startTime: Yup.string().required("Required"),
-    endTime: validationSchemas.Date.when("startTime", {
-      is: (startTime: string) => startTime !== null,
-      then: (schema) =>
-        schema.min(Yup.ref("startTime"), "To Date can't be before From Date"),
-      otherwise: (schema) => schema,
-    }),
+    endTime: Yup.string().required("Required"),
     reservationDate: Yup.string().required("Required"),
     levelMin: Yup.number().required("Required"),
     levelMax: Yup.number().required("Required"),

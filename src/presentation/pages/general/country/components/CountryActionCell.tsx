@@ -98,7 +98,7 @@ const CountryActionCell: FC<Props> = ({ id, name }) => {
       />
       {itemIdForUpdate === id && (
         <CustomModal
-          modalSize="lg"
+          modalSize="Default"
           modalTitle="Country-UPDATE-MODAL"
           onClick={() => {
             setItemIdForUpdate(undefined);

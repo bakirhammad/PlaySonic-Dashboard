@@ -31,6 +31,7 @@ import { useCitiesDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useCiti
 import { useAreasDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useAreasDDL";
 import { useCountriesDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useCountriesDDL";
 import validationSchemas from "@presentation/helpers/validationSchemas";
+import { useAreasByCityDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useAreasByCityDDL";
 
 export const ClubModalCreateForm = () => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);

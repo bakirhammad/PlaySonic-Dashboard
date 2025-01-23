@@ -54,7 +54,7 @@ const CityList = () => {
   }, [CityData, isFetching, isLoading, error]);
 
   const tableData = useMemo(() => CityData?.data, [CityData]);
-
+console.log("city", CityData)
   const handleDeleteSelected = async () => {
     const confirm = await showConfirmationAlert(`${selected.length} item`);
     if (confirm) {
@@ -94,7 +94,7 @@ const CityList = () => {
       </CustomKTCard>
       {itemIdForUpdate === null && (
         <CustomModal
-          modalSize="xl"
+          modalSize="Default"
           modalTitle="Create-City"
           onClick={() => setItemIdForUpdate(undefined)}
         >

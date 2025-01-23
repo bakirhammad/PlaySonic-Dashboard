@@ -1,4 +1,4 @@
-import { Fragment, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import {
   CustomButton,
   CustomInputField,
@@ -21,7 +21,6 @@ import PleaseWaitTxt from "@presentation/helpers/loading/PleaseWaitTxt";
 import { useLanguageStore } from "@infrastructure/storage/LanguageStore";
 import clsx from "clsx";
 import validationSchemas from "@presentation/helpers/validationSchemas";
-import CustomEditor from "@presentation/components/forms/CustomEditor";
 import CustomSelectField from "@presentation/components/forms/CustomSelectField";
 import { ICityData } from "@domain/entities/general/city/City";
 import { CityCommandInstance } from "@app/useCases/general/city/commands/CityCommand";
@@ -76,15 +75,8 @@ export const UpdateCity = ({ CityData, isLoading }: IProps) => {
             ),
           }
         : {
-            [`name${lang?.id}`]: Yup.string().when(
-              [`description${lang.id}`, `note${lang.id}`],
-              {
-                is: (descriptionVal: string, noteVal: string) =>
-                  (descriptionVal && descriptionVal.trim() !== "") ||
-                  (noteVal && noteVal.trim() !== ""),
-                then: (schema) => schema.required("This field is required"),
-                otherwise: (schema) => schema,
-              }
+            [`name${lang?.id}`]: Yup.string().required(
+              "This field is required"
             ),
           };
     })
@@ -182,10 +174,22 @@ const CityUpdateForm = () => {
     isSubmitting,
     isValid,
     values,
+    setFieldValue,
   }: FormikContextType<FormikValues> = useFormikContext();
   const { Languages } = useLanguageStore();
   const [languageInput, setLanguageInput] = useState(2);
   const { CountryOption, isCountryLoading } = useCountriesDDL();
+
+  useEffect(() => {
+    CountryOption.forEach((elem) => {
+      if (elem.value === values.countryId) {
+        return setFieldValue("countryId", {
+          value: elem.value,
+          label: elem.label,
+        });
+      }
+    });
+  }, [CountryOption]);
 
   return (
     <>
@@ -197,39 +201,6 @@ const CityUpdateForm = () => {
       >
         <div className="row row-cols-md-1 row-cols-sm-1 row-cols-1">
           <div className="row">
-            <div className="row row-cols-3">
-              <CustomInputField
-                name="rank"
-                placeholder="Country-RANK"
-                label="Country-RANK"
-                as="input"
-                touched={touched}
-                errors={errors}
-                type="number"
-                isSubmitting={isSubmitting}
-              />
-              <CustomInputField
-                name="payload"
-                placeholder="Country-PAYLOAD"
-                label="Country-PAYLOAD"
-                as="input"
-                touched={touched}
-                errors={errors}
-                type="text"
-                isSubmitting={isSubmitting}
-              />
-              <CustomSelectField
-                name="countryId"
-                options={CountryOption}
-                labelRequired={false}
-                isloading={isCountryLoading}
-                label="DDL-COUNTRY_LABEL"
-                placeholder="DDL-COUNTRY_LABEL"
-                touched={touched}
-                errors={errors}
-              />
-            </div>
-            <hr />
             <div className="translation mt-5">
               <div className="d-flex mb-7">
                 {Languages.map((lang, index) => (
@@ -249,7 +220,7 @@ const CityUpdateForm = () => {
                 (lang) =>
                   lang.id === languageInput && (
                     <Fragment key={lang.id + lang.id + "input+"}>
-                      <div className="row row-cols-md-2 row-cols-sm-1 row-cols-1">
+                      <div className="row row-cols-1">
                         <CustomInputField
                           key={
                             lang.prefix +
@@ -267,15 +238,49 @@ const CityUpdateForm = () => {
                           labelRequired={languageInput === 2 ? true : false}
                         />
                       </div>
-                      <CustomEditor
+                      {/* <CustomEditor
                         key={lang.prefix + lang.id + "editor"}
                         name={`description${lang?.id}`}
                         labelRequired={languageInput === 2 ? true : false}
                         label={"City-DISSCRIPTION"}
-                      />
+                      /> */}
                     </Fragment>
                   )
               )}
+            </div>
+            <hr />
+
+            <div className="row row-cols-1">
+              {/* <CustomInputField
+                name="rank"
+                placeholder="Country-RANK"
+                label="Country-RANK"
+                as="input"
+                touched={touched}
+                errors={errors}
+                type="number"
+                isSubmitting={isSubmitting}
+              />
+              <CustomInputField
+                name="payload"
+                placeholder="Country-PAYLOAD"
+                label="Country-PAYLOAD"
+                as="input"
+                touched={touched}
+                errors={errors}
+                type="text"
+                isSubmitting={isSubmitting}
+              /> */}
+              <CustomSelectField
+                name="countryId"
+                options={CountryOption}
+                labelRequired={false}
+                isloading={isCountryLoading}
+                label="DDL-COUNTRY_LABEL"
+                placeholder="DDL-COUNTRY_LABEL"
+                touched={touched}
+                errors={errors}
+              />
             </div>
           </div>
         </div>

@@ -95,7 +95,7 @@ const AreaActionCell: FC<Props> = ({ id, name }) => {
       />
       {itemIdForUpdate === id && (
         <CustomModal
-          modalSize="xl"
+          modalSize="Default"
           modalTitle="Area-UPDATE-MODAL"
           onClick={() => {
             setItemIdForUpdate(undefined);

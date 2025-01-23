@@ -162,6 +162,7 @@ const CourtUpdateForm = () => {
       }
     });
   }, [clubsOption ,SlotTypesOption]);
+  console.log(values)
 
   return (
     <>
@@ -204,7 +205,18 @@ const CourtUpdateForm = () => {
                 touched={touched}
                 errors={errors}
               />
-              <CustomInputField
+                   <CustomInputField
+                name="rank"
+                placeholder="COURT-RANK"
+                label="COURT-RANK"
+                as="input"
+                touched={touched}
+                errors={errors}
+                type="number"
+                min={1}
+                isSubmitting={isSubmitting}
+              />
+              {/* <CustomInputField
                 name="payload"
                 placeholder="COURT-PAYLOAD"
                 label="COURT-PAYLOAD"
@@ -213,10 +225,10 @@ const CourtUpdateForm = () => {
                 errors={errors}
                 type="text"
                 isSubmitting={isSubmitting}
-              />
+              /> */}
             </div>
 
-            <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
+            {/* <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
               <CustomInputField
                 name="courtTypeId"
                 placeholder="COURT-TYPE-ID"
@@ -239,19 +251,7 @@ const CourtUpdateForm = () => {
               />
             </div>
             <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
-              <CustomInputField
-                name="rank"
-                placeholder="COURT-RANK"
-                label="COURT-RANK"
-                as="input"
-                touched={touched}
-                errors={errors}
-                type="number"
-                step="0.5"
-                max={7}
-                min={1}
-                isSubmitting={isSubmitting}
-              />
+         
               <CustomInputField
                 name="sportId"
                 placeholder="COURT-SPORT-ID"
@@ -262,7 +262,7 @@ const CourtUpdateForm = () => {
                 type="number"
                 isSubmitting={isSubmitting}
               />
-            </div>
+            </div> */}
             <div>
               <CustomCheckbox
                 labelTxt="COURT-INDOOR"

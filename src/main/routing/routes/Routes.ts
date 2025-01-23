@@ -1,7 +1,6 @@
 import { FC } from "react";
 import { PageLink } from "@presentation/layout/core";
 import { DashboardRoute } from "./DashboardRoute";
-import { DirectClientsRouter } from "./DirectClients";
 import { ClubRoute } from "./ClubRoute";
 import { CourtRoute } from "./CourtRoute";
 import { GeneralRoute } from "./GeneralRoute";
@@ -24,7 +23,6 @@ export interface Route {
 }
 const routes: Route[] = [
   DashboardRoute,
-  DirectClientsRouter,
   ClubRoute,
   CourtRoute,
   GeneralRoute,

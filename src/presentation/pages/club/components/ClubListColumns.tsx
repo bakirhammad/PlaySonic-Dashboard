@@ -45,23 +45,25 @@ const ClubListColumns: ReadonlyArray<Column<IClubData>> = [
     ),
     id: "name",
     Cell: ({ ...props }) => (
-      <CustomCell data={props.data[props.row.index]?.clubInfoResponses[0]?.name || "NA"} />
-    ),
-  },
-  {
-    Header: (props) => (
-      <CustomHeaderCell
-        tableProps={props}
-        title="SIDEBAR-CLUB-PAYLOAD"
-        enableSorting={false}
-        className="min-w-125px"
+      <CustomCell
+        data={props.data[props.row.index]?.clubInfoResponses[0]?.name || "NA"}
       />
     ),
-    id: "payload",
-    Cell: ({ ...props }) => (
-      <CustomCell data={props.data[props.row.index]?.payload} />
-    ),
   },
+  // {
+  //   Header: (props) => (
+  //     <CustomHeaderCell
+  //       tableProps={props}
+  //       title="SIDEBAR-CLUB-PAYLOAD"
+  //       enableSorting={false}
+  //       className="min-w-125px"
+  //     />
+  //   ),
+  //   id: "payload",
+  //   Cell: ({ ...props }) => (
+  //     <CustomCell data={props.data[props.row.index]?.payload} />
+  //   ),
+  // },
   {
     Header: (props) => (
       <CustomHeaderCell

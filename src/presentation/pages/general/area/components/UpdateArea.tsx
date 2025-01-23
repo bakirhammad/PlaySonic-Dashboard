@@ -1,4 +1,4 @@
-import { Fragment, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import {
   CustomButton,
   CustomInputField,
@@ -167,10 +167,22 @@ const AreaUpdateForm = () => {
     isSubmitting,
     isValid,
     values,
+    setFieldValue
   }: FormikContextType<FormikValues> = useFormikContext();
   const { Languages } = useLanguageStore();
   const [languageInput, setLanguageInput] = useState(2);
   const { CityOption, isCityLoading } = useCitiesDDL();
+
+  useEffect(() => {
+    CityOption.forEach((elem) => {
+      if (elem.value === values.cityId) {
+        return setFieldValue("cityId", {
+          value: elem.value,
+          label: elem.label,
+        });
+      }
+    });
+  }, [CityOption]);
 
   return (
     <>
@@ -182,39 +194,6 @@ const AreaUpdateForm = () => {
       >
         <div className="row row-cols-md-1 row-cols-sm-1 row-cols-1">
           <div className="row">
-            <div className="row row-cols-3">
-              <CustomInputField
-                name="rank"
-                placeholder="Country-RANK"
-                label="Country-RANK"
-                as="input"
-                touched={touched}
-                errors={errors}
-                type="number"
-                isSubmitting={isSubmitting}
-              />
-              <CustomInputField
-                name="payload"
-                placeholder="Country-PAYLOAD"
-                label="Country-PAYLOAD"
-                as="input"
-                touched={touched}
-                errors={errors}
-                type="text"
-                isSubmitting={isSubmitting}
-              />
-              <CustomSelectField
-                name="cityId"
-                options={CityOption}
-                labelRequired={false}
-                isloading={isCityLoading}
-                label="DDL-City-label"
-                placeholder="DDL-City-label"
-                touched={touched}
-                errors={errors}
-              />
-            </div>
-            <hr />
             <div className="translation mt-5">
               <div className="d-flex mb-7">
                 {Languages.map((lang, index) => (
@@ -234,7 +213,7 @@ const AreaUpdateForm = () => {
                 (lang) =>
                   lang.id === languageInput && (
                     <Fragment key={lang.id + lang.id + "input+"}>
-                      <div className="row row-cols-md-2 row-cols-sm-1 row-cols-1">
+                      <div className="row row-cols-1">
                         <CustomInputField
                           key={
                             lang.prefix +
@@ -255,6 +234,41 @@ const AreaUpdateForm = () => {
                     </Fragment>
                   )
               )}
+            </div>
+
+            <hr />
+
+            <div className="row row-cols-1">
+              {/* <CustomInputField
+                name="rank"
+                placeholder="Country-RANK"
+                label="Country-RANK"
+                as="input"
+                touched={touched}
+                errors={errors}
+                type="number"
+                isSubmitting={isSubmitting}
+              />
+              <CustomInputField
+                name="payload"
+                placeholder="Country-PAYLOAD"
+                label="Country-PAYLOAD"
+                as="input"
+                touched={touched}
+                errors={errors}
+                type="text"
+                isSubmitting={isSubmitting}
+              /> */}
+              <CustomSelectField
+                name="cityId"
+                options={CityOption}
+                labelRequired={false}
+                isloading={isCityLoading}
+                label="DDL-City-label"
+                placeholder="DDL-City-label"
+                touched={touched}
+                errors={errors}
+              />
             </div>
           </div>
         </div>

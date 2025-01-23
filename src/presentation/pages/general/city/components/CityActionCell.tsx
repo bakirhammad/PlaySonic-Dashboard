@@ -95,7 +95,7 @@ const CityActionCell: FC<Props> = ({ id, name }) => {
       />
       {itemIdForUpdate === id && (
         <CustomModal
-          modalSize="xl"
+          modalSize="Default"
           modalTitle="City-UPDATE-MODAL"
           onClick={() => {
             setItemIdForUpdate(undefined);

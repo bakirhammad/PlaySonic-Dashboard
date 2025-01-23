@@ -152,7 +152,51 @@ const AreaForm = () => {
       >
         <div className="row row-cols-md-1 row-cols-sm-1 row-cols-1">
           <div className="row">
-            <div className="row row-cols-3">
+            <div className="translation mt-5">
+              <div className="d-flex mb-7">
+                {Languages.map((lang, index) => (
+                  <button
+                    type="button"
+                    key={lang.prefix + lang.id + index}
+                    className={clsx("btn btn-light me-3", {
+                      "btn-primary": languageInput === lang.id,
+                    })}
+                    onClick={() => setLanguageInput(lang.id)}
+                  >
+                    {lang.name}
+                  </button>
+                ))}
+              </div>
+              {Languages.map(
+                (lang) =>
+                  lang.id === languageInput && (
+                    <Fragment key={lang.id + lang.id + "input+"}>
+                      <div className="row row-cols-1">
+                        <CustomInputField
+                          key={
+                            lang.prefix +
+                            lang.id +
+                            lang.direction +
+                            "input name"
+                          }
+                          name={`name${lang?.id}`}
+                          label="SIDEBAR-Area-NAME"
+                          placeholder="SIDEBAR-Area-NAME"
+                          as="input"
+                          touched={touched}
+                          errors={errors}
+                          isSubmitting={isSubmitting}
+                          labelRequired={languageInput === 2 ? true : false}
+                        />
+                      </div>
+                    </Fragment>
+                  )
+              )}
+            </div>
+
+            <hr />
+
+            <div className="row row-cols-1">
               {/* <CustomInputField
                 name="rank"
                 placeholder="Country-RANK"
@@ -183,48 +227,6 @@ const AreaForm = () => {
                 touched={touched}
                 errors={errors}
               />
-            </div>
-            <hr />
-            <div className="translation mt-5">
-              <div className="d-flex mb-7">
-                {Languages.map((lang, index) => (
-                  <button
-                    type="button"
-                    key={lang.prefix + lang.id + index}
-                    className={clsx("btn btn-light me-3", {
-                      "btn-primary": languageInput === lang.id,
-                    })}
-                    onClick={() => setLanguageInput(lang.id)}
-                  >
-                    {lang.name}
-                  </button>
-                ))}
-              </div>
-              {Languages.map(
-                (lang) =>
-                  lang.id === languageInput && (
-                    <Fragment key={lang.id + lang.id + "input+"}>
-                      <div className="row row-cols-md-2 row-cols-sm-1 row-cols-1">
-                        <CustomInputField
-                          key={
-                            lang.prefix +
-                            lang.id +
-                            lang.direction +
-                            "input name"
-                          }
-                          name={`name${lang?.id}`}
-                          label="SIDEBAR-Area-NAME"
-                          placeholder="SIDEBAR-Area-NAME"
-                          as="input"
-                          touched={touched}
-                          errors={errors}
-                          isSubmitting={isSubmitting}
-                          labelRequired={languageInput === 2 ? true : false}
-                        />
-                      </div>
-                    </Fragment>
-                  )
-              )}
             </div>
           </div>
         </div>

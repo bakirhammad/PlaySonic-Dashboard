@@ -218,7 +218,7 @@ const CountryUpdateForm = () => {
                 (lang) =>
                   lang.id === languageInput && (
                     <Fragment key={lang.id + lang.id + "input+"}>
-                      <div className="row row-cols-md-2 row-cols-sm-1 row-cols-1">
+                      <div className="row row-cols-1">
                         <CustomInputField
                           key={
                             lang.prefix +

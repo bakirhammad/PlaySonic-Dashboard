@@ -54,7 +54,7 @@ const AreaList = () => {
   }, [AreaData, isFetching, isLoading, error]);
 
   const tableData = useMemo(() => AreaData?.data, [AreaData]);
-
+console.log(AreaData, "dafadfsdf")
   const handleDeleteSelected = async () => {
     const confirm = await showConfirmationAlert(`${selected.length} item`);
     if (confirm) {
@@ -94,7 +94,7 @@ const AreaList = () => {
       </CustomKTCard>
       {itemIdForUpdate === null && (
         <CustomModal
-          modalSize="xl"
+          modalSize="Default"
           modalTitle="Create-Area"
           onClick={() => setItemIdForUpdate(undefined)}
         >

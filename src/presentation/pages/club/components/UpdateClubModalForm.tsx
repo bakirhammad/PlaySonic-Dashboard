@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import { FC, Fragment, useEffect, useMemo, useRef, useState } from "react";
 import {
   CustomButton,
   CustomInputField,
@@ -33,6 +33,7 @@ import {
 import { useCitiesDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useCitiesDDL";
 import { useAreasDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useAreasDDL";
 import { useCountriesDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useCountriesDDL";
+import { useFindFeaturesByNumb } from "@presentation/helpers/DDL/FindFeaturesByNumb";
 
 interface IProps {
   ClubData: IClubData;
@@ -69,8 +70,8 @@ export const UpdateClubModalForm = ({ ClubData, isLoading }: IProps) => {
       website: ClubData.website,
       features: ClubData.features,
       payload: ClubData.payload,
-      lat:0,
-      lng:0,
+      lat: 0,
+      lng: 0,
       ...translations,
     };
   }, [ClubData, Languages, fullLocationArray]);
@@ -183,14 +184,17 @@ export const UpdateClubModalForm = ({ ClubData, isLoading }: IProps) => {
             handleSubmit(values, setSubmitting);
           }}
         >
-          <ClubUpdateForm />
+          <ClubUpdateForm clubData={ClubData} />
         </Formik>
       )}
     </>
   );
 };
 
-const ClubUpdateForm = () => {
+interface IData {
+  clubData: IClubData;
+}
+const ClubUpdateForm: FC<IData> = ({ clubData }) => {
   const { setItemIdForUpdate } = useListView();
 
   const {
@@ -206,6 +210,12 @@ const ClubUpdateForm = () => {
   const { CountryOption, isCountryLoading } = useCountriesDDL();
   const { CityOption, isCityLoading } = useCitiesDDL();
   const { AreaOption, isAreaLoading } = useAreasDDL();
+
+  const { featuresList } = useFindFeaturesByNumb(clubData.features);
+  const featuresReturnList = featuresList?.map((feature) => ({
+    value: feature.value,
+    label: feature.label,
+  }));
 
   useEffect(() => {
     CountryOption.forEach((elem) => {
@@ -233,7 +243,13 @@ const ClubUpdateForm = () => {
         });
       }
     });
-  }, [CountryOption, CityOption, AreaOption]);
+
+    if (featuresReturnList) {
+      setFieldValue("features", featuresReturnList);
+    }
+  }, [CountryOption, CityOption, AreaOption, featuresList]);
+
+  console.log(values)
   return (
     <>
       <Form
@@ -321,7 +337,7 @@ const ClubUpdateForm = () => {
                 isSubmitting={isSubmitting}
               />
 
-              <CustomInputField
+              {/* <CustomInputField
                 name="payload"
                 placeholder="CLUB-PAYLOAD"
                 label="CLUB-PAYLOAD"
@@ -330,7 +346,7 @@ const ClubUpdateForm = () => {
                 errors={errors}
                 type="text"
                 isSubmitting={isSubmitting}
-              />
+              /> */}
 
               <CustomInputField
                 name="website"
