@@ -48,6 +48,7 @@ export interface ICourtData {
   systemTypeId: number;
   allowedSlotTypes: number;
   sportId: number;
+  image:string
 }
 
 export interface IMyCourt {

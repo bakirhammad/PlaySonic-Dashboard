@@ -14,7 +14,7 @@ const AreaListWrapper = lazy(
 );
 
 const RegisterWrapper = lazy(
-  () => import("@presentation/pages/register")
+  () => import("@presentation/pages/addUser")
 );
 
 
@@ -47,8 +47,8 @@ const GeneralRoute: Route = {
       breadcrumbs: [],
     },
     {
-      path: "register",
-      title: "SIDEBAR-REGISTER",
+      path: "adduser",
+      title: "SIDEBAR-ADD-USER",
       component: RegisterWrapper,
       role: [],
       breadcrumbs: [],

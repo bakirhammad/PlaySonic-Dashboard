@@ -3,7 +3,7 @@ import {
   CustomKTCard,
   CustomKTCardBody,
 } from "@presentation/components";
-import { stringifyRequestQuery } from "@presentation/helpers";
+import { QUERIES, stringifyRequestQuery } from "@presentation/helpers";
 import { useQuery, useQueryClient } from "react-query";
 import { Form, Formik } from "formik";
 import { useState } from "react";
@@ -25,7 +25,7 @@ export default function MyReservations() {
   const [endTime, setEndTime] = useState("");
   const [courtId , setCourtId ] = useState<any>()
 
-  const clubId = 7;
+  const clubId = 23;
 
   const {
     data: ReservationData,
@@ -48,13 +48,13 @@ export default function MyReservations() {
   };
 
   const filterSchema = Yup.object().shape({
-    fromDate: validationSchemas.Date,
-    toDate: validationSchemas.Date.when("fromDate", {
-      is: (fromDate: string) => fromDate !== null,
-      then: (schema) =>
-        schema.min(Yup.ref("fromDate"), "To Date can't be before From Date"),
-      otherwise: (schema) => schema,
-    }),
+    // fromDate: validationSchemas.Date,
+    // toDate: validationSchemas.Date.when("fromDate", {
+    //   is: (fromDate: string) => fromDate !== null,
+    //   then: (schema) =>
+    //     schema.min(Yup.ref("fromDate"), "To Date can't be before From Date"),
+    //   otherwise: (schema) => schema,
+    // }),
     court: validationSchemas.object,
   });
 

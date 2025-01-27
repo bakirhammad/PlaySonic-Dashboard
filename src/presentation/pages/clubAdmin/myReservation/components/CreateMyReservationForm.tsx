@@ -44,7 +44,7 @@ export const CreateReservationForm = () => {
     levelMax: null,
     isPublic: false,
     reservationDate: null,
-    slotsRemaining: null,
+    slotsRemaining: 1,
     sportId: 1,
     ownerID: "345ebbb9-924b-4359-845d-60860c5ed515",
   });

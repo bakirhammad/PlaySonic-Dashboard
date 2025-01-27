@@ -27,7 +27,7 @@ const MyCourts = () => {
   const columns = useMemo(() => CourtListColumns, []);
 
   const queryClient = useQueryClient();
-  const clubId = 7;
+  const clubId = 23;
   const { itemIdForUpdate, setItemIdForUpdate, selected, clearSelected } =
     useListView();
   const {
@@ -68,8 +68,8 @@ const MyCourts = () => {
           CustomToast(`Deleted successfully`, "success");
         }
       } catch (error) {
-        console.error("Error when delete Sightseeing Tour", error);
-        CustomToast(`Failed to Delete Sightseeing  Tour `, "error");
+        console.error("Error when delete ", error);
+        CustomToast(`Failed to Delete `, "error");
       }
     }
   };
@@ -86,7 +86,7 @@ const MyCourts = () => {
           // FilterComponent={<ClubFilter></ClubFilter>}
           onDeleteSelectedAll={() => handleDeleteSelected()}
           addBtn={true}
-          addName="ADD"
+          addName="ADD-Court"
           
         />
         <CustomTemplate courtData={tableData || []}/>
@@ -95,7 +95,7 @@ const MyCourts = () => {
       {itemIdForUpdate === null && (
         <CustomModal
           modalSize="xl"
-          modalTitle="Create-Club"
+          modalTitle="Create-Court"
           onClick={() => setItemIdForUpdate(undefined)}
         >
           <CourtModalCreateForm id={clubId} />

@@ -24,6 +24,7 @@ import { CourtCommandInstance } from "@app/useCases/court";
 import { CourtUrlEnum } from "@domain/enums/URL/Court/CourtUrls/Court";
 import { useClubsDDL } from "@presentation/hooks/queries/DDL/Club/useClubsDDL";
 import { useSlotTypesDDL } from "@presentation/hooks/queries/DDL/SlotTypes/useSlotTypesDDL";
+import { CustomUploadFile } from "@presentation/components/forms/CustomUploadFile";
 
 export const CourtModalCreateForm = () => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);
@@ -40,6 +41,7 @@ export const CourtModalCreateForm = () => {
     systemTypeId: 1,
     allowedSlotTypes: 1,
     sportId: 1,
+    image: null,
   });
 
   const _CourtSchema = Object.assign({
@@ -68,6 +70,7 @@ export const CourtModalCreateForm = () => {
     formData.append("Payload", values.payload);
     formData.append("AllowedSlotTypes", values.allowedSlotTypes.value);
     formData.append("SportId", values.sportId);
+    formData.append("Img", values.image);
 
     try {
       const data = await CourtCommandInstance.createCourt(
@@ -218,7 +221,15 @@ const CourtForm = () => {
                 isSubmitting={isSubmitting}
               />
             </div> */}
-            <div>
+            <div className="row row-cols-1 row-cols-md-2 border-info-subtle border-black">
+              <CustomUploadFile
+                isSubmitting={isSubmitting}
+                touched={touched}
+                errors={errors}
+                accept="image/*"
+                name="image"
+                label="COURT-IMAGE"
+              />
               <CustomCheckbox
                 labelTxt="COURT-INDOOR"
                 name={"indoor"}

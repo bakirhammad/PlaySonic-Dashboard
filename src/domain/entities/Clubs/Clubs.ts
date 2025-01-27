@@ -52,7 +52,8 @@ export interface IClubData {
   areaTranslations: any | null;
   courts: any | null;
   lat: number,
-  lng: number
+  lng: number,
+  image: string
 }
 
 export interface IClubInfoResponse {

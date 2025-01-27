@@ -40,6 +40,7 @@ export interface ICourtScheduleBody {
 export interface ICourtScheduleData {
   id: number;
   courtId: number;
+  clubId:number;
   days: number;
   startTime: string;
   endTime: string;

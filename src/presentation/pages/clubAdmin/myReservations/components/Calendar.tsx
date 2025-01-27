@@ -21,7 +21,7 @@ interface IPropsCalendar {
 }
 const Calendar = ({
   ReservationData,
-  startTime,
+  startTime ,
   endTime,
   courtId,
 }: IPropsCalendar) => {

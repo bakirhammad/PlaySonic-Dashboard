@@ -47,7 +47,6 @@ const CourtList = () => {
       );
     },
   });
-
   useEffect(() => {
     updateData(CourtData);
     setIsLoading(isFetching || isLoading);

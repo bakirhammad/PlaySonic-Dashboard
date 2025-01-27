@@ -17,14 +17,20 @@ import {
   showDeletedAlert,
 } from "@presentation/components";
 import { CourtSlotsUrlEnum } from "@domain/enums/URL/courtSlots/courtSlotsUrls/CourtSlots";
-import { CourtSlotsCommandInstance, CourtSlotsQueryInstance } from "@app/useCases/courtSlot";
+import {
+  CourtSlotsCommandInstance,
+  CourtSlotsQueryInstance,
+} from "@app/useCases/courtSlot";
 import { CourtSlotsListColumns } from "./components/CourtSlotsListColumns";
 import { CourtSlotsModalCreateForm } from "./components/CourtSlotsModalCreateForm";
+import { useParams } from "react-router-dom";
 
 const CourtSlots = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
 
   const columns = useMemo(() => CourtSlotsListColumns, []);
+
+  const { courtId } = useParams();
 
   const queryClient = useQueryClient();
 
@@ -41,7 +47,9 @@ const CourtSlots = () => {
     queryFn: () => {
       const searchQuery = query ? `&${query}` : "";
       return CourtSlotsQueryInstance.getCourtSlotsList(
-        `${CourtSlotsUrlEnum.GetCourtSlotsList + searchQuery}`
+        courtId
+          ? `${CourtSlotsUrlEnum.GetCourtSlotsList}courtId=${courtId}${searchQuery}`
+          : `${CourtSlotsUrlEnum.GetCourtSlotsList}${searchQuery}`
       );
     },
   });

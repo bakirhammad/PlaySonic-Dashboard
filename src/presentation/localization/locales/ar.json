@@ -239,7 +239,25 @@
   "Create New" :"Create New",
   "DDL-Owner": "User Name",
   "Create-New-User": "Create New User",
-  "CHOOSE-permission":"Choose Permissions"
+  "CHOOSE-permission":"Choose Permissions",
+   "ADD-Court":"Add Court",
+  "Create-Court": "Create Court",
+  "CONFIRM-PASSWORD":"Confirm Password",
+  "Club-Name":"Club Name",
+  "Select-Club":"Select Club",
+  "Court Slots": "Court Slots",
+  "Firts-Name":"الاسم الأول",
+  "Last-Name":"الاسم الأخير",
+  "User-DISPLAY-NAME":"الاسم",
+  "Bith-Date":"تاريخ الميلاد",
+  "Level":"المستوى",
+  "DDL-GENDER":"الجنس",
+  "COURT-IMAGE": "صورة",
+    "CLUB-IMAGE":"الصورة"
+
+
+
+
 
 
 

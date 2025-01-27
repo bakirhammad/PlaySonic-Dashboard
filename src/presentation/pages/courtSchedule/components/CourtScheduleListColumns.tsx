@@ -9,6 +9,7 @@ import { CourtScheduleActionCell } from "./CourtScheduleActionCell";
 import { ICourtScheduleData } from "@domain/entities/CourtSchedule/CourtSchedule";
 import CourtNameCell from "@presentation/helpers/cells/CourtNameCell";
 import { DaysCell } from "@presentation/helpers/cells/DaysCell";
+import ClubNameCell from "@presentation/helpers/cells/ClubNameCell";
 
 const CourtScheduleListColumns: ReadonlyArray<Column<ICourtScheduleData>> = [
   {
@@ -44,6 +45,20 @@ const CourtScheduleListColumns: ReadonlyArray<Column<ICourtScheduleData>> = [
     id: "court",
     Cell: ({ ...props }) => {
       return <CourtNameCell courtId={props.data[props.row.index]?.courtId} />;
+    },
+  },
+  {
+    Header: (props) => (
+      <CustomHeaderCell
+        tableProps={props}
+        title="CLUB-NAME"
+        enableSorting={false}
+        className="min-w-125px"
+      />
+    ),
+    id: "clubId",
+    Cell: ({ ...props }) => {
+      return <ClubNameCell clubId={props.data[props.row.index]?.clubId} />;
     },
   },
   {

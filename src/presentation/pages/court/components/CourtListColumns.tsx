@@ -2,6 +2,7 @@ import { Column } from "react-table";
 import {
   CustomCell,
   CustomHeaderCell,
+  CustomImageCell,
   CustomSelectAll,
   CustomSelectionCell,
   CustomStatusCell,
@@ -9,6 +10,7 @@ import {
 import { CourtActionCell } from "./CourtActionCell";
 import { ICourtData } from "@domain/entities/Court/Court";
 import ClubNameCell from "@presentation/helpers/cells/ClubNameCell";
+import DefaultImageCell from "@presentation/components/tables/cells/DefaultImageCell";
 
 const CourtListColumns: ReadonlyArray<Column<ICourtData>> = [
   {
@@ -57,9 +59,25 @@ const CourtListColumns: ReadonlyArray<Column<ICourtData>> = [
     ),
     id: "club",
     Cell: ({ ...props }) => {
-      return <ClubNameCell clubId={props.data[props.row.index]?.clubId} />
-      
+      return <ClubNameCell clubId={props.data[props.row.index]?.clubId} />;
     },
+  },
+  {
+    Header: (props) => (
+      <CustomHeaderCell
+        tableProps={props}
+        title="COURT-IMAGE"
+        enableSorting={false}
+        className="min-w-125px"
+      />
+    ),
+    id: "image",
+    Cell: ({ ...props }) =>
+      props.data[props.row.index]?.image ? (
+        <CustomImageCell image={props.data[props.row.index]?.image} />
+      ) : (
+        <DefaultImageCell alt="Court image" />
+      ),
   },
   // {
   //   Header: (props) => (

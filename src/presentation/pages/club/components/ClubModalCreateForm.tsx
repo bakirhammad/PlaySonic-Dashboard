@@ -32,6 +32,7 @@ import { useAreasDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useAreas
 import { useCountriesDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useCountriesDDL";
 import validationSchemas from "@presentation/helpers/validationSchemas";
 import { useAreasByCityDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useAreasByCityDDL";
+import { CustomUploadFile } from "@presentation/components/forms/CustomUploadFile";
 
 export const ClubModalCreateForm = () => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);
@@ -50,6 +51,7 @@ export const ClubModalCreateForm = () => {
       payload: "New Club",
       lat: 0,
       lng: 0,
+      image: null,
     },
     ...Languages.map((lang) => ({
       [`name${lang?.id}`]: "",
@@ -101,6 +103,7 @@ export const ClubModalCreateForm = () => {
     formData.append("Payload", values.payload);
     formData.append("lat", values.lat);
     formData.append("lng", values.lng);
+    formData.append("Img", values.image);
 
     ///
     let index = 0;
@@ -279,6 +282,14 @@ const ClubForm = () => {
                 errors={errors}
                 type="text"
                 isSubmitting={isSubmitting}
+              />
+              <CustomUploadFile
+                isSubmitting={isSubmitting}
+                touched={touched}
+                errors={errors}
+                accept="image/*"
+                name="image"
+                label="CLUB-IMAGE"
               />
             </div>
             <hr />

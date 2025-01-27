@@ -245,7 +245,7 @@
   "Reject": "Reject",
   "Approve":"Approve",
   "Create-Reservation": "Create Reservation",
-  "SIDEBAR-REGISTER":"Register User",
+  "SIDEBAR-ADD-USER":"Add User",
   "User-Name":"Name",
   "USER-PHONE": "Phone Number",
   "PlaySonicId":"Play Sonic ID",
@@ -253,7 +253,22 @@
   "Create New" :"Create New",
   "DDL-Owner": "User Name",
   "Create-New-User": "Create New User",
-  "CHOOSE-permission":"Choose Permissions"
+  "CHOOSE-permission":"Choose Permissions",
+  "ADD-Court":"Add Court",
+  "Create-Court": "Create Court",
+  "CONFIRM-PASSWORD":"Confirm Password",
+   "Club-Name":"Club Name",
+  "Select-Club":"Select Club",
+  "Court Slots": "Court Slots",
+  "Firts-Name":"First Name",
+  "Last-Name":"Last Name",
+  "User-DISPLAY-NAME":"Display Name",
+  "Bith-Date":"Birth Of Date",
+  "Level":"Level",
+  "DDL-GENDER":"Gender",
+  "COURT-IMAGE": "Court Image",
+  "CLUB-IMAGE":"Club Image"
+  
 
 
 

@@ -17,14 +17,19 @@ import {
   showDeletedAlert,
 } from "@presentation/components";
 import { CourtScheduleListColumns } from "./components/CourtScheduleListColumns";
-import { CourtScheduleCommandInstance, CourtScheduleQueryInstance } from "@app/useCases/courtSchedule";
+import {
+  CourtScheduleCommandInstance,
+  CourtScheduleQueryInstance,
+} from "@app/useCases/courtSchedule";
 import { CourtScheduleUrlEnum } from "@domain/enums/URL/CourtSchedule/CourtScheduleUrls/CourtSchedule";
 import { CourtScheduleModalCreateForm } from "./components/CourtScheduleModalCreateForm";
+import { useParams } from "react-router-dom";
 
 const CourtSchedule = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
 
   const columns = useMemo(() => CourtScheduleListColumns, []);
+  const { courtId } = useParams();
 
   const queryClient = useQueryClient();
 
@@ -41,7 +46,9 @@ const CourtSchedule = () => {
     queryFn: () => {
       const searchQuery = query ? `&${query}` : "";
       return CourtScheduleQueryInstance.getCourtScheduleList(
-        `${CourtScheduleUrlEnum.GetCourtScheduleList + searchQuery}`
+        courtId
+          ? `${CourtScheduleUrlEnum.GetCourtScheduleList}courtId=${courtId}${searchQuery}`
+          : `${CourtScheduleUrlEnum.GetCourtScheduleList + searchQuery}`
       );
     },
   });
@@ -51,7 +58,7 @@ const CourtSchedule = () => {
     setIsLoading(isFetching || isLoading);
     setError(error as Error);
   }, [CourtScheduleData, isFetching, isLoading, error]);
-  
+
   const tableData = useMemo(() => CourtScheduleData?.data, [CourtScheduleData]);
 
   const handleDeleteSelected = async () => {

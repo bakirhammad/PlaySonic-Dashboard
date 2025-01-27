@@ -87,7 +87,7 @@ const ViewCourt = () => {
           filterBtn={true}
           // FilterComponent={<ClubFilter></ClubFilter>}
           onDeleteSelectedAll={() => handleDeleteSelected()}
-          addBtn={true}
+          addBtn={false}
           addName="ADD-Reservation"
         />
         <CustomTable columns={columns} data={tableData || []} />
@@ -95,7 +95,7 @@ const ViewCourt = () => {
       {itemIdForUpdate === null && (
         <CustomModal
           modalSize="xl"
-          modalTitle="Create-Club"
+          modalTitle="ADD-Reservation"
           onClick={() => setItemIdForUpdate(undefined)}
         >
           <CreateMyReservationForm courtId={CourtData?.id || 0} />

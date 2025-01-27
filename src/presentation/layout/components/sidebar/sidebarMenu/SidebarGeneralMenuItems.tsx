@@ -19,11 +19,11 @@ const SidebarGeneralMenuItems: FC = () => {
         title="SIDEBAR-Area"
         hasBullet={true}
       />
-      {/* <SidebarMenuItem
-        to="/apps/general/register"
-        title="SIDEBAR-REGISTER"
+       <SidebarMenuItem
+        to="/apps/general/adduser"
+        title="SIDEBAR-ADD-USER"
         hasBullet={true}
-      /> */}
+      /> 
     </>
   );
 };

@@ -18,6 +18,13 @@ const ViewCourtWrapper = lazy(
   () => import("@presentation/pages/clubAdmin/myCourts/components/ViewCourt")
 );
 
+const CourtSlotsListWrapper = lazy(
+  () => import("@presentation/pages/courtSlots")
+);
+
+const CourtScheduleListWrapper = lazy(
+  () => import("@presentation/pages/courtSchedule")
+);
 
 
 const ClubAdminRoutes: Route = {
@@ -45,6 +52,20 @@ const ClubAdminRoutes: Route = {
       path: "viewcourt/:id",
       title: "SIDEBAR-Court",
       component: ViewCourtWrapper,
+      role: [],
+      breadcrumbs: [],
+    },
+    {
+      path: "courtslots/:courtId",
+      title: "SIDEBAR-COURT-SLOTS",
+      component: CourtSlotsListWrapper,
+      role: [],
+      breadcrumbs: [],
+    },
+    {
+      path: "courtschedule/:courtId",
+      title: "SIDEBAR-COURT-SCHEDULE",
+      component: CourtScheduleListWrapper,
       role: [],
       breadcrumbs: [],
     },

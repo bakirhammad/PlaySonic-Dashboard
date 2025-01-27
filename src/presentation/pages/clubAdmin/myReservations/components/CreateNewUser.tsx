@@ -19,6 +19,9 @@ import { useQueryClient } from "react-query";
 import { QUERIES } from "@presentation/helpers";
 import { ReservationCommandInstance } from "@app/useCases/reservation";
 import { ReservationUrlEnum } from "@domain/enums/URL/Reservation/reservationUrls/Reservation";
+import CustomTimePicker from "@presentation/components/forms/CustomTimePicker";
+import CustomSelectField from "@presentation/components/forms/CustomSelectField";
+import { GenderOptionsDDL } from "@presentation/helpers/DDL/GenderOptions";
 
 export const CreateNewUser = () => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);
@@ -101,9 +104,23 @@ const ReservationForm = () => {
           <div className="row">
             <div className="row row-cols-1 row-cols-md-2  border-info-subtle border-black">
               <CustomInputField
-                name="name"
-                placeholder="User-Name"
-                label="User-Name"
+                name="firstName"
+                placeholder="Firts-Name"
+                label="Firts-Name"
+                as="input"
+              />
+              <CustomInputField
+                name="lastName"
+                placeholder="Last-Name"
+                label="Last-Name"
+                as="input"
+              />
+            </div>
+            <div className="row row-cols-1 row-cols-md-2  border-info-subtle border-black">
+              <CustomInputField
+                name="displayName"
+                placeholder="User-DISPLAY-NAME"
+                label="User-DISPLAY-NAME"
                 as="input"
               />
               <CustomInputField
@@ -113,16 +130,36 @@ const ReservationForm = () => {
                 as="input"
               />
             </div>
+            <div className="row row-cols-1 row-cols-md-2  border-info-subtle border-black">
+              <CustomTimePicker
+                label="Bith-Date"
+                name="bod"
+                placeholder="Bith-Date"
+              />
+              <CustomInputField
+                name="userLevel"
+                placeholder="Level"
+                label="Level"
+                as="input"
+                type="number"
+              />
+            </div>
+            <CustomSelectField
+              name="Gender"
+              options={GenderOptionsDDL}
+              label="DDL-GENDER"
+              placeholder="DDL-GENDER"
+            />
           </div>
         </div>
         <div className="text-center pt-15">
-          <CustomButton
+          {/* <CustomButton
             type="reset"
             text="CANCEL"
             onClick={() => setItemIdForUpdate(undefined)}
             className="btn btn-light me-3"
             disabled={isSubmitting}
-          />
+          /> */}
           <CustomButton
             type="submit"
             className="btn btn-primary"

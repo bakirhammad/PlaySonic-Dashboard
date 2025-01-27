@@ -40,6 +40,7 @@ export interface ICourtSlotsBody {
 export interface ICourtSlotsData {
   id: number,
   courtId: number,
+  clubId:number,
   slotTypeId: number,
   fullPrice: number,
   singlePrice: number

@@ -3,7 +3,6 @@ import {
   CustomButton,
   CustomInputField,
   CustomListLoading,
-  CustomToast,
 } from "@presentation/components";
 import { useListView } from "@presentation/context";
 import {
@@ -16,8 +15,8 @@ import {
 } from "formik";
 import * as Yup from "yup";
 import { useQueryClient } from "react-query";
-import { QUERIES } from "@presentation/helpers";
 import CustomSelectField from "@presentation/components/forms/CustomSelectField";
+import { useClubsDDL } from "@presentation/hooks/queries/DDL/Club/useClubsDDL";
 
 export const RegisterFields = () => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);
@@ -123,6 +122,8 @@ const RegisterForm = () => {
     values,
   }: FormikContextType<FormikValues> = useFormikContext();
   const { setItemIdForUpdate } = useListView();
+
+  const {clubsOption,isClubLoading} = useClubsDDL()
   return (
     <>
       <Form
@@ -143,6 +144,16 @@ const RegisterForm = () => {
               as="input"
               type="text"
             />
+
+            <CustomSelectField
+              name={"clubId"}
+              options={clubsOption}
+              isloading={isClubLoading}
+              placeholder="Select-Club"
+              label="Club-Name"
+            />
+          </div>
+          <div className="row row-cols-2">
             <CustomInputField
               name="email"
               placeholder="EMAIL"
@@ -150,8 +161,6 @@ const RegisterForm = () => {
               as="input"
               type="email"
             />
-          </div>
-          <div className="row row-cols-2">
             <CustomInputField
               name="password"
               placeholder="Password"
@@ -162,6 +171,8 @@ const RegisterForm = () => {
               type="password"
               isSubmitting={isSubmitting}
             />
+          </div>
+          <div className="row row-cols-2">
             <CustomInputField
               name="confirmPasswor"
               placeholder="CONFIRM-PASSWORD"
@@ -172,8 +183,6 @@ const RegisterForm = () => {
               type="password"
               isSubmitting={isSubmitting}
             />
-          </div>
-          <div className="row row-cols-2">
             <CustomSelectField
               name={"permissions"}
               options={[]}

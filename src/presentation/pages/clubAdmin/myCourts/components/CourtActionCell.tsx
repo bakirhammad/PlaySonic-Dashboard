@@ -16,6 +16,7 @@ import {
 import { CourtUrlEnum } from "@domain/enums/URL/Court/CourtUrls/Court";
 import UpdateCourtModalForm from "./UpdateCourtModalForm";
 import { ICourtData } from "@domain/entities/Court/Court";
+import CustomActionSellDrop from "@presentation/helpers/CustomActionSellDrop";
 
 interface Props {
   id: number;
@@ -94,6 +95,7 @@ const CourtActionCell: FC<Props> = ({ id, name }) => {
           setItemIdForUpdate(id);
         }}
         deletBtnOnClick={() => handleDelete()}
+        children={<CustomActionSellDrop courtId={id}/>}
       />
       {itemIdForUpdate === id && (
         <CustomModal

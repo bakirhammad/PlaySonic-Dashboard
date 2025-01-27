@@ -56,10 +56,10 @@ export const CalenderCreateMyReservationForm: FC<ICourtId> = ({
     levelMax: null,
     isPublic: false,
     reservationDate: reservationDate,
-    slotsRemaining: null,
+    slotsRemaining: 1,
     sportId: 1,
-    // ownerID: "345ebbb9-924b-4359-845d-60860c5ed515",
-    ownerID: null,
+     ownerID: "345ebbb9-924b-4359-845d-60860c5ed515",
+    // ownerID: null,
   });
 
   const _ReservationSchema = Object.assign({
@@ -167,7 +167,6 @@ const ReservationForm = () => {
     }
   };
 
-  console.log(values, ";d;;d;;dd");
   const { setItemIdForUpdate } = useListView();
   const { SlotTypesOption, isSlotTypesLoading } = useSlotTypesDDL();
   return (
@@ -280,7 +279,7 @@ const ReservationForm = () => {
             {createUserModal && (
               <CustomModal
                 modalTitle="Create-New-User"
-                modalSize={"lg"}
+                modalSize={"xl"}
                 onClick={() => setCreateUserModal(false)}
               >
                 <CreateNewUser />
@@ -319,13 +318,13 @@ const ReservationForm = () => {
           </div>
         </div>
         <div className="text-center pt-15">
-          <CustomButton
+          {/* <CustomButton
             type="reset"
             text="CANCEL"
             onClick={() => setItemIdForUpdate(undefined)}
             className="btn btn-light me-3"
             disabled={isSubmitting}
-          />
+          /> */}
           <CustomButton
             type="submit"
             className="btn btn-primary"
