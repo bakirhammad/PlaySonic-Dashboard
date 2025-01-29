@@ -17,13 +17,14 @@ import {
 } from "formik";
 import * as Yup from "yup";
 import { useQueryClient } from "react-query";
-import { QUERIES } from "@presentation/helpers";
+import { combineBits, QUERIES } from "@presentation/helpers";
 import CustomSelectField from "@presentation/components/forms/CustomSelectField";
 import validationSchemas from "@presentation/helpers/validationSchemas";
 import { CourtCommandInstance } from "@app/useCases/court";
 import { CourtUrlEnum } from "@domain/enums/URL/Court/CourtUrls/Court";
 import { useClubsDDL } from "@presentation/hooks/queries/DDL/Club/useClubsDDL";
 import { useSlotTypesDDL } from "@presentation/hooks/queries/DDL/SlotTypes/useSlotTypesDDL";
+import { IDDlOptionSlotType } from "@domain/entities";
 import { CustomUploadFile } from "@presentation/components/forms/CustomUploadFile";
 
 export const CourtModalCreateForm = () => {
@@ -39,17 +40,17 @@ export const CourtModalCreateForm = () => {
     courtTypeId: 1,
     name: "",
     systemTypeId: 1,
-    allowedSlotTypes: 1,
+    allowedSlotTypes: null,
     sportId: 1,
     image: null,
   });
 
   const _CourtSchema = Object.assign({
     club: validationSchemas.object,
-    allowedSlotTypes: validationSchemas.object,
-    systemTypeId: validationSchemas.number,
-    sportId: validationSchemas.number,
-    courtTypeId: validationSchemas.number,
+    allowedSlotTypes: validationSchemas.array.required("Required"),
+    // systemTypeId: validationSchemas.number,
+    // sportId: validationSchemas.number,
+    // courtTypeId: validationSchemas.number,
     // payload: Yup.string().required("Payload is required"),
     name: Yup.string().required("Name is required"),
   });
@@ -60,6 +61,10 @@ export const CourtModalCreateForm = () => {
     values: FormikValues,
     setSubmitting: (isSubmitting: boolean) => void
   ) => {
+    const allowedSlots = combineBits(
+      values.allowedSlotTypes.map((slot: IDDlOptionSlotType) => slot.value)
+    );
+
     const formData = new FormData();
     formData.append("ClubId", values.club.value);
     formData.append("Rank", values.rank);
@@ -68,9 +73,9 @@ export const CourtModalCreateForm = () => {
     formData.append("Name", values.name);
     formData.append("SystemTypeId", values.systemTypeId);
     formData.append("Payload", values.payload);
-    formData.append("AllowedSlotTypes", values.allowedSlotTypes.value);
+    formData.append("AllowedSlotTypes", String(allowedSlots));
     formData.append("SportId", values.sportId);
-    formData.append("Img", values.image);
+     formData.append("Img", values.image);
 
     try {
       const data = await CourtCommandInstance.createCourt(
@@ -115,14 +120,15 @@ const CourtForm = () => {
     errors,
     touched,
     isSubmitting,
-    isValid,
-  }: // values,
+    isValid,values,
+  }: 
   FormikContextType<FormikValues> = useFormikContext();
 
   const { setItemIdForUpdate } = useListView();
   const { isClubLoading, clubsOption } = useClubsDDL();
   const { SlotTypesOption, isSlotTypesLoading } = useSlotTypesDDL();
 
+  console.log(values)
   return (
     <>
       <Form
@@ -163,6 +169,7 @@ const CourtForm = () => {
                 placeholder="COURT-ALLOWED-SLOT-TYPES"
                 touched={touched}
                 errors={errors}
+                isMulti={true}
               />
               <CustomInputField
                 name="rank"
@@ -222,14 +229,14 @@ const CourtForm = () => {
               />
             </div> */}
             <div className="row row-cols-1 row-cols-md-2 border-info-subtle border-black">
-              <CustomUploadFile
+               <CustomUploadFile
                 isSubmitting={isSubmitting}
                 touched={touched}
                 errors={errors}
                 accept="image/*"
                 name="image"
                 label="COURT-IMAGE"
-              />
+              /> 
               <CustomCheckbox
                 labelTxt="COURT-INDOOR"
                 name={"indoor"}

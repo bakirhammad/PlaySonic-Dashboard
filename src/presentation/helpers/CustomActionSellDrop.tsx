@@ -16,7 +16,7 @@ const CustomActionSellDrop: FC<ICourtId> = ({ courtId }) => {
       />
       <ActionItem
         icon=""
-        onClick={() => navigate(`apps/courtschedule/${courtId}`)}
+        onClick={() => navigate(`/apps/courtschedule/${courtId}`)}
         title="Court Schedule"
       />
     </div>

@@ -91,9 +91,11 @@ const CourtActionCell: FC<Props> = ({ id, name }) => {
     <>
       <CustomActionsCell
         id={id}
+        editBtn={false}
         editBtnOnClick={() => {
           setItemIdForUpdate(id);
         }}
+        deleteBtn={false}
         deletBtnOnClick={() => handleDelete()}
         children={<CustomActionSellDrop courtId={id}/>}
       />

@@ -10,7 +10,7 @@ interface IStatusApproval {
   id: number;
 }
 const StatusApproval: FC<IStatusApproval> = ({ id }) => {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const handleSubmit = async (statusId: number, statusType: string) => {
     try {
       const confirmAction = await CustomComfirmationAlert(
@@ -19,11 +19,10 @@ const StatusApproval: FC<IStatusApproval> = ({ id }) => {
       );
 
       if (confirmAction) {
-    
-        const formData = new FormData()
+        const formData = new FormData();
 
-        formData.append("Id" , id.toString())
-        formData.append("Status" , statusId.toString())
+        formData.append("Id", id.toString());
+        formData.append("Status", statusId.toString());
         const statusResult = await StatusCommandInstance.updateStatus(
           StatusUrlEnum.UpdateStatus,
           formData
@@ -31,8 +30,9 @@ const StatusApproval: FC<IStatusApproval> = ({ id }) => {
         if (statusResult) {
           console.log(statusResult, "statusresres");
           CustomToast(`Success Update Status`, "success");
-          queryClient.invalidateQueries({queryKey:[QUERIES.ReservationList]})
-
+          queryClient.invalidateQueries({
+            queryKey: ["MyReservations"],
+          });
         } else {
           CustomToast(`Failed to  Update Status`, "error");
         }

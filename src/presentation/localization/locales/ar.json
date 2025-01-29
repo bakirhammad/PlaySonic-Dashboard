@@ -154,7 +154,7 @@
   "Court-Schedule-UPDATE-MODAL": "Update Court Schedule",
   "SIDEBAR-SLOT-TYPE": "Slot Type",
   "Duration":"Duration",
-  "Create-Slot-Type": "Create Slot-Type",
+  "Create-Slot-Type": "Create Court Slots",
   "SIDEBAR-COURT-SLOTS":"Court Slots",
   "SLOT-TYPE-ID":"Slot Type",
   "FULL-PRICE":"Full Price",
@@ -253,7 +253,38 @@
   "Level":"المستوى",
   "DDL-GENDER":"الجنس",
   "COURT-IMAGE": "صورة",
-    "CLUB-IMAGE":"الصورة"
+    "CLUB-IMAGE":"الصورة",
+  "SIDEBAR-ROLES":"Rules"  ,
+  "ROLE-PERRMISSIONS": "Permissions",
+  "ROLE-TYPE" : "Type",
+  "ROLE-NAME" : "Name",
+  "SIDEBAR-ROLE-ID" : "ID",
+  "SELECT-ALL-Permissions": "Select All Permissions",
+  "Create-Role":"Create Role",
+  "DDL-ROLE-TYPE":"Role Type",
+  "SIDEBAR-RESERVATION-CLUB-ID":"Club Name",
+  "SIDEBAR-ADD-ROLE":"Roles",
+  "Reservation-UPDATE-MODAL":"Update Reservation",
+  "SIDEBAR-Allowed-Slots":"Allowed Slots",
+  "Club-Covers": "Club Cover",
+  "Create-Slot-Types": "Create Slot Type",
+  "Slot-Type-UPDATE-MODAL": "Update Slot Type",
+  "Create-City":"Create City",
+  "Role-UPDATE-MODAL":"Update Role",
+  "CHOOSE-Role":"Select Role",
+  "Club-Image":"Club Image"
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -95,7 +95,7 @@ const SlotType = () => {
       {itemIdForUpdate === null && (
         <CustomModal
           modalSize="lg"
-          modalTitle="Create-Slot-Type"
+          modalTitle="Create-Slot-Types"
           onClick={() => setItemIdForUpdate(undefined)}
         >
           <SlotTypeModalCreateForm />

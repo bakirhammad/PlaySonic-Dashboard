@@ -55,10 +55,6 @@ export const UpdateCourtModalForm = ({ CourtData, isLoading }: IProps) => {
     // club: validationSchemas.object,
     rank: validationSchemas.number,
     allowedSlotTypes: validationSchemas.number,
-    systemTypeId: validationSchemas.number,
-    sportId: validationSchemas.number,
-    courtTypeId: validationSchemas.number,
-    payload: Yup.string().required("Payload is required"),
     name: Yup.string().required("Name is required"),
   });
 
@@ -162,6 +158,16 @@ const CourtUpdateForm = () => {
                 isSubmitting={isSubmitting}
               />
               <CustomInputField
+                name="allowedSlotTypes"
+                placeholder="COURT-ALLOWED-SLOT-TYPES"
+                label="COURT-ALLOWED-SLOT-TYPES"
+                as="input"
+                touched={touched}
+                errors={errors}
+                type="number"
+                isSubmitting={isSubmitting}
+              />
+              {/* <CustomInputField
                 name="payload"
                 placeholder="COURT-PAYLOAD"
                 label="COURT-PAYLOAD"
@@ -170,7 +176,7 @@ const CourtUpdateForm = () => {
                 errors={errors}
                 type="text"
                 isSubmitting={isSubmitting}
-              />
+              /> */}
             </div>
             <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
               <CustomInputField
@@ -186,7 +192,7 @@ const CourtUpdateForm = () => {
                 min={1}
                 isSubmitting={isSubmitting}
               />
-              <CustomInputField
+              {/* <CustomInputField
                 name="courtTypeId"
                 placeholder="COURT-TYPE-ID"
                 label="COURT-TYPE-ID"
@@ -195,11 +201,11 @@ const CourtUpdateForm = () => {
                 errors={errors}
                 type="number"
                 isSubmitting={isSubmitting}
-              />
+              /> */}
             </div>
 
             <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
-              <CustomInputField
+              {/* <CustomInputField
                 name="systemTypeId"
                 placeholder="COURT-SYSTEM-TYPE-ID"
                 label="COURT-SYSTEM-TYPE-ID"
@@ -208,19 +214,9 @@ const CourtUpdateForm = () => {
                 errors={errors}
                 type="number"
                 isSubmitting={isSubmitting}
-              />
-              <CustomInputField
-                name="allowedSlotTypes"
-                placeholder="COURT-ALLOWED-SLOT-TYPES"
-                label="COURT-ALLOWED-SLOT-TYPES"
-                as="input"
-                touched={touched}
-                errors={errors}
-                type="number"
-                isSubmitting={isSubmitting}
-              />
+              /> */}
             </div>
-            <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
+            {/* <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
               <CustomInputField
                 name="sportId"
                 placeholder="COURT-SPORT-ID"
@@ -231,7 +227,7 @@ const CourtUpdateForm = () => {
                 type="number"
                 isSubmitting={isSubmitting}
               />
-            </div>
+            </div> */}
             <div>
               <CustomCheckbox
                 labelTxt="COURT-INDOOR"

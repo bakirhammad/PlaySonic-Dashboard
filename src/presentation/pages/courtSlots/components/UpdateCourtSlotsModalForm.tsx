@@ -44,7 +44,7 @@ export const UpdateCourtSlotsModalForm = ({
   const initialValues = useMemo(() => {
     return {
       id: CourtSlotsData.id,
-      clubId: 18,
+      clubId: CourtSlotsData.clubId,
       courtId: CourtSlotsData.courtId,
       slotTypeId: CourtSlotsData.slotTypeId,
       fullPrice: CourtSlotsData.fullPrice,
@@ -178,6 +178,7 @@ const CourtSlotsUpdateForm = () => {
                 placeholder="DDL-CLUB-MANE"
                 touched={touched}
                 errors={errors}
+                disabled={true}
               />
               <CustomSelectField
                 name="courtId"
@@ -187,6 +188,7 @@ const CourtSlotsUpdateForm = () => {
                 placeholder="DDL-COURT-MANE"
                 touched={touched}
                 errors={errors}
+                disabled={true}
               />
             </div>
             <div className="row row-cols-2">
@@ -220,6 +222,7 @@ const CourtSlotsUpdateForm = () => {
                 placeholder="DDL-SLOT-TYPE"
                 touched={touched}
                 errors={errors}
+                disabled={true}
               />
             </div>
           </div>

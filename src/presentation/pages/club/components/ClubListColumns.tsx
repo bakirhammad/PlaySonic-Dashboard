@@ -152,7 +152,7 @@ const ClubListColumns: ReadonlyArray<Column<IClubData>> = [
       ) : (
         <DefaultImageCell alt="Club image" />
       ),
-  },
+   }, 
   {
     Header: (props) => (
       <CustomHeaderCell

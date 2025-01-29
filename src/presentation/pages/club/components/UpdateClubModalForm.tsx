@@ -4,6 +4,9 @@ import {
   CustomInputField,
   CustomListLoading,
   CustomToast,
+  showAreYouSure,
+  showConfirmationAlert,
+  showDeletedAlert,
 } from "@presentation/components";
 import { useListView } from "@presentation/context";
 import {
@@ -16,7 +19,7 @@ import {
 } from "formik";
 import * as Yup from "yup";
 import { combineBits, QUERIES } from "@presentation/helpers";
-import { useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import PleaseWaitTxt from "@presentation/helpers/loading/PleaseWaitTxt";
 import { useLanguageStore } from "@infrastructure/storage/LanguageStore";
 import clsx from "clsx";
@@ -34,6 +37,8 @@ import { useCitiesDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useCiti
 import { useAreasDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useAreasDDL";
 import { useCountriesDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useCountriesDDL";
 import { useFindFeaturesByNumb } from "@presentation/helpers/DDL/FindFeaturesByNumb";
+import { CustomUploadFile } from "@presentation/components/forms/CustomUploadFile";
+import { CustomImageReviewForUpdate } from "@presentation/components/forms/CustomImageReviewForUpdate";
 
 interface IProps {
   ClubData: IClubData;
@@ -46,7 +51,14 @@ export const UpdateClubModalForm = ({ ClubData, isLoading }: IProps) => {
   const queryClient = useQueryClient();
   const { Languages } = useLanguageStore();
 
-  const fullLocationArray = ClubData.location.slice(7, 10).split(" ");
+  // To extract the lat and lng from full location path.
+  const locationString = ClubData.location;
+  const regex = /POINT \(([^ ]+) ([^)]+)\)/;
+  const matches = locationString.match(regex) || "";
+
+  const lat = parseFloat(matches[1]);
+  const lng = parseFloat(matches[2]);
+
   const initialValues = useMemo(() => {
     const translations = Languages.reduce<{ [key: string]: string }>(
       (acc, lang) => {
@@ -70,11 +82,13 @@ export const UpdateClubModalForm = ({ ClubData, isLoading }: IProps) => {
       website: ClubData.website,
       features: ClubData.features,
       payload: ClubData.payload,
-      lat: 0,
-      lng: 0,
+      lat: lat,
+      lng: lng,
+      image: ClubData.image,
+      // images: ClubData.images,
       ...translations,
     };
-  }, [ClubData, Languages, fullLocationArray]);
+  }, [ClubData, Languages, lng, lat]);
 
   const _ClubSchema = Object.assign(
     {
@@ -124,6 +138,10 @@ export const UpdateClubModalForm = ({ ClubData, isLoading }: IProps) => {
     formData.append("Payload", values.payload);
     formData.append("lat", values.lat);
     formData.append("lng", values.lng);
+    formData.append("Img", values.image);
+    // values?.images.forEach((img: File) => {
+    //   formData.append("Images", img);
+    // });
 
     let index = 0;
     Languages.forEach((lang) => {
@@ -196,6 +214,7 @@ interface IData {
 }
 const ClubUpdateForm: FC<IData> = ({ clubData }) => {
   const { setItemIdForUpdate } = useListView();
+  const queryClient = useQueryClient();
 
   const {
     errors,
@@ -249,7 +268,50 @@ const ClubUpdateForm: FC<IData> = ({ clubData }) => {
     }
   }, [CountryOption, CityOption, AreaOption, featuresList]);
 
-  console.log(values)
+  console.log(values, "dasadsadsasdadsads");
+
+  const { mutateAsync: deleteImage } = useMutation(
+    async () => {
+      const confirm = await showConfirmationAlert();
+      if (confirm) {
+        const data = await ClubCommandInstance.deleteClubImage(
+          ClubUrlEnum.DeleteClubImage,
+          clubData?.id
+        );
+        return data;
+      }
+    },
+    {
+      onSuccess: async () => {
+        CustomToast(`Deleted successfully`, "success");
+        showDeletedAlert();
+        queryClient.invalidateQueries({ queryKey: [QUERIES.ClubList] });
+        setItemIdForUpdate(undefined);
+      },
+      onError: (error) => {
+        console.error("Error when deleting Country Image", error);
+        CustomToast(`Failed to delete Country Image`, "error");
+      },
+    }
+  );
+
+  const HandelDeleteImage = async (img?: string) => {
+    showAreYouSure({
+      message: "Are you sure you want to delete the image?",
+      onConfirm: async () => {
+        if (img) {
+          await ClubCommandInstance.deleteClubImages(
+            ClubUrlEnum.DeleteClubImages,
+            clubData?.id,
+            img.trim()
+          );
+          // openUpdateHotelSupplierRoomModal(values?.id);
+        }
+      },
+      onCancel: async () => {},
+      icon: "warning",
+    });
+  };
   return (
     <>
       <Form
@@ -358,6 +420,56 @@ const ClubUpdateForm: FC<IData> = ({ clubData }) => {
                 type="text"
                 isSubmitting={isSubmitting}
               />
+              <ul>
+                <CustomUploadFile
+                  label="Club-Image"
+                  name="image"
+                  touched={touched}
+                  errors={errors}
+                  labelRequired={true}
+                  isSubmitting={isSubmitting}
+                  accept={"image/*"}
+                />
+                {typeof values.image === "string" && clubData.image ? (
+                  <CustomImageReviewForUpdate
+                    inedx={1}
+                    fileName={clubData.image}
+                    imageUrl={clubData.image}
+                    onClickDelete={async () => {
+                      await deleteImage();
+                    }}
+                  />
+                ) : (
+                  <div></div>
+                )}
+              </ul>
+            </div>
+
+            <div className="row row-cols-3">
+              {/* <ul>
+                <CustomUploadFile
+                  name={"images"}
+                  label="Club-Covers"
+                  touched={touched}
+                  errors={errors}
+                  multiple={true}
+                  labelRequired={false}
+                  isSubmitting={isSubmitting}
+                  accept={"image/*"}
+                />
+
+                {clubData.images &&
+                  clubData?.images.split(",").map((image) => (
+                    <CustomImageReviewForUpdate
+                      inedx={+image}
+                      fileName={clubData.images + image}
+                      imageUrl={image.trim()}
+                      onClickDelete={() => {
+                        HandelDeleteImage(image);
+                      }}
+                    />
+                  ))}
+              </ul> */}
             </div>
             <hr />
             <div className="translation mt-5">

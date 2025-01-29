@@ -105,7 +105,7 @@ export const CalenderCreateMyReservationForm: FC<ICourtId> = ({
         });
         setItemIdForUpdate(undefined);
         queryClient.invalidateQueries({
-          queryKey: [QUERIES.ReservationList],
+          queryKey: ["MyReservations"],
         });
       }
     } catch (error) {

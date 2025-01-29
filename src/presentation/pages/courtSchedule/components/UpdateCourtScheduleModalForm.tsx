@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { FC, useEffect, useMemo, useRef } from "react";
 import {
   CustomButton,
   CustomListLoading,
@@ -31,6 +31,7 @@ import { useCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useCourtsDDL
 import CustomTimePicker from "@presentation/components/forms/CustomTimePicker";
 import { useClubCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useClubCourtsDDL";
 import { useClubsDDL } from "@presentation/hooks/queries/DDL/Club/useClubsDDL";
+import { DaysEnum } from "@domain/enums/days/DaysEnum";
 
 interface IProps {
   CourtScheduleData: ICourtScheduleData;
@@ -49,7 +50,7 @@ export const UpdateCourtScheduleModalForm = ({
   const initialValues = useMemo(() => {
     return {
       id: CourtScheduleData.id,
-      clubId: 18,
+      clubId: CourtScheduleData.clubId,
       courtId: CourtScheduleData.courtId,
       days: CourtScheduleData.days,
       startTime: CourtScheduleData.startTime,
@@ -122,14 +123,17 @@ export const UpdateCourtScheduleModalForm = ({
             handleSubmit(values, setSubmitting);
           }}
         >
-          <CourtScheduleUpdateForm />
+          <CourtScheduleUpdateForm CourtScheduleData={CourtScheduleData} />
         </Formik>
       )}
     </>
   );
 };
 
-const CourtScheduleUpdateForm = () => {
+interface IPropData {
+  CourtScheduleData: ICourtScheduleData;
+}
+const CourtScheduleUpdateForm: FC<IPropData> = ({ CourtScheduleData }) => {
   const { setItemIdForUpdate } = useListView();
 
   const {
@@ -147,6 +151,15 @@ const CourtScheduleUpdateForm = () => {
     values.clubId.value
   );
   useEffect(() => {
+    const daysEnumOptions = Object.entries(DaysEnum).map(([key, value]) => ({
+      label: key,
+      value: value,
+    }));
+    const selectedDays = daysEnumOptions.filter(
+      (option) => (CourtScheduleData.days & option.value) === option.value
+    );
+    setFieldValue("days", selectedDays);
+
     clubsOption.forEach((elem) => {
       if (elem.value === values.clubId) {
         return setFieldValue("clubId", {
@@ -163,7 +176,14 @@ const CourtScheduleUpdateForm = () => {
         });
       }
     });
-  }, [CourtsOption, clubsOption]);
+  }, [
+    CourtsOption,
+    clubsOption,
+    values.clubId,
+    values.courtId,
+    setFieldValue,
+    CourtScheduleData.days,
+  ]);
 
   return (
     <>

@@ -41,7 +41,7 @@ const Calendar = ({
     const fullEndDate = `${filterDate}T${data.endTime}`;
     return {
       id: data.id,
-      backgroundColor: data.status === 1 ? "#4584FF" : "gray",
+      backgroundColor: data.status === 1 ? "#4584FF" : "green",
       title: data.name,
       start: fullStartDate,
       end: fullEndDate,

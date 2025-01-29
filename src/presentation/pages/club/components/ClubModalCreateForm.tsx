@@ -52,6 +52,7 @@ export const ClubModalCreateForm = () => {
       lat: 0,
       lng: 0,
       image: null,
+      // images: [],
     },
     ...Languages.map((lang) => ({
       [`name${lang?.id}`]: "",
@@ -104,7 +105,9 @@ export const ClubModalCreateForm = () => {
     formData.append("lat", values.lat);
     formData.append("lng", values.lng);
     formData.append("Img", values.image);
-
+    // values?.images?.map((img: File) => {
+    //   formData.append("Images", img);
+    // });
     ///
     let index = 0;
     Languages.forEach((lang) => {
@@ -175,6 +178,7 @@ const ClubForm = () => {
   const { CityOption, isCityLoading } = useCitiesDDL();
   const { AreaOption, isAreaLoading } = useAreasDDL();
 
+  console.log(values , "Cover")
   return (
     <>
       <Form
@@ -292,6 +296,19 @@ const ClubForm = () => {
                 label="CLUB-IMAGE"
               />
             </div>
+            {/* <div className="row row-cols-3">
+              <CustomUploadFile
+                name="images"
+                label="Club-Covers"
+                touched={touched}
+                errors={errors}
+                multiple={true}
+                labelRequired={false}
+                isSubmitting={isSubmitting}
+                accept={"image/*"}
+              />
+            </div> */}
+
             <hr />
             <div className="translation mt-5">
               <div className="d-flex mb-7">

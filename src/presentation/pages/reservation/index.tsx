@@ -88,7 +88,7 @@ const ReservationList = () => {
           filterBtn={true}
           FilterComponent={<ReservaionFilter />}
           onDeleteSelectedAll={() => handleDeleteSelected()}
-          addBtn={true}
+          addBtn={false}
           addName="ADD"
         />
         <CustomTable columns={columns} data={tableData || []} />

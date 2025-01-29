@@ -36,6 +36,6 @@ export interface ICityTranslation {
   id: number;
   CityId: number;
   name: string;
-  languageId: number;
+  langId: number;
   description: string;
 }

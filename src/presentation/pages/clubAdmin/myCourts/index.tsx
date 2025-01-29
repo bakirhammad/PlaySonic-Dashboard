@@ -27,7 +27,7 @@ const MyCourts = () => {
   const columns = useMemo(() => CourtListColumns, []);
 
   const queryClient = useQueryClient();
-  const clubId = 23;
+  const clubId = 43;
   const { itemIdForUpdate, setItemIdForUpdate, selected, clearSelected } =
     useListView();
   const {

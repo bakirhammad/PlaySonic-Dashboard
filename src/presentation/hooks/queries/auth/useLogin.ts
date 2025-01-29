@@ -14,7 +14,7 @@ const useLogin = () => {
     setLoading(true);
     try {
       const { token, expiration } = await makeRemoteAuthentication().login(
-        "https://bigdapi.kensoftware.com/api/Authenticate/Authenticate/login",
+        authenticationURLEnum.login,
         {
           username,
           password,
@@ -24,7 +24,7 @@ const useLogin = () => {
       saveAuth({ token, expiration });
       const { user, auth, roles } =
         await makeRemoteAuthentication().getUserByToken(
-          "https://bigdapi.kensoftware.com/api/Authenticate/Users/getUserByToken"
+          authenticationURLEnum.getUserByToken
         );
 
       setCurrentUser({ user, auth, roles });

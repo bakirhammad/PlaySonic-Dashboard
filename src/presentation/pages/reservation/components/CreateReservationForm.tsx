@@ -22,11 +22,10 @@ import CustomSelectField from "@presentation/components/forms/CustomSelectField"
 import validationSchemas from "@presentation/helpers/validationSchemas";
 import { ReservationCommandInstance } from "@app/useCases/reservation";
 import { ReservationUrlEnum } from "@domain/enums/URL/Reservation/reservationUrls/Reservation";
-import { useCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useCourtsDDL";
-import { ReservationStatusOptionsOptions } from "@presentation/helpers/DDL/ReservationStatusOptions";
 import CustomTimePicker from "@presentation/components/forms/CustomTimePicker";
 import { useSlotTypesDDL } from "@presentation/hooks/queries/DDL/SlotTypes/useSlotTypesDDL";
-import { ResarvationOptions } from "@presentation/helpers/DDL/ResarvationOptions";
+import { useClubsDDL } from "@presentation/hooks/queries/DDL/Club/useClubsDDL";
+import { useClubCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useClubCourtsDDL";
 
 export const CreateReservationForm = () => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);
@@ -34,6 +33,7 @@ export const CreateReservationForm = () => {
   const queryClient = useQueryClient();
 
   const initialValues = Object.assign({
+    clubId: null,
     courtId: null,
     slotTypeId: null,
     startTime: null,
@@ -125,12 +125,15 @@ const ReservationForm = () => {
     touched,
     isSubmitting,
     isValid,
-    values
+    values,
   }: FormikContextType<FormikValues> = useFormikContext();
 
   const { setItemIdForUpdate } = useListView();
-  const { CourtsOption, isCourtLoading } = useCourtsDDL();
   const { SlotTypesOption, isSlotTypesLoading } = useSlotTypesDDL();
+  const { clubsOption, isClubLoading } = useClubsDDL();
+  const { ClubCourtsOption, isClubCourtLoading } = useClubCourtsDDL(
+    values.clubId ? values.clubId.value : 0
+  );
   return (
     <>
       <Form
@@ -143,25 +146,26 @@ const ReservationForm = () => {
           <div className="row">
             <div className="row row-cols-2 1 row-cols-md-2">
               <CustomSelectField
-                name="courtId"
-                options={CourtsOption}
-                isloading={isCourtLoading}
-                label="DDL-Court-NAME"
-                placeholder="DDL-Court-NAME"
+                name="clubId"
+                options={clubsOption}
+                isloading={isClubLoading}
+                label="DDL-CLUB-MANE"
+                placeholder="DDL-CLUB-MANE"
                 touched={touched}
                 errors={errors}
               />
               <CustomSelectField
-                name="slotTypeId"
-                options={SlotTypesOption}
-                isloading={isSlotTypesLoading}
-                label="DDL-Slot-Type-NAME"
-                placeholder="DDL-Slot-Type-NAME"
+                name="courtId"
+                options={ClubCourtsOption}
+                isloading={isClubCourtLoading}
+                label="DDL-COURT-MANE"
+                placeholder="DDL-COURT-MANE"
                 touched={touched}
                 errors={errors}
+                disabled={values.clubId ? false : true}
               />
             </div>
-
+            {/* 
             <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
               <CustomSelectField
                 name="status"
@@ -181,7 +185,7 @@ const ReservationForm = () => {
                 errors={errors}
                 disabled={true}
               />
-            </div>
+            </div> */}
             <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
               <CustomInputField
                 name="levelMin"
@@ -228,6 +232,15 @@ const ReservationForm = () => {
                 placeholder="Reservation-Date"
                 enableTime={false}
                 Mode="single"
+              />
+              <CustomSelectField
+                name="slotTypeId"
+                options={SlotTypesOption}
+                isloading={isSlotTypesLoading}
+                label="DDL-Slot-Type-NAME"
+                placeholder="DDL-Slot-Type-NAME"
+                touched={touched}
+                errors={errors}
               />
               <CustomCheckbox
                 labelTxt="isPublic"

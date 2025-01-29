@@ -94,6 +94,7 @@ const CalenderReservationActionCell: FC<Props> = ({ id, name }) => {
     <>
       <CustomActionsCell
         id={id}
+        editBtn={false}
         editBtnOnClick={() => {
           setItemIdForUpdate(id);
         }}

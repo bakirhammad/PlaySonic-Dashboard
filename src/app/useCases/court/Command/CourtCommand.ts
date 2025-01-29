@@ -114,7 +114,39 @@ export class CourtCommand
         throw new UnexpectedError();
     }
   }
+
+  async deleteCourtImage(
+    url: string,
+    id: number
+  ): Promise<ICourtData> {
+    const httpResponse = await this.httpPostClient.deleteRequest({
+      url,
+      body: {
+        id,
+        isDeleteImage: false
+      },
+    });
+    switch (httpResponse.statusCode) {
+      case HttpStatusCode.ok:
+        return httpResponse.data.value;
+      case HttpStatusCode.coustomError:
+        throw new Error(httpResponse.data?.message);
+      case HttpStatusCode.unauthorized:
+        throw new InvalidCredentialsError();
+      case HttpStatusCode.notFound:
+        throw new NotFoundError();
+      case HttpStatusCode.badRequest:
+        throw new BadRequestError();
+      case HttpStatusCode.serverError:
+        throw new ServerError();
+      default:
+        throw new UnexpectedError();
+    }
+  }
+
 }
+
+
 
 export const CourtCommandInstance = new CourtCommand(
   makeAxiosHttpClient()

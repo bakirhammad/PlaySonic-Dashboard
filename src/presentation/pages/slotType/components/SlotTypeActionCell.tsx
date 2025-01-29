@@ -101,7 +101,7 @@ const SlotTypeActionCell: FC<Props> = ({ id, name }) => {
       {itemIdForUpdate === id && (
         <CustomModal
           modalSize="lg"
-          modalTitle="Court-Schedule-UPDATE-MODAL"
+          modalTitle="Slot-Type-UPDATE-MODAL"
           onClick={() => {
             setItemIdForUpdate(undefined);
           }}

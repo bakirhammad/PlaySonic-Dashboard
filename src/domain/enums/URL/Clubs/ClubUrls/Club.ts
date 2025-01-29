@@ -5,4 +5,7 @@ export enum ClubUrlEnum {
   UpdateClub = "Booking/Club/Update",
   DeleteClub = "Booking/Club/Delete?",
   MultipleDeleteClub = "Booking/Club/MultipleDelete",
+  DeleteClubImage = "Booking/Club/DeleteImage",
+  DeleteClubImages = "Booking/Club/DeleteImages?"
+
 }

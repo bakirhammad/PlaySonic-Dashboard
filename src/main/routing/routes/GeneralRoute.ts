@@ -17,6 +17,10 @@ const RegisterWrapper = lazy(
   () => import("@presentation/pages/addUser")
 );
 
+const RolesListWrapper = lazy(
+  () => import("@presentation/pages/general/roles")
+);
+
 
 const GeneralRoute: Route = {
   path: "/apps/general",
@@ -50,6 +54,13 @@ const GeneralRoute: Route = {
       path: "adduser",
       title: "SIDEBAR-ADD-USER",
       component: RegisterWrapper,
+      role: [],
+      breadcrumbs: [],
+    },
+    {
+      path: "roles",
+      title: "SIDEBAR-ADD-ROLE",
+      component: RolesListWrapper,
       role: [],
       breadcrumbs: [],
     },

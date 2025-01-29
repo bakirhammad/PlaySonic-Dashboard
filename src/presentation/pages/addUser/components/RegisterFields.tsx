@@ -17,6 +17,7 @@ import * as Yup from "yup";
 import { useQueryClient } from "react-query";
 import CustomSelectField from "@presentation/components/forms/CustomSelectField";
 import { useClubsDDL } from "@presentation/hooks/queries/DDL/Club/useClubsDDL";
+import { useRolesDDL } from "@presentation/hooks/queries/DDL/Roles/useRolesDDL";
 
 export const RegisterFields = () => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);
@@ -24,11 +25,11 @@ export const RegisterFields = () => {
   const queryClient = useQueryClient();
 
   const initialValues = Object.assign({
-    firstname: "",
-    lastname: "",
+    name: "",
+    clubId: "",
     email: "",
     password: "",
-    changepassword: "",
+    role: null,
   });
 
   const _RegisterSchema = Object.assign({
@@ -49,14 +50,6 @@ export const RegisterFields = () => {
       .min(3, "Minimum 3 symbols")
       .max(50, "Maximum 50 symbols")
       .required("Password is required"),
-    changepassword: Yup.string()
-      .min(3, "Minimum 3 symbols")
-      .max(50, "Maximum 50 symbols")
-      .required("Password confirmation is required")
-      .oneOf(
-        [Yup.ref("password")],
-        "Password and Confirm Password didn't match"
-      ),
     acceptTerms: Yup.bool().required(
       "You must accept the terms and conditions"
     ),
@@ -69,11 +62,11 @@ export const RegisterFields = () => {
     setSubmitting: (isSubmitting: boolean) => void
   ) => {
     const formData = new FormData();
-    formData.append("firstname", values.rank);
-    formData.append("lastname", values.payload);
-    formData.append("email", values.cityId.value);
-    formData.append("password", values.cityId.value);
-    formData.append("changepassword", values.cityId.value);
+    formData.append("Name", values.name);
+    formData.append("clubId", values.clubId);
+    formData.append("Email", values.email);
+    formData.append("Password", values.password);
+    formData.append("Role", values.role);
 
     // try {
     //   const data = await RegisterCommandInstance.createRegister(
@@ -123,7 +116,8 @@ const RegisterForm = () => {
   }: FormikContextType<FormikValues> = useFormikContext();
   const { setItemIdForUpdate } = useListView();
 
-  const {clubsOption,isClubLoading} = useClubsDDL()
+  const { clubsOption, isClubLoading } = useClubsDDL();
+  const { RolesOption, isRoleLoading } = useRolesDDL();
   return (
     <>
       <Form
@@ -173,21 +167,12 @@ const RegisterForm = () => {
             />
           </div>
           <div className="row row-cols-2">
-            <CustomInputField
-              name="confirmPasswor"
-              placeholder="CONFIRM-PASSWORD"
-              label="CONFIRM-PASSWORD"
-              as="input"
-              touched={touched}
-              errors={errors}
-              type="password"
-              isSubmitting={isSubmitting}
-            />
             <CustomSelectField
-              name={"permissions"}
-              options={[]}
-              placeholder="CHOOSE-permission"
-              label="CHOOSE-permission"
+              name={"role"}
+              options={RolesOption}
+              isloading={isRoleLoading}
+              placeholder="CHOOSE-Role"
+              label="CHOOSE-Role"
             />
           </div>
         </div>

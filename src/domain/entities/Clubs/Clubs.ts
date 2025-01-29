@@ -21,6 +21,18 @@ export interface IClubQueryById {
     url: string,
     id: number | string
   ): Promise<IClubData>;
+
+  deleteClubImage(
+    url: string,
+    id: number,
+    isDeleteImage: boolean
+  ): Promise<IClubData>;
+
+  deleteClubImages(
+    url: string,
+    id: number,
+    img: string
+  ): Promise<IClubData>;
 }
 
 export interface IClubBody {
@@ -54,6 +66,7 @@ export interface IClubData {
   lat: number,
   lng: number,
   image: string
+  images: []
 }
 
 export interface IClubInfoResponse {

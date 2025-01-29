@@ -12,6 +12,7 @@ import CourtNameCell from "@presentation/helpers/cells/CourtNameCell";
 import SlotTypeNameCell from "@presentation/helpers/cells/SlotTypeNameCell";
 import { ReservationTypeEnum } from "@domain/enums/reservationType/ReservationTypeEnum";
 import { ReservationStatusEnum } from "@domain/enums/reservationStatus/ReservationStatusEnum";
+import ClubNameCell from "@presentation/helpers/cells/ClubNameCell";
 
 const ReservationListColumns: ReadonlyArray<Column<IReservationData>> = [
   {
@@ -47,6 +48,20 @@ const ReservationListColumns: ReadonlyArray<Column<IReservationData>> = [
     id: "courtId",
     Cell: ({ ...props }) => (
       <CourtNameCell courtId={props.data[props.row.index]?.courtId} />
+    ),
+  },
+  {
+    Header: (props) => (
+      <CustomHeaderCell
+        tableProps={props}
+        title="SIDEBAR-RESERVATION-CLUB-ID"
+        enableSorting={false}
+        className="min-w-125px"
+      />
+    ),
+    id: "clubId",
+    Cell: ({ ...props }) => (
+      <ClubNameCell clubId={props.data[props.row.index]?.clubId} />
     ),
   },
   {

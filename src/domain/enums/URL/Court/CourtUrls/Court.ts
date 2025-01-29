@@ -5,4 +5,5 @@ export enum CourtUrlEnum {
   UpdateCourt = "Booking/Court/Update",
   DeleteCourt = "Booking/Court/Delete?",
   MultipleDeleteCourt = "Booking/Court/MultipleDelete",
+  DeleteCourtImage = "Booking/Court/DeleteImage"
 }

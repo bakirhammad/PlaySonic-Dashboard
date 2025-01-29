@@ -43,7 +43,7 @@ const SidebarMenuMain = () => {
       {/* .. >>>>>  */}
 
       {loginedUser.includes("suberAdmin") && <SidebarMenuAdmin />}
-      {loginedUser.includes("subAdmin") && <SidebarMenuClubAdmins />}
+      {loginedUser.includes("subAdmin///") && <SidebarMenuClubAdmins />}
     </>
   );
 };

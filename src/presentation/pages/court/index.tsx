@@ -53,6 +53,7 @@ const CourtList = () => {
     setError(error as Error);
   }, [CourtData, isFetching, isLoading, error]);
 
+  console.log(CourtData , "ddddddddddd")
   const tableData = useMemo(() => CourtData?.data, [CourtData]);
   const handleDeleteSelected = async () => {
     const confirm = await showConfirmationAlert(`${selected.length} item`);
@@ -94,7 +95,7 @@ const CourtList = () => {
       {itemIdForUpdate === null && (
         <CustomModal
           modalSize="xl"
-          modalTitle="Create-Club"
+          modalTitle="Create-Court"
           onClick={() => setItemIdForUpdate(undefined)}
         >
           <CourtModalCreateForm />

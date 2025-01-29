@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   CustomButton,
   CustomKTCard,
@@ -23,16 +24,16 @@ export default function MyReservations() {
   const [searchQuery, setSearchQuery] = useState<string>();
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [courtId , setCourtId ] = useState<any>()
+  const [courtId, setCourtId] = useState<any>();
 
-  const clubId = 23;
+  const clubId = 43;
 
   const {
     data: ReservationData,
     isLoading,
     isFetching,
   } = useQuery({
-    queryKey: [searchQuery, "MyReservations"],
+    queryKey: ["MyReservations", searchQuery],
     queryFn: () => {
       return ReservationQueryInstance.getReservationList(
         `${ReservationUrlEnum.GetReservationList}${searchQuery}`
@@ -59,9 +60,9 @@ export default function MyReservations() {
   });
 
   // return all non cancelled reservations.
-  const filteredData = ReservationData?.data.filter((data)=>{
-    return data.status !== 16
-  })
+  const filteredData = ReservationData?.data.filter((data) => {
+    return data.status !== 16;
+  });
 
   const handleSubmit = (values: typeof initialValues) => {
     const query = stringifyRequestQuery({
@@ -73,7 +74,7 @@ export default function MyReservations() {
     setApplyFilter(true);
     setStartTime(values.fromDate);
     setEndTime(values.toDate);
-    setCourtId(values.court?.value)
+    setCourtId(values.court?.value);
   };
   const queryClient = useQueryClient();
 

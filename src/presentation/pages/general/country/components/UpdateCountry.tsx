@@ -44,7 +44,7 @@ export const UpdateCountry = ({ CountryData, isLoading }: IProps) => {
       {}
     );
     CountryData.translations.forEach((lang) => {
-      translations[`name${lang.languageId}`] = lang.name;
+      translations[`name${lang.langId}`] = lang.name;
     });
     return {
       id: CountryData.id,

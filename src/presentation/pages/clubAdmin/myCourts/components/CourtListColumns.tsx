@@ -61,20 +61,20 @@ const CourtListColumns: ReadonlyArray<Column<ICourtData>> = [
       
     },
   },
-  {
-    Header: (props) => (
-      <CustomHeaderCell
-        tableProps={props}
-        title="SIDEBAR-COURT-PAYLOAD"
-        enableSorting={false}
-        className="min-w-125px"
-      />
-    ),
-    id: "payload",
-    Cell: ({ ...props }) => (
-      <CustomCell data={props.data[props.row.index]?.payload} />
-    ),
-  },
+  // {
+  //   Header: (props) => (
+  //     <CustomHeaderCell
+  //       tableProps={props}
+  //       title="SIDEBAR-COURT-PAYLOAD"
+  //       enableSorting={false}
+  //       className="min-w-125px"
+  //     />
+  //   ),
+  //   id: "payload",
+  //   Cell: ({ ...props }) => (
+  //     <CustomCell data={props.data[props.row.index]?.payload} />
+  //   ),
+  // },
   {
     Header: (props) => (
       <CustomHeaderCell

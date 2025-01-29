@@ -35,6 +35,6 @@ export interface ICountryTranslation {
   id: number;
   countryId: number;
   name: string;
-  languageId: number;
+  langId: number;
   description: string;
 }

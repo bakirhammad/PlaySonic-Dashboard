@@ -21,6 +21,12 @@ export interface ICourtQueryById {
     url: string,
     id: number | string
   ): Promise<ICourtData>;
+
+  deleteCourtImage(
+    url: string,
+    id: number,
+    isDeleteImage:boolean
+  ): Promise<ICourtData>;
 }
 
 export interface ICourtBody {
@@ -48,7 +54,7 @@ export interface ICourtData {
   systemTypeId: number;
   allowedSlotTypes: number;
   sportId: number;
-  image:string
+  fullPathImage:string
 }
 
 export interface IMyCourt {

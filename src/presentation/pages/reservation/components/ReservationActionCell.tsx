@@ -94,11 +94,12 @@ const ReservationActionCell: FC<Props> = ({ id, name }) => {
     <>
       <CustomActionsCell
         id={id}
+        editBtn={false}
         editBtnOnClick={() => {
           setItemIdForUpdate(id);
         }}
         deletBtnOnClick={() => handleDelete()}
-        children={<StatusApproval id={id} />}
+        // children={<StatusApproval id={id} />}
       />
       {itemIdForUpdate === id && (
         <CustomModal

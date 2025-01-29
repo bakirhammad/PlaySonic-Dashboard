@@ -48,13 +48,13 @@ export const UpdateCity = ({ CityData, isLoading }: IProps) => {
       {}
     );
     CityData.translations.forEach((lang) => {
-      translations[`name${lang.languageId}`] = lang.name;
-      translations[`description${lang.languageId}`] = lang.description;
+      translations[`name${lang.langId}`] = lang.name;
+      translations[`description${lang.langId}`] = lang.description;
     });
 
     return {
       id: CityData.id,
-      rank: CityData.rank,
+      rank: CityData.rank,  
       payload: CityData.payload,
       countryId: CityData.countryId,
       ...translations,

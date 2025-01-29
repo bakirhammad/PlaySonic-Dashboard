@@ -10,6 +10,7 @@ import {
 import { CourtActionCell } from "./CourtActionCell";
 import { ICourtData } from "@domain/entities/Court/Court";
 import ClubNameCell from "@presentation/helpers/cells/ClubNameCell";
+import { AllowedSlotsTypeCell } from "@presentation/helpers/cells/AllowedSlotsTypeCell";
 import DefaultImageCell from "@presentation/components/tables/cells/DefaultImageCell";
 
 const CourtListColumns: ReadonlyArray<Column<ICourtData>> = [
@@ -66,6 +67,20 @@ const CourtListColumns: ReadonlyArray<Column<ICourtData>> = [
     Header: (props) => (
       <CustomHeaderCell
         tableProps={props}
+        title="SIDEBAR-Allowed-Slots"
+        enableSorting={false}
+        className="min-w-125px"
+      />
+    ),
+    id: "slotType",
+    Cell: ({ ...props }) => {
+      return <AllowedSlotsTypeCell slot={props.data[props.row.index]?.allowedSlotTypes} />;
+    },
+  },
+  {
+    Header: (props) => (
+      <CustomHeaderCell
+        tableProps={props}
         title="COURT-IMAGE"
         enableSorting={false}
         className="min-w-125px"
@@ -73,8 +88,8 @@ const CourtListColumns: ReadonlyArray<Column<ICourtData>> = [
     ),
     id: "image",
     Cell: ({ ...props }) =>
-      props.data[props.row.index]?.image ? (
-        <CustomImageCell image={props.data[props.row.index]?.image} />
+      props.data[props.row.index]?.fullPathImage ? (
+        <CustomImageCell image={props.data[props.row.index]?.fullPathImage} />
       ) : (
         <DefaultImageCell alt="Court image" />
       ),

@@ -5,6 +5,8 @@ import {
   CustomInputField,
   CustomListLoading,
   CustomToast,
+  showConfirmationAlert,
+  showDeletedAlert,
 } from "@presentation/components";
 import { useListView } from "@presentation/context";
 import {
@@ -16,8 +18,8 @@ import {
   useFormikContext,
 } from "formik";
 import * as Yup from "yup";
-import { QUERIES } from "@presentation/helpers";
-import { useQueryClient } from "react-query";
+import { combineBits, QUERIES } from "@presentation/helpers";
+import { useMutation, useQueryClient } from "react-query";
 import PleaseWaitTxt from "@presentation/helpers/loading/PleaseWaitTxt";
 import { useLanguageStore } from "@infrastructure/storage/LanguageStore";
 import validationSchemas from "@presentation/helpers/validationSchemas";
@@ -27,6 +29,9 @@ import { CourtCommandInstance } from "@app/useCases/court";
 import { CourtUrlEnum } from "@domain/enums/URL/Court/CourtUrls/Court";
 import { useClubsDDL } from "@presentation/hooks/queries/DDL/Club/useClubsDDL";
 import { useSlotTypesDDL } from "@presentation/hooks/queries/DDL/SlotTypes/useSlotTypesDDL";
+import { IDDlOptionSlotType } from "@domain/entities";
+import { CustomUploadFile } from "@presentation/components/forms/CustomUploadFile";
+import { CustomImageReviewForUpdate } from "@presentation/components/forms/CustomImageReviewForUpdate";
 interface IProps {
   CourtData: ICourtData;
   isLoading: boolean;
@@ -35,6 +40,7 @@ export const UpdateCourtModalForm = ({ CourtData, isLoading }: IProps) => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);
   const { setItemIdForUpdate } = useListView();
   const queryClient = useQueryClient();
+
   const { Languages } = useLanguageStore();
 
   const initialValues = useMemo(() => {
@@ -49,13 +55,14 @@ export const UpdateCourtModalForm = ({ CourtData, isLoading }: IProps) => {
       systemTypeId: CourtData.systemTypeId,
       allowedSlotTypes: CourtData.allowedSlotTypes,
       sportId: CourtData.sportId,
+      image: CourtData.fullPathImage,
     };
   }, [CourtData]);
 
   const _CourtSchema = Object.assign({
     club: validationSchemas.object,
     rank: validationSchemas.number,
-    allowedSlotTypes: validationSchemas.object,
+    allowedSlotTypes: validationSchemas.array.required("Required"),
     systemTypeId: validationSchemas.number,
     sportId: validationSchemas.number,
     courtTypeId: validationSchemas.number,
@@ -70,6 +77,10 @@ export const UpdateCourtModalForm = ({ CourtData, isLoading }: IProps) => {
   ) => {
     const formData = new FormData();
 
+    const allowedSlots = combineBits(
+      values.allowedSlotTypes.map((slot: IDDlOptionSlotType) => slot.value)
+    );
+
     formData.append("Id", String(initialValues.id));
     formData.append("ClubId", values.club.value);
     formData.append("Rank", values.rank);
@@ -78,8 +89,9 @@ export const UpdateCourtModalForm = ({ CourtData, isLoading }: IProps) => {
     formData.append("Name", values.name);
     formData.append("SystemTypeId", values.systemTypeId);
     formData.append("Payload", values.payload);
-    formData.append("AllowedSlotTypes", values.allowedSlotTypes.value);
+    formData.append("AllowedSlotTypes", String(allowedSlots));
     formData.append("SportId", values.sportId);
+    formData.append("Img", values.image);
 
     try {
       const data = await CourtCommandInstance.updateCourt(
@@ -125,15 +137,20 @@ export const UpdateCourtModalForm = ({ CourtData, isLoading }: IProps) => {
             handleSubmit(values, setSubmitting);
           }}
         >
-          <CourtUpdateForm />
+          <CourtUpdateForm CourtData={CourtData} />
         </Formik>
       )}
     </>
   );
 };
 
-const CourtUpdateForm = () => {
+interface IProp {
+  CourtData: ICourtData;
+}
+
+const CourtUpdateForm = ({ CourtData }: IProp) => {
   const { setItemIdForUpdate } = useListView();
+  const queryClient = useQueryClient();
 
   const {
     errors,
@@ -153,16 +170,38 @@ const CourtUpdateForm = () => {
       }
     });
 
-    SlotTypesOption.forEach((elem) => {
-      if (elem.value === values.allowedSlotTypes) {
-        return setFieldValue("allowedSlotTypes", {
-          value: elem.value,
-          label: elem.label,
-        });
+    const SlotTypesOptions = SlotTypesOption.filter(
+      (option) => (CourtData.allowedSlotTypes & option.value) === option.value
+    );
+    setFieldValue("allowedSlotTypes", SlotTypesOptions);
+  }, [clubsOption, SlotTypesOption]);
+  console.log(values);
+
+  const { mutateAsync: deleteImage } = useMutation(
+    async () => {
+      const confirm = await showConfirmationAlert();
+      if (confirm) {
+        const data = await CourtCommandInstance.deleteCourtImage(
+          CourtUrlEnum.DeleteCourtImage,
+          CourtData?.id
+        );
+        return data;
       }
-    });
-  }, [clubsOption ,SlotTypesOption]);
-  console.log(values)
+    },
+    {
+      onSuccess: async () => {
+        queryClient.invalidateQueries({ queryKey: [QUERIES.CourtList] });
+        setItemIdForUpdate(undefined)
+        CustomToast(`Deleted successfully`, "success");
+        showDeletedAlert();
+        // setItemIdForUpdate(CourtData.id)
+      },
+      onError: (error) => {
+        console.error("Error when deleting Country Image", error);
+        CustomToast(`Failed to delete Country Image`, "error");
+      },
+    }
+  );
 
   return (
     <>
@@ -204,8 +243,9 @@ const CourtUpdateForm = () => {
                 placeholder="COURT-ALLOWED-SLOT-TYPES"
                 touched={touched}
                 errors={errors}
+                isMulti={true}
               />
-                   <CustomInputField
+              <CustomInputField
                 name="rank"
                 placeholder="COURT-RANK"
                 label="COURT-RANK"
@@ -263,7 +303,30 @@ const CourtUpdateForm = () => {
                 isSubmitting={isSubmitting}
               />
             </div> */}
-            <div>
+            <div className="row row-cols-1 row-cols-md-2 border-info-subtle border-black">
+              <ul>
+                <CustomUploadFile
+                  label="CHARTER-AIRLINE_LOGO_LABEL"
+                  name="image"
+                  touched={touched}
+                  errors={errors}
+                  labelRequired={true}
+                  isSubmitting={isSubmitting}
+                  accept={"image/*"}
+                />
+                {typeof values.image === "string" && CourtData.fullPathImage ? (
+                  <CustomImageReviewForUpdate
+                    inedx={1}
+                    fileName={CourtData.fullPathImage}
+                    imageUrl={CourtData.fullPathImage}
+                    onClickDelete={async () => {
+                      await deleteImage();
+                    }}
+                  />
+                ) : (
+                  <div></div>
+                )}
+              </ul>
               <CustomCheckbox
                 labelTxt="COURT-INDOOR"
                 name={"indoor"}
@@ -294,5 +357,3 @@ const CourtUpdateForm = () => {
     </>
   );
 };
-
-export default UpdateCourtModalForm;

@@ -116,6 +116,63 @@ export class ClubCommand
         throw new UnexpectedError();
     }
   }
+
+  async deleteClubImage(
+      url: string,
+      id: number
+    ): Promise<IClubData> {
+      const httpResponse = await this.httpPostClient.deleteRequest({
+        url,
+        body: {
+          id,
+          isDeleteImage: false
+        },
+      });
+      switch (httpResponse.statusCode) {
+        case HttpStatusCode.ok:
+          return httpResponse.data.value;
+        case HttpStatusCode.coustomError:
+          throw new Error(httpResponse.data?.message);
+        case HttpStatusCode.unauthorized:
+          throw new InvalidCredentialsError();
+        case HttpStatusCode.notFound:
+          throw new NotFoundError();
+        case HttpStatusCode.badRequest:
+          throw new BadRequestError();
+        case HttpStatusCode.serverError:
+          throw new ServerError();
+        default:
+          throw new UnexpectedError();
+      }
+    }
+
+    async deleteClubImages(
+      url: string,
+      id: number,
+      img: string
+    ): Promise<IClubData> {
+      const newUrl = `${url}Id=${id}&img=${img}`;
+  
+      const httpResponse = await this.httpPostClient.deleteRequest({
+        url: newUrl,
+      });
+      switch (httpResponse.statusCode) {
+        case HttpStatusCode.ok:
+          return httpResponse.data.value;
+        case HttpStatusCode.coustomError:
+          throw new Error(httpResponse.data?.message);
+        case HttpStatusCode.unauthorized:
+          throw new InvalidCredentialsError();
+        case HttpStatusCode.notFound:
+          throw new NotFoundError();
+        case HttpStatusCode.badRequest:
+          throw new BadRequestError();
+        case HttpStatusCode.serverError:
+          throw new ServerError();
+        default:
+          throw new UnexpectedError();
+      }
+    }
 }
 
 export const ClubCommandInstance = new ClubCommand(
