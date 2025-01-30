@@ -85,7 +85,7 @@ export const UpdateClubModalForm = ({ ClubData, isLoading }: IProps) => {
       lat: lat,
       lng: lng,
       image: ClubData.image,
-      // images: ClubData.images,
+      images: ClubData.images,
       ...translations,
     };
   }, [ClubData, Languages, lng, lat]);
@@ -139,9 +139,14 @@ export const UpdateClubModalForm = ({ ClubData, isLoading }: IProps) => {
     formData.append("lat", values.lat);
     formData.append("lng", values.lng);
     formData.append("Img", values.image);
-    // values?.images.forEach((img: File) => {
-    //   formData.append("Images", img);
-    // });
+
+    if (Array.isArray(values?.images)) {
+      values?.images.forEach((img: File) => {
+        formData.append("Images", img);
+      });
+    } else {
+      formData.append("Images", values?.images);
+    }
 
     let index = 0;
     Languages.forEach((lang) => {
@@ -312,6 +317,8 @@ const ClubUpdateForm: FC<IData> = ({ clubData }) => {
       icon: "warning",
     });
   };
+
+  console.log(values, "clubId");
   return (
     <>
       <Form
@@ -420,7 +427,7 @@ const ClubUpdateForm: FC<IData> = ({ clubData }) => {
                 type="text"
                 isSubmitting={isSubmitting}
               />
-              <ul>
+              <div>
                 <CustomUploadFile
                   label="Club-Image"
                   name="image"
@@ -442,11 +449,11 @@ const ClubUpdateForm: FC<IData> = ({ clubData }) => {
                 ) : (
                   <div></div>
                 )}
-              </ul>
+              </div>
             </div>
 
             <div className="row row-cols-3">
-              {/* <ul>
+              <div>
                 <CustomUploadFile
                   name={"images"}
                   label="Club-Covers"
@@ -469,7 +476,7 @@ const ClubUpdateForm: FC<IData> = ({ clubData }) => {
                       }}
                     />
                   ))}
-              </ul> */}
+              </div>
             </div>
             <hr />
             <div className="translation mt-5">

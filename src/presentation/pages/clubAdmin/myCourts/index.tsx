@@ -27,7 +27,7 @@ const MyCourts = () => {
   const columns = useMemo(() => CourtListColumns, []);
 
   const queryClient = useQueryClient();
-  const clubId = 43;
+  const clubId = 61;
   const { itemIdForUpdate, setItemIdForUpdate, selected, clearSelected } =
     useListView();
   const {
@@ -44,7 +44,6 @@ const MyCourts = () => {
       );
     },
   });
-
 
   useEffect(() => {
     updateData(CourtData);
@@ -87,9 +86,8 @@ const MyCourts = () => {
           onDeleteSelectedAll={() => handleDeleteSelected()}
           addBtn={true}
           addName="ADD-Court"
-          
         />
-        <CustomTemplate courtData={tableData || []}/>
+        <CustomTemplate courtData={tableData || []} />
         {/* <CustomTable columns={columns} data={tableData || []} /> */}
       </CustomKTCard>
       {itemIdForUpdate === null && (

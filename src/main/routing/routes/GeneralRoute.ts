@@ -21,7 +21,9 @@ const RolesListWrapper = lazy(
   () => import("@presentation/pages/general/roles")
 );
 
-
+const ImageBannerListWrapper = lazy(
+  () => import("@presentation/pages/general/imageBanner")
+);
 const GeneralRoute: Route = {
   path: "/apps/general",
   title: "",
@@ -61,6 +63,13 @@ const GeneralRoute: Route = {
       path: "roles",
       title: "SIDEBAR-ADD-ROLE",
       component: RolesListWrapper,
+      role: [],
+      breadcrumbs: [],
+    },
+    {
+      path: "banner",
+      title: "SIDEBAR-Banner-Image",
+      component: ImageBannerListWrapper,
       role: [],
       breadcrumbs: [],
     },

@@ -15,7 +15,8 @@ const QUERIES = {
   CityList:"CityList",
   AreaList: "AreaList",
   ReservationList:"ReservationtList",
-  RolesList:"RolesList"
+  RolesList:"RolesList",
+  ImageBannerList: "ImageBannerList"
 };
 const PAGINATION_PAGES_COUNT = 3;
 const defaultPageNumberInPagination = 1;

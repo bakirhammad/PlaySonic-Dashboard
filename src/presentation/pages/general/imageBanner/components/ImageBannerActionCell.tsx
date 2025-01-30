@@ -9,73 +9,69 @@ import { FC } from "react";
 import { useQueryClient, useMutation, useQuery } from "react-query";
 import { QUERIES } from "@presentation/helpers";
 import { useListView } from "@presentation/context/index";
-import { IReservationData } from "@domain/entities/Reservation/Reservation";
-import { ReservationCommandInstance, ReservationQueryByIdInstance } from "@app/useCases/reservation";
-import { ReservationUrlEnum } from "@domain/enums/URL/Reservation/reservationUrls/Reservation";
-import UpdateReservationForm from "./UpdateReservationForm";
-import StatusApproval from "./StatusApproval";
+import { ImageBannerUrlEnum } from "@domain/enums/URL/General/GeneralEnum/ImageBannerEnum";
+import { IImageBannerData } from "@domain/entities/general/ImageBanner/ImageBanner";
+import { ImageBannerCommandInstance, ImageBannerQueryByIdInstance } from "@app/useCases/general/imageBanner";
+import UpdateImageBanner from "./UpdateImageBanner";
 
 interface Props {
   id: number;
   name?: string;
 }
 
-const ReservationActionCell: FC<Props> = ({ id, name }) => {
+const ImageBannerActionCell: FC<Props> = ({ id, name }) => {
   const { itemIdForUpdate, setItemIdForUpdate } = useListView();
   const queryClient = useQueryClient();
 
   const { data, error, isLoading } = useQuery({
-    queryKey: [QUERIES.ReservationList, id],
+    queryKey: [QUERIES.ImageBannerList, id],
     queryFn: () => {
-      return ReservationQueryByIdInstance.getReservationById(
-        ReservationUrlEnum.GetReservationById,
-        id
-      );
+      return ImageBannerQueryByIdInstance.getImageBannerById(ImageBannerUrlEnum.GetImageBannerById, id);
     },
     onError: () => {
       console.error("Error submitting form:", error);
-      CustomToast(`Failed to get Reservation data`, "error");
+      CustomToast(`Failed to get ImageBanner data`, "error");
       setItemIdForUpdate(undefined);
     },
     enabled: itemIdForUpdate === id,
   });
 
-  const { mutate: deleteReservation } = useMutation(
+  const { mutate: deleteImageBanner } = useMutation(
     async (id: number) => {
-      const data = await ReservationCommandInstance.deleteReservation(
-        ReservationUrlEnum.DeleteReservation,
+      const data = await ImageBannerCommandInstance.deleteImageBanner(
+        ImageBannerUrlEnum.DeleteImageBanner,
         id
       );
       return data;
     },
     {
-      onSuccess: async (res: IReservationData | number) => {
+      onSuccess: async (res: IImageBannerData | number) => {
         if (res === -1) {
           const confirmForceDelete = await showConfirmationAlert(
             "This Item has Related entities"
           );
           if (confirmForceDelete) {
-            await ReservationCommandInstance.deleteReservation(
-              ReservationUrlEnum.DeleteReservation + `forceDelete=true&`,
+            await ImageBannerCommandInstance.deleteImageBanner(
+              ImageBannerUrlEnum.DeleteImageBanner + `forceDelete=true&`,
               id
             );
             CustomToast(`Deleted successfully`, "success");
             showDeletedAlert(name);
             queryClient.invalidateQueries({
-              queryKey: [QUERIES.ReservationList],
+              queryKey: [QUERIES.ImageBannerList],
             });
           }
         } else {
           CustomToast(`Deleted successfully`, "success");
           showDeletedAlert(name);
           queryClient.invalidateQueries({
-            queryKey: [QUERIES.ReservationList],
+            queryKey: [QUERIES.ImageBannerList],
           });
         }
       },
       onError: (error) => {
-        console.error("Error when delete Reservation", error);
-        CustomToast(`Failed to delete Reservation`, "error");
+        console.error("Error when delete ImageBanner", error);
+        CustomToast(`Failed to delete ImageBanner`, "error");
       },
     }
   );
@@ -83,7 +79,7 @@ const ReservationActionCell: FC<Props> = ({ id, name }) => {
   const handleDelete = async () => {
     const confirm = await showConfirmationAlert(name);
     if (confirm) {
-      deleteReservation(id);
+      deleteImageBanner(id);
     }
   };
 
@@ -95,26 +91,20 @@ const ReservationActionCell: FC<Props> = ({ id, name }) => {
           setItemIdForUpdate(id);
         }}
         deletBtnOnClick={() => handleDelete()}
-        children={<StatusApproval id={id}/>}
       />
       {itemIdForUpdate === id && (
         <CustomModal
           modalSize="xl"
-          modalTitle="Reservation-UPDATE-MODAL"
+          modalTitle="ImageBanner-UPDATE-MODAL"
           onClick={() => {
             setItemIdForUpdate(undefined);
           }}
         >
-          {data && (
-            <UpdateReservationForm
-              ReservationData={data}
-              isLoading={isLoading}
-            />
-          )}
+          {data && <UpdateImageBanner ImageBannerData={data} isLoading={isLoading} />}
         </CustomModal>
       )}
     </>
   );
 };
 
-export { ReservationActionCell };
+export { ImageBannerActionCell };

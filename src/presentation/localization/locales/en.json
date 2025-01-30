@@ -286,7 +286,16 @@
   "Create-City":"Create City",
   "Role-UPDATE-MODAL":"Update Role",
   "CHOOSE-Role":"Select Role",
-  "Club-Image":"Club Image"
+  "Club-Image":"Club Image",
+  "SIDEBAR-Banner-Image":"Banner Image",
+  "Banner-Titel":"Titel",
+  "Banner-Description": "Description",
+  "Banner-Image":"Image",
+  "Banner-Path":"Path",
+  "Create-ImageBanner":"Add Image Banner",
+  "ImageBanner-UPDATE-MODAL": "Update Image Banner"
+
+
 
 
 

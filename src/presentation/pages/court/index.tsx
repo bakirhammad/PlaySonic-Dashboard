@@ -16,13 +16,12 @@ import {
   showConfirmationAlert,
   showDeletedAlert,
 } from "@presentation/components";
-import { ClubCommandInstance } from "@app/useCases/clubs";
-import { ClubUrlEnum } from "@domain/enums/URL/Clubs/ClubUrls/Club";
 import { CourtModalCreateForm } from "./components/CourtModalCreateForm";
 import { CourtCommandInstance, CourtQueryInstance } from "@app/useCases/court";
 import { CourtUrlEnum } from "@domain/enums/URL/Court/CourtUrls/Court";
 import { CourtListColumns } from "./components/CourtListColumns";
 import CourtFilter from "./components/CourtFilter";
+import CheckPermission from "@presentation/helpers/CheckPermission";
 
 const CourtList = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
@@ -76,6 +75,7 @@ const CourtList = () => {
     }
   };
 
+  const checkCreatePermission = CheckPermission("Create")
   return (
     <>
       <CustomKTCard>
@@ -87,7 +87,7 @@ const CourtList = () => {
           filterBtn={true}
           FilterComponent={<CourtFilter />}
           onDeleteSelectedAll={() => handleDeleteSelected()}
-          addBtn={true}
+          addBtn={checkCreatePermission}
           addName="ADD"
         />
         <CustomTable columns={columns} data={tableData || []} />
@@ -98,6 +98,7 @@ const CourtList = () => {
           modalTitle="Create-Court"
           onClick={() => setItemIdForUpdate(undefined)}
         >
+          
           <CourtModalCreateForm />
         </CustomModal>
       )}

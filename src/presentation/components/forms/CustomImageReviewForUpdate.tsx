@@ -56,13 +56,13 @@ const CustomImageReviewForUpdate: FC<Props> = ({
 
         {deleteBtn && (
           <div>
-            <button
+            {/* <button
               type="button"
               className="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
               onClick={onClickDelete}
             >
-              <CustomKTIcon iconName="trash" className="fs-3" />
-            </button>
+               <CustomKTIcon iconName="trash" className="fs-3" />
+            </button> */}
           </div>
         )}
       </li>

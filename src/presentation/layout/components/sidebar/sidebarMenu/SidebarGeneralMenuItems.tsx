@@ -19,16 +19,21 @@ const SidebarGeneralMenuItems: FC = () => {
         title="SIDEBAR-Area"
         hasBullet={true}
       />
-      {/* <SidebarMenuItem
+      <SidebarMenuItem
+        to="/apps/general/banner"
+        title="SIDEBAR-Banner-Image"
+        hasBullet={true}
+      />
+      <SidebarMenuItem
         to="/apps/general/adduser"
         title="SIDEBAR-ADD-USER"
         hasBullet={true}
-      /> 
-         <SidebarMenuItem
+      />
+      <SidebarMenuItem
         to="/apps/general/roles"
         title="SIDEBAR-ROLES"
         hasBullet={true}
-      />   */}
+      />
     </>
   );
 };

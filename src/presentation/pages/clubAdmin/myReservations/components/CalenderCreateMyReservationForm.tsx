@@ -1,10 +1,9 @@
-import { FC, useRef, useState } from "react";
+import { FC, useEffect, useRef } from "react";
 import {
   CustomButton,
   CustomCheckbox,
   CustomInputField,
   CustomListLoading,
-  CustomModal,
   CustomToast,
 } from "@presentation/components";
 import { useListView } from "@presentation/context";
@@ -18,16 +17,12 @@ import {
 } from "formik";
 import * as Yup from "yup";
 import { useQueryClient } from "react-query";
-import { QUERIES } from "@presentation/helpers";
 import CustomSelectField from "@presentation/components/forms/CustomSelectField";
 import validationSchemas from "@presentation/helpers/validationSchemas";
 import { ReservationCommandInstance } from "@app/useCases/reservation";
 import { ReservationUrlEnum } from "@domain/enums/URL/Reservation/reservationUrls/Reservation";
 import CustomTimePicker from "@presentation/components/forms/CustomTimePicker";
 import { useSlotTypesDDL } from "@presentation/hooks/queries/DDL/SlotTypes/useSlotTypesDDL";
-import { CourtQueryInstance } from "@app/useCases/court";
-import { CourtUrlEnum } from "@domain/enums/URL/Court/CourtUrls/Court";
-import { IDDlOption } from "@domain/entities";
 import { CreateNewUser } from "./CreateNewUser";
 
 interface ICourtId {
@@ -58,8 +53,8 @@ export const CalenderCreateMyReservationForm: FC<ICourtId> = ({
     reservationDate: reservationDate,
     slotsRemaining: 1,
     sportId: 1,
-     ownerID: "345ebbb9-924b-4359-845d-60860c5ed515",
-    // ownerID: null,
+    //  ownerID: "345ebbb9-924b-4359-845d-60860c5ed515",
+    ownerID: null,
   });
 
   const _ReservationSchema = Object.assign({
@@ -92,7 +87,7 @@ export const CalenderCreateMyReservationForm: FC<ICourtId> = ({
     formData.append("IsPublic", values.isPublic);
     formData.append("ReservationDate", values.reservationDate);
     formData.append("SportId", values.sportId);
-    formData.append("OwnerID", values.ownerID);
+    formData.append("OwnerID", values.ownerID.value);
 
     try {
       const data = await ReservationCommandInstance.createReservation(
@@ -141,34 +136,18 @@ const ReservationForm = () => {
     setFieldValue,
   }: FormikContextType<FormikValues> = useFormikContext();
 
-  const [user, setUser] = useState<IDDlOption[]>([]);
-  const [createUserModal, setCreateUserModal] = useState(false);
-
-  const HandleFindUser = async () => {
-    try {
-      const findUser = await CourtQueryInstance.getCourtList(
-        CourtUrlEnum.GetCourtList + `clubId=${values.playSonicId}`
-      );
-      if (findUser.data.length === 0) {
-        setUser([]);
-        CustomToast("User Not found", "error");
-      } else {
-        const user = findUser?.data?.map((user) => {
-          return {
-            value: user.id,
-            label: user.name,
-          };
-        });
-        setUser(user.length ? user : []);
-        setFieldValue("ownerID", user[0]);
-      }
-    } catch {
-      console.log("error");
-    }
-  };
-
-  const { setItemIdForUpdate } = useListView();
   const { SlotTypesOption, isSlotTypesLoading } = useSlotTypesDDL();
+
+  useEffect(() => {
+    if (values.slotTypeId && values.startTime) {
+      const slotDuration = parseInt(values.slotTypeId.label);
+      const startTime = new Date(`1970-01-01T${values.startTime}:00`);
+      startTime.setMinutes(startTime.getMinutes() + slotDuration);
+      const updatedEndTime = startTime.toTimeString().substring(0, 5);
+
+      setFieldValue("endTime", updatedEndTime);
+    }
+  }, [values.slotTypeId, values.startTime, setFieldValue]);
   return (
     <>
       <Form
@@ -249,42 +228,8 @@ const ReservationForm = () => {
                 type="number"
                 isSubmitting={isSubmitting}
               />
-              <div className="d-flex tw-gap-5">
-                <CustomButton
-                  type="button"
-                  text="Add"
-                  onClick={() => HandleFindUser()}
-                  className="btn btn-primary"
-                />
-                <CustomButton
-                  type="button"
-                  text="Create New"
-                  onClick={() => setCreateUserModal(true)}
-                  className="btn btn-light-primary"
-                />
-              </div>
             </div>
-            {user.length !== 0 && (
-              <div className="row row-cols-1 row-cols-md-2 border-info-subtle border-black">
-                <CustomSelectField
-                  name="ownerID"
-                  options={user}
-                  label="DDL-Owner"
-                  placeholder="DDL-Owner"
-                  touched={touched}
-                  errors={errors}
-                />
-              </div>
-            )}
-            {createUserModal && (
-              <CustomModal
-                modalTitle="Create-New-User"
-                modalSize={"xl"}
-                onClick={() => setCreateUserModal(false)}
-              >
-                <CreateNewUser />
-              </CustomModal>
-            )}
+
             {/* <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
               <CustomSelectField
                 name="status"
@@ -334,6 +279,7 @@ const ReservationForm = () => {
         </div>
         {isSubmitting && <CustomListLoading />}
       </Form>
+      <CreateNewUser values={values} setFieldValue={setFieldValue} />
     </>
   );
 };

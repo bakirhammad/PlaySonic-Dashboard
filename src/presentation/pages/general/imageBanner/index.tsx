@@ -16,57 +16,57 @@ import {
   showConfirmationAlert,
   showDeletedAlert,
 } from "@presentation/components";
-import { ClubCommandInstance } from "@app/useCases/clubs";
-import { ClubUrlEnum } from "@domain/enums/URL/Clubs/ClubUrls/Club";
-import { ReservationQueryInstance } from "@app/useCases/reservation";
-import { ReservationUrlEnum } from "@domain/enums/URL/Reservation/reservationUrls/Reservation";
-import { ReservationListColumns } from "./components/ReservationListColumns";
-import { CreateReservationForm } from "./components/CreateMyReservationForm";
-import ReservaionFilter from "./components/ReservaionFilter";
+import {
+  ImageBannerCommandInstance,
+  ImageBannerQueryInstance,
+} from "@app/useCases/general/imageBanner";
+import { ImageBannerUrlEnum } from "@domain/enums/URL/General/GeneralEnum/ImageBannerEnum";
+import { CreateImageBanner } from "./components/CreateImageBanner";
+import { ImageBannerListColumns } from "./components/ImageBannerListColumns";
 
-const MyReservations = () => {
+const ImageBanner = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
 
-  const columns = useMemo(() => ReservationListColumns, []);
-
+  const columns = useMemo(() => ImageBannerListColumns, []);
   const queryClient = useQueryClient();
 
   const { itemIdForUpdate, setItemIdForUpdate, selected, clearSelected } =
     useListView();
   const {
-    data: ReservationData,
+    data: ImageBannerData,
     error,
     isLoading,
     isFetching,
   } = useQuery({
-    queryKey: [QUERIES.ReservationList, [query]],
+    queryKey: [QUERIES.ImageBannerList, [query]],
+
     queryFn: () => {
       const searchQuery = query ? `&${query}` : "";
-      return ReservationQueryInstance.getReservationList(
-        `${ReservationUrlEnum.GetReservationList + searchQuery}`
+      return ImageBannerQueryInstance.getImageBannerList(
+        `${ImageBannerUrlEnum.GetImageBannerList + searchQuery}`
       );
     },
   });
 
   useEffect(() => {
-    updateData(ReservationData);
+    updateData(ImageBannerData);
     setIsLoading(isFetching || isLoading);
     setError(error as Error);
-  }, [ReservationData, isFetching, isLoading, error]);
+  }, [ImageBannerData, isFetching, isLoading, error]);
 
-  const tableData = useMemo(() => ReservationData?.data, [ReservationData]);
+  const tableData = useMemo(() => ImageBannerData?.data, [ImageBannerData]);
 
   const handleDeleteSelected = async () => {
     const confirm = await showConfirmationAlert(`${selected.length} item`);
     if (confirm) {
       try {
-        const data = await ClubCommandInstance.multipleDeleteClub(
-          ClubUrlEnum.MultipleDeleteClub,
+        const data = await ImageBannerCommandInstance.multipleDeleteImageBanner(
+          ImageBannerUrlEnum.MultipleDeleteImageBanner,
           selected
         );
         if (data) {
           showDeletedAlert(`${selected.length} item`);
-          queryClient.invalidateQueries([QUERIES.ClubList]);
+          queryClient.invalidateQueries([QUERIES.ImageBannerList]);
           clearSelected();
           CustomToast(`Deleted successfully`, "success");
         }
@@ -86,9 +86,9 @@ const MyReservations = () => {
           }}
           searchPlaceholder="SEARCH"
           filterBtn={true}
-           FilterComponent={<ReservaionFilter/>}
+          // FilterComponent={<ImageBannerFilter></ImageBannerFilter>}
           onDeleteSelectedAll={() => handleDeleteSelected()}
-          addBtn={false}
+          addBtn={true}
           addName="ADD"
         />
         <CustomTable columns={columns} data={tableData || []} />
@@ -96,23 +96,23 @@ const MyReservations = () => {
       {itemIdForUpdate === null && (
         <CustomModal
           modalSize="xl"
-          modalTitle="Create-Club"
+          modalTitle="Create-ImageBanner"
           onClick={() => setItemIdForUpdate(undefined)}
         >
-          <CreateReservationForm />
+          <CreateImageBanner />
         </CustomModal>
       )}
     </>
   );
 };
 
-function MyReservationsWrapper() {
+function ImageBannerListWrapper() {
   return (
     <QueryRequestProvider>
       <ListViewProvider>
-        <MyReservations />
+        <ImageBanner />
       </ListViewProvider>
     </QueryRequestProvider>
   );
 }
-export default MyReservationsWrapper;
+export default ImageBannerListWrapper;

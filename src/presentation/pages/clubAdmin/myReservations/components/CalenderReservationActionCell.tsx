@@ -15,8 +15,8 @@ import {
   ReservationQueryByIdInstance,
 } from "@app/useCases/reservation";
 import { ReservationUrlEnum } from "@domain/enums/URL/Reservation/reservationUrls/Reservation";
-import StatusApproval from "@presentation/pages/clubAdmin/myReservation/components/StatusApproval";
 import CalenderUpdateReservationForm from "./CalenderUpdateReservationForm";
+import StatusApproval from "@presentation/helpers/StatusApproval";
 
 interface Props {
   id: number;
@@ -28,7 +28,7 @@ const CalenderReservationActionCell: FC<Props> = ({ id, name }) => {
   const queryClient = useQueryClient();
 
   const { data, error, isLoading } = useQuery({
-    queryKey: [QUERIES.ReservationList, id],
+    queryKey: ["MyReservations", id],
     queryFn: () => {
       return ReservationQueryByIdInstance.getReservationById(
         ReservationUrlEnum.GetReservationById,
@@ -65,14 +65,14 @@ const CalenderReservationActionCell: FC<Props> = ({ id, name }) => {
             CustomToast(`Deleted successfully`, "success");
             showDeletedAlert(name);
             queryClient.invalidateQueries({
-              queryKey: [QUERIES.ReservationList],
+              queryKey: ["MyReservations"],
             });
           }
         } else {
           CustomToast(`Deleted successfully`, "success");
           showDeletedAlert(name);
           queryClient.invalidateQueries({
-            queryKey: [QUERIES.ReservationList],
+            queryKey: ["MyReservations"],
           });
         }
       },
