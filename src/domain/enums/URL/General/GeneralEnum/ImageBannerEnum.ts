@@ -5,4 +5,5 @@ export enum ImageBannerUrlEnum {
   UpdateImageBanner = "General/ImageBanner/Update",
   DeleteImageBanner = "General/ImageBanner/Delete?",
   MultipleDeleteImageBanner = "General/ImageBanner/MultipleDelete",
+  DeleteBannerImage = "General/ImageBanner/DeleteImage"
 }

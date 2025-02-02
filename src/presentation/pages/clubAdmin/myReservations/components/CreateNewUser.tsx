@@ -26,7 +26,6 @@ import { addReservationUserCommandInstance } from "@app/useCases/addReservationU
 import { AddReservationUserUrlEnum } from "@domain/enums/URL/AddReservationUser/AddReservationUser";
 import { GetPlaySonicByIdInstance } from "@app/useCases/getPlaySonicId";
 import { GetPlaySonicByIdUrlEnum } from "@domain/enums/URL/GetPlaySonicById/GetPlaySonicById";
-import { CustomComfirmationAlert } from "@presentation/components/alerts/CustomComfirmationAlert";
 import { showPalySonicIdAlert } from "@presentation/components/alerts/showPalySonicIdAlert";
 
 const CreateNewUserForm = ({ setFieldValue, values }: any) => {
@@ -83,7 +82,7 @@ const CreateNewUserForm = ({ setFieldValue, values }: any) => {
           `Your Playsonic ID is ${data.playSonicId}`,
           "Success Create"
         );
-
+        setFieldValue("playSonicId", data.playSonicId);
         setItemIdForUpdate(undefined);
         queryClient.invalidateQueries({
           queryKey: [QUERIES.ReservationList],
@@ -120,20 +119,6 @@ const CreateNewUserForm = ({ setFieldValue, values }: any) => {
   };
   return (
     <>
-      <div className="d-flex tw-gap-5">
-        <CustomButton
-          type="button"
-          text="Add"
-          onClick={() => HandleFindUser()}
-          className="btn btn-primary"
-        />
-        <CustomButton
-          type="button"
-          text="Create New"
-          onClick={() => setCreateUserModal(true)}
-          className="btn btn-light-primary"
-        />
-      </div>
       {user && (
         <div className="row row-cols-1 row-cols-md-2 border-info-subtle border-black">
           <CustomSelectField
@@ -144,6 +129,21 @@ const CreateNewUserForm = ({ setFieldValue, values }: any) => {
           />
         </div>
       )}
+      <div className="d-flex tw-gap-5">
+        <CustomButton
+          type="button"
+          text="Find"
+          onClick={() => HandleFindUser()}
+          className="btn btn-primary"
+        />
+        <CustomButton
+          type="button"
+          text="Create New"
+          onClick={() => setCreateUserModal(true)}
+          className="btn btn-light-primary"
+        />
+      </div>
+
       {createUserModal && (
         <CustomModal
           modalTitle="Create-New-User"

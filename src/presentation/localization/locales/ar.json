@@ -232,7 +232,7 @@
   "Approve":"موافقة",
   "Create-Reservation": "Create Reservation",
   "SIDEBAR-REGISTER":"Resgister User",
-    "User-Name":"الاسم",
+    "User-Name":"اسم المستخدم",
   "USER-PHONE": "رقم الهاتف",
   "PlaySonicId":"Play Sonic ID",
   "Add" :"Add",
@@ -254,7 +254,7 @@
   "DDL-GENDER":"الجنس",
   "COURT-IMAGE": "صورة",
     "CLUB-IMAGE":"الصورة",
-  "SIDEBAR-ROLES":"Rules"  ,
+  "SIDEBAR-ROLES":"Roles"  ,
   "ROLE-PERRMISSIONS": "Permissions",
   "ROLE-TYPE" : "Type",
   "ROLE-NAME" : "Name",
@@ -279,7 +279,24 @@
   "Banner-Image":"Image",
   "Banner-Path":"Path",
   "Create-ImageBanner":"Add Image Banner",
-  "ImageBanner-UPDATE-MODAL": "Update Image Banner"
+  "ImageBanner-UPDATE-MODAL": "Update Image Banner",
+  "SIDEBAR-USERS":"Admin Users",
+  "Add-User":"Add User",
+    "EMAIL":"Email",
+  "Name":"Name",
+    "Phone-Number":"Phone Number",
+  "Password":"Password",
+  "UPDATE-User":"Update User",
+  "Is-Club":"Club Admin?",
+  "SIDEBAR-PLAYSONIC-USERS":"Playsonic Users",
+  "PhoneNumber":"Phone Number",
+  "Email":"الايميل"
+
+
+
+
+
+
 
 
 

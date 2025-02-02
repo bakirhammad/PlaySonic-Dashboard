@@ -6,6 +6,7 @@ import { MutableRefObject, useEffect, useRef } from "react";
 import { ToggleComponent } from "../../../../assets/ts/components";
 import { CustomKTIcon } from "../../../components";
 
+
 type PropsType = {
   sidebarRef: MutableRefObject<HTMLDivElement | null>;
 };
@@ -56,28 +57,27 @@ const SidebarLogo = (props: PropsType) => {
       <Link to="/dashboard">
         {config.layoutType === "dark-sidebar" ? (
           <img
-            alt="Logo"
-            src={toAbsoluteUrlForLocalImage("")}
-            className="h-75px w-200px app-sidebar-logo-default"
+            alt="PlaySonic-Logo"
+            src={toAbsoluteUrlForLocalImage("media/playsonic/palysonic-1.png")}
+            className="h-50px w-200px app-sidebar-logo-default"
           />
         ) : (
           <>
             <img
-              alt="Logo"
+              alt="PlaySonic-Logo"
               src={toAbsoluteUrlForLocalImage("")}
               className="h-75px w-200px app-sidebar-logo-default theme-light-show"
             />
             <img
-              alt="Logo"
+              alt="PlaySonic-Logo"
               src={toAbsoluteUrlForLocalImage("")}
-              className="h-75px w-200px app-sidebar-logo-default theme-dark-show"
+              className="h-65px w-200px app-sidebar-logo-default theme-dark-show"
             />
           </>
         )}
-
         <img
-          alt="Logo"
-          src={toAbsoluteUrlForLocalImage("media/logos/logo-dallas-small.png")}
+          alt="PlaySonic-Logo"
+          src={toAbsoluteUrlForLocalImage("media/playsonic/playsonic-2.png")}
           className="h-30px app-sidebar-logo-minimize"
         />
       </Link>

@@ -24,16 +24,6 @@ const SidebarGeneralMenuItems: FC = () => {
         title="SIDEBAR-Banner-Image"
         hasBullet={true}
       />
-      <SidebarMenuItem
-        to="/apps/general/adduser"
-        title="SIDEBAR-ADD-USER"
-        hasBullet={true}
-      />
-      <SidebarMenuItem
-        to="/apps/general/roles"
-        title="SIDEBAR-ROLES"
-        hasBullet={true}
-      />
     </>
   );
 };

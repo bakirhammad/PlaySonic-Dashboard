@@ -245,8 +245,8 @@
   "Reject": "Reject",
   "Approve":"Approve",
   "Create-Reservation": "Create Reservation",
-  "SIDEBAR-ADD-USER":"Add User",
-  "User-Name":"Name",
+  "SIDEBAR-USERS":"Admin Users",
+  "User-Name":"User Name",
   "USER-PHONE": "Phone Number",
   "PlaySonicId":"Play Sonic ID",
   "Add" :"Add",
@@ -268,7 +268,7 @@
   "DDL-GENDER":"Gender",
   "COURT-IMAGE": "Court Image",
   "CLUB-IMAGE":"Club Image",
-  "SIDEBAR-ROLES":"Rules",
+  "SIDEBAR-ROLES":"Roles",
   "ROLE-PERRMISSIONS": "Permissions",
   "ROLE-TYPE" : "Type",
   "ROLE-NAME" : "Name",
@@ -293,7 +293,18 @@
   "Banner-Image":"Image",
   "Banner-Path":"Path",
   "Create-ImageBanner":"Add Image Banner",
-  "ImageBanner-UPDATE-MODAL": "Update Image Banner"
+  "ImageBanner-UPDATE-MODAL": "Update Image Banner",
+  "Add-User":"Add User",
+  "EMAIL":"Email",
+  "Name":"Name",
+  "Phone-Number":"Phone Number",
+  "Password":"Password",
+  "UPDATE-User":"Update User",
+  "Is-Club":"Club Admin?",
+  "SIDEBAR-PLAYSONIC-USERS":"Playsonic Users",
+  "PhoneNumber":"Phone Number",
+  "Email":"Email"
+
 
 
 

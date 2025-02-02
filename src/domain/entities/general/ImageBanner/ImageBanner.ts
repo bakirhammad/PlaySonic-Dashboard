@@ -10,6 +10,12 @@ export interface IImageBannerCommand {
     url: string,
     ids: number[]
   ): Promise<IImageBannerData>;
+
+    deleteBannerImage(
+      url: string,
+      id: number,
+      isDeleteImage: boolean
+    ): Promise<IImageBannerData>;
 }
 
 export interface IImageBannerQuery {

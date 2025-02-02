@@ -13,14 +13,6 @@ const AreaListWrapper = lazy(
   () => import("@presentation/pages/general/area")
 );
 
-const RegisterWrapper = lazy(
-  () => import("@presentation/pages/addUser")
-);
-
-const RolesListWrapper = lazy(
-  () => import("@presentation/pages/general/roles")
-);
-
 const ImageBannerListWrapper = lazy(
   () => import("@presentation/pages/general/imageBanner")
 );
@@ -49,20 +41,6 @@ const GeneralRoute: Route = {
       path: "arealist",
       title: "SIDEBAR-Area",
       component: AreaListWrapper,
-      role: [],
-      breadcrumbs: [],
-    },
-    {
-      path: "adduser",
-      title: "SIDEBAR-ADD-USER",
-      component: RegisterWrapper,
-      role: [],
-      breadcrumbs: [],
-    },
-    {
-      path: "roles",
-      title: "SIDEBAR-ADD-ROLE",
-      component: RolesListWrapper,
       role: [],
       breadcrumbs: [],
     },

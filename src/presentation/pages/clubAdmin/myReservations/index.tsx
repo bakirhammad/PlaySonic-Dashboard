@@ -26,7 +26,7 @@ export default function MyReservations() {
   const [endTime, setEndTime] = useState("");
   const [courtId, setCourtId] = useState<any>();
 
-  const clubId = 61;
+  const clubId = 81;
 
   const {
     data: ReservationData,

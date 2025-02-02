@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IImageBannerCommand, IImageBannerData } from "@domain/entities/general/ImageBanner/ImageBanner";
+import { IAddUsersCommand, IAddUsersData } from "@domain/entities/general/AddUsers/AddUsers";
 import { IHttpClient } from "@domain/entities/protocols/http";
 import { HttpStatusCode } from "@domain/enums";
 import { InvalidCredentialsError, UnexpectedError } from "@domain/errors";
@@ -9,14 +9,14 @@ import { ServerError } from "@domain/errors/ServerError";
 import { ICommand } from "@domain/primitives/commands/ICommand";
 import { makeAxiosHttpClient } from "@main/factories/http/AxiosHttpClient";
 
-export class ImageBannerCommand
-  implements IImageBannerCommand, ICommand {
+export class AddUsersCommand
+  implements IAddUsersCommand, ICommand {
   constructor(private readonly httpPostClient: IHttpClient) { }
 
-  async createImageBanner(
+  async createAddUsers(
     url: any,
     body: any
-  ): Promise<IImageBannerData> {
+  ): Promise<IAddUsersData> {
     const httpResponse = await this.httpPostClient.postRequest({
       url,
       body,
@@ -38,10 +38,10 @@ export class ImageBannerCommand
         throw new UnexpectedError();
     }
   }
-  async updateImageBanner(
+  async updateAddUsers(
     url: any,
     body: any
-  ): Promise<IImageBannerData> {
+  ): Promise<IAddUsersData> {
     const httpResponse = await this.httpPostClient.putRequest({
       url,
       body,
@@ -63,10 +63,10 @@ export class ImageBannerCommand
         throw new UnexpectedError();
     }
   }
-  async deleteImageBanner(
+  async deleteAddUsers(
     url: string,
     id: number
-  ): Promise<IImageBannerData> {
+  ): Promise<IAddUsersData> {
     const newUrl = `${url}Id=${id}`;
     const httpResponse = await this.httpPostClient.deleteRequest({
       url: newUrl,
@@ -89,10 +89,10 @@ export class ImageBannerCommand
     }
   }
 
-  async multipleDeleteImageBanner(
+  async multipleDeleteAddUsers(
     url: string,
     ids: number[]
-  ): Promise<IImageBannerData> {
+  ): Promise<IAddUsersData> {
     const httpResponse = await this.httpPostClient.deleteRequest({
       url,
       body: ids,
@@ -114,37 +114,8 @@ export class ImageBannerCommand
         throw new UnexpectedError();
     }
   }
-
-  async deleteBannerImage(
-      url: string,
-      id: number
-    ): Promise<IImageBannerData> {
-      const httpResponse = await this.httpPostClient.deleteRequest({
-        url,
-        body: {
-          id,
-          isDeleteImage: false
-        },
-      });
-      switch (httpResponse.statusCode) {
-        case HttpStatusCode.ok:
-          return httpResponse.data.value;
-        case HttpStatusCode.coustomError:
-          throw new Error(httpResponse.data?.message);
-        case HttpStatusCode.unauthorized:
-          throw new InvalidCredentialsError();
-        case HttpStatusCode.notFound:
-          throw new NotFoundError();
-        case HttpStatusCode.badRequest:
-          throw new BadRequestError();
-        case HttpStatusCode.serverError:
-          throw new ServerError();
-        default:
-          throw new UnexpectedError();
-      }
-    }
 }
 
-export const ImageBannerCommandInstance = new ImageBannerCommand(
+export const AddUsersCommandInstance = new AddUsersCommand(
   makeAxiosHttpClient()
 );

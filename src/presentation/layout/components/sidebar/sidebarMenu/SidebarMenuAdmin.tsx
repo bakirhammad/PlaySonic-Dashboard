@@ -4,6 +4,7 @@ import { SidebarClubMenuItems } from "./SidebarClubMenuItems";
 import { SidebarGeneralMenuItems } from "./SidebarGeneralMenuItems";
 import { SidebarReservationMenuItems } from "./SidebarReservationMenuItems";
 import CheckPermission from "@presentation/helpers/CheckPermission";
+import { SidebarAdminControlMenuItems } from "./SidebarAdminControlMenuItems";
 
 const SidebarMenuAdmin = () => {
   const checkSuberClubPermission = CheckPermission("Access Super Club");
@@ -12,6 +13,7 @@ const SidebarMenuAdmin = () => {
     "Access Suber Reservtion"
   );
   const checkGeneralPermission = CheckPermission("Access Genderal");
+  const checkAdminControlPermission = CheckPermission("Access Admin Control");
 
   return (
     <>
@@ -56,6 +58,17 @@ const SidebarMenuAdmin = () => {
           fontIcon="bi-people-fill"
         >
           <SidebarGeneralMenuItems />
+        </SidebarMenuItemWithSub>
+      )}
+
+      {checkAdminControlPermission && (
+        <SidebarMenuItemWithSub
+          to="/apps/admin"
+          title={"Admin Control"}
+          icon="abstract-28"
+          fontIcon="bi-people-fill"
+        >
+          <SidebarAdminControlMenuItems />
         </SidebarMenuItemWithSub>
       )}
     </>

@@ -1,6 +1,6 @@
 import { PermissionsEnum } from "@domain/enums/PermissionsEnum/PermissionsEnum";
 
-const userPermissionEnum = 511; // Just for test ..
+const userPermissionEnum = 1023; // Just for test ..
 
 const CheckPermission = (action: string) => {
   const userPermissionsArray = Object.entries(PermissionsEnum)

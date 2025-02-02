@@ -24,6 +24,7 @@ import { ReservationUrlEnum } from "@domain/enums/URL/Reservation/reservationUrl
 import CustomTimePicker from "@presentation/components/forms/CustomTimePicker";
 import { useSlotTypesDDL } from "@presentation/hooks/queries/DDL/SlotTypes/useSlotTypesDDL";
 import { CreateNewUser } from "./CreateNewUser";
+import { useGetSlotTypeByCourtIdDDL } from "@presentation/hooks/queries/DDL/SlotTypes/useGetSlotTypeByCourtIdDDL ";
 
 interface ICourtId {
   courtId: number;
@@ -122,11 +123,15 @@ export const CalenderCreateMyReservationForm: FC<ICourtId> = ({
         handleSubmit(values, setSubmitting);
       }}
     >
-      <ReservationForm />
+      <ReservationForm courtId={courtId} formikRef={formikRef} />
     </Formik>
   );
 };
-const ReservationForm = () => {
+interface Iprop {
+  courtId: number;
+  formikRef: React.MutableRefObject<FormikProps<FormikValues> | null>;
+}
+const ReservationForm = ({ courtId, formikRef }: Iprop) => {
   const {
     errors,
     touched,
@@ -136,7 +141,12 @@ const ReservationForm = () => {
     setFieldValue,
   }: FormikContextType<FormikValues> = useFormikContext();
 
-  const { SlotTypesOption, isSlotTypesLoading } = useSlotTypesDDL();
+  const { SlotTypesOption } = useSlotTypesDDL();
+  const { CourtSlotTypesOption } = useGetSlotTypeByCourtIdDDL(courtId);
+
+  const filteredSlotTypes = SlotTypesOption.filter((slot) =>
+    CourtSlotTypesOption.includes(slot.value)
+  );
 
   useEffect(() => {
     if (values.slotTypeId && values.startTime) {
@@ -148,11 +158,13 @@ const ReservationForm = () => {
       setFieldValue("endTime", updatedEndTime);
     }
   }, [values.slotTypeId, values.startTime, setFieldValue]);
+
   return (
     <>
       <Form
-        className="form container-fluid w-100"
+        className="form container-fluid w-100  d-inline"
         placeholder={undefined}
+        style={{ paddingBottom: "100px" }}
         onPointerEnterCapture={undefined}
         onPointerLeaveCapture={undefined}
       >
@@ -161,8 +173,8 @@ const ReservationForm = () => {
             <div className="row row-cols-1 row-cols-md-2">
               <CustomSelectField
                 name="slotTypeId"
-                options={SlotTypesOption}
-                isloading={isSlotTypesLoading}
+                options={filteredSlotTypes}
+                // isloading={isSlotTypesLoading}
                 label="DDL-Slot-Type-NAME"
                 placeholder="DDL-Slot-Type-NAME"
                 touched={touched}
@@ -215,71 +227,45 @@ const ReservationForm = () => {
                 type="number"
                 isSubmitting={isSubmitting}
               />{" "}
+              <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
+                <CustomCheckbox
+                  labelTxt="isPublic"
+                  name={"indoor"}
+                  touched={touched}
+                  errors={errors}
+                />
+              </div>
             </div>
             <hr />
-            <div className="row row-cols-1 row-cols-md-2  border-info-subtle border-black tw-justify-center tw-items-center">
-              <CustomInputField
-                name="playSonicId"
-                placeholder="PlaySonicId"
-                label="PlaySonicId"
-                as="input"
-                touched={touched}
-                errors={errors}
-                type="number"
-                isSubmitting={isSubmitting}
-              />
-            </div>
-
-            {/* <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
-              <CustomSelectField
-                name="status"
-                options={ReservationStatusOptionsOptions}
-                label="DDL-Status"
-                placeholder="DDL-Status"
-                touched={touched}
-                errors={errors}
-                disabled={true}
-              />
-              <CustomSelectField
-                name="reservationTypeId"
-                options={ResarvationOptions}
-                label="DDL-Reservaion-Type"
-                placeholder="DDL-Reservaion-Type"
-                touched={touched}
-                errors={errors}
-                disabled={true}
-              />
-            </div>  */}
-
-            <hr />
-            <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
-              <CustomCheckbox
-                labelTxt="isPublic"
-                name={"indoor"}
-                touched={touched}
-                errors={errors}
-              />
-            </div>
           </div>
         </div>
-        <div className="text-center pt-15">
-          {/* <CustomButton
-            type="reset"
-            text="CANCEL"
-            onClick={() => setItemIdForUpdate(undefined)}
-            className="btn btn-light me-3"
-            disabled={isSubmitting}
-          /> */}
-          <CustomButton
-            type="submit"
-            className="btn btn-primary"
-            disabled={isSubmitting || !isValid}
-            text={isSubmitting ? "PLEASE_WAIT" : "SUBMIT"}
+        <div className="row row-cols-1 row-cols-md-2  border-info-subtle border-black position-relative">
+          <CustomInputField
+            name="playSonicId"
+            placeholder="PlaySonicId"
+            label="PlaySonicId"
+            as="input"
+            touched={touched}
+            errors={errors}
+            type="number"
+            isSubmitting={isSubmitting}
           />
         </div>
+
         {isSubmitting && <CustomListLoading />}
       </Form>
       <CreateNewUser values={values} setFieldValue={setFieldValue} />
+      <div className="text-center pt-15">
+        <CustomButton
+          type="submit"
+          className="btn btn-primary"
+          onClick={() => {
+            formikRef.current?.submitForm();
+          }}
+          disabled={isSubmitting || !isValid}
+          text={isSubmitting ? "PLEASE_WAIT" : "SUBMIT"}
+        />
+      </div>
     </>
   );
 };

@@ -6,6 +6,7 @@ import { CourtRoute } from "./CourtRoute";
 import { GeneralRoute } from "./GeneralRoute";
 import { ReservationRoute } from "./ReservationRoute";
 import { ClubAdminRoutes } from "./ClubAdminRoutes";
+import { AdminControlRoute } from "./AdminControlRoute";
 
 export interface Route {
   path: string;
@@ -27,7 +28,8 @@ const routes: Route[] = [
   CourtRoute,
   GeneralRoute,
   ReservationRoute,
-  ClubAdminRoutes
+  ClubAdminRoutes,
+  AdminControlRoute
 ];
 
 export { routes };

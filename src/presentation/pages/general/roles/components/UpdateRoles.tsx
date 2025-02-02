@@ -42,7 +42,7 @@ export const UpdateRules = ({ RoleData, isLoading }: IProps) => {
       id: RoleData.id,
       name: RoleData.name,
       type: RoleData.type,
-      permissions: [],
+      permissions: RoleData.permissions,
     };
   }, [RoleData]);
 
@@ -125,14 +125,13 @@ const RolesUpdateForm = () => {
     }
   };
 
-  console.log(RoleTypesOptions);
   useEffect(() => {
     RoleTypesOptions.forEach((role) => {
       if (role.value === values.type) {
-        return setFieldValue("type", { value: role.value, label: role.value });
+        return setFieldValue("type", { value: role.value, label: role.label });
       }
     });
-  }, []);
+  }, [values.type, setFieldValue]);
   return (
     <>
       <Form

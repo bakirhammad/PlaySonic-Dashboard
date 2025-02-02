@@ -53,8 +53,8 @@ export const UpdateCourtSlotsModalForm = ({
   }, [CourtSlotsData]);
 
   const _CourtSlotsSchema = Object.assign({
-    courtId: validationSchemas.object,
-    slotTypeId: validationSchemas.object,
+    // courtId: validationSchemas.object,
+    // slotTypeId: validationSchemas.object,
     fullPrice: Yup.number().required("Field is Required"),
     singlePrice: Yup.number().required("Field is Required"),
   });
@@ -66,8 +66,8 @@ export const UpdateCourtSlotsModalForm = ({
   ) => {
     const formData = new FormData();
     formData.append("Id", String(initialValues.id));
-    formData.append("CourtId", values.courtId.value);
-    formData.append("SlotTypeId", values.slotTypeId.value);
+    // formData.append("CourtId", values.courtId.value);
+    // formData.append("SlotTypeId", values.slotTypeId.value);
     formData.append("FullPrice", values.fullPrice);
     formData.append("SinglePrice", values.singlePrice);
     try {

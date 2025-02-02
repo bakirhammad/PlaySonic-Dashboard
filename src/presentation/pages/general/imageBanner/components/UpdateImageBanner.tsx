@@ -5,6 +5,7 @@ import {
   CustomListLoading,
   CustomToast,
   showConfirmationAlert,
+  showDeletedAlert,
 } from "@presentation/components";
 import { useListView } from "@presentation/context";
 import {
@@ -108,6 +109,7 @@ interface IProp {
 }
 const ImageBannerUpdateForm: FC<IProp> = ({ ImageBannerData }) => {
   const { setItemIdForUpdate } = useListView();
+  const queryClient = useQueryClient();
 
   const {
     errors,
@@ -116,32 +118,31 @@ const ImageBannerUpdateForm: FC<IProp> = ({ ImageBannerData }) => {
     isValid,
     values,
   }: FormikContextType<FormikValues> = useFormikContext();
- // Wait to Delete Image Api to added >>
-  // const { mutateAsync: deleteImage } = useMutation(
-  //   async () => {
-  //     const confirm = await showConfirmationAlert();
-  //     if (confirm) {
-  //       const data = await CourtCommandInstance.deleteCourtImage(
-  //         CourtUrlEnum.DeleteCourtImage,
-  //         CourtData?.id
-  //       );
-  //       return data;
-  //     }
-  //   },
-  //   {
-  //     onSuccess: async () => {
-  //       queryClient.invalidateQueries({ queryKey: [QUERIES.CourtList] });
-  //       setItemIdForUpdate(undefined)
-  //       CustomToast(`Deleted successfully`, "success");
-  //       showDeletedAlert();
-  //       // setItemIdForUpdate(CourtData.id)
-  //     },
-  //     onError: (error) => {
-  //       console.error("Error when deleting Country Image", error);
-  //       CustomToast(`Failed to delete Country Image`, "error");
-  //     },
-  //   }
-  // );
+
+  const { mutateAsync: deleteImage } = useMutation(
+    async () => {
+      const confirm = await showConfirmationAlert();
+      if (confirm) {
+        const data = await ImageBannerCommandInstance.deleteBannerImage(
+          ImageBannerUrlEnum.DeleteBannerImage,
+          ImageBannerData?.id
+        );
+        return data;
+      }
+    },
+    {
+      onSuccess: async () => {
+        queryClient.invalidateQueries({ queryKey: [QUERIES.ImageBannerList] });
+        setItemIdForUpdate(undefined);
+        CustomToast(`Deleted successfully`, "success");
+        showDeletedAlert();
+      },
+      onError: (error) => {
+        console.error("Error when deleting Banner Image", error);
+        CustomToast(`Failed to delete Banner Image`, "error");
+      },
+    }
+  );
 
   return (
     <>
@@ -188,14 +189,13 @@ const ImageBannerUpdateForm: FC<IProp> = ({ ImageBannerData }) => {
                   accept={"image/*"}
                 />
                 {typeof values.image === "string" && ImageBannerData.image ? (
-                  // Wait to Delete Image Api to added ,, the trash icon hidden
                   <CustomImageReviewForUpdate
                     inedx={1}
                     fileName={ImageBannerData.image}
                     imageUrl={ImageBannerData.image}
-                    // onClickDelete={async () => {
-                    //   await deleteImage();
-                    // }}
+                    onClickDelete={async () => {
+                      await deleteImage();
+                    }}
                   />
                 ) : (
                   <div></div>
