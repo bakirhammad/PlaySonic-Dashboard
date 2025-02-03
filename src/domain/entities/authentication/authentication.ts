@@ -76,4 +76,7 @@ export interface IUser {
 export interface AuthModel {
   token: string;
   expiration?: Date;
+  permissions?: number,
+  clubID?: number,
+  type?: number
 }

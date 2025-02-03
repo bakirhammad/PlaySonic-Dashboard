@@ -4,8 +4,9 @@ import { makeLocalStorage } from "@main/factories/chache/localStorage";
 
 const AUTH_LOCAL_STORAGE_KEY = import.meta.env.VITE_AUTH_LOCAL_STORAGE_KEY;
 
+const auth = makeLocalStorage().get(AUTH_LOCAL_STORAGE_KEY);
 const initAuthState = {
-  auth: undefined,
+  auth: auth,
   currentUser: undefined,
   defaultUserCurrency: undefined,
   userCurrencies: [],

@@ -21,7 +21,7 @@ import { CourtCommandInstance, CourtQueryInstance } from "@app/useCases/court";
 import { CourtUrlEnum } from "@domain/enums/URL/Court/CourtUrls/Court";
 import { CourtListColumns } from "./components/CourtListColumns";
 import CourtFilter from "./components/CourtFilter";
-import CheckPermission from "@presentation/helpers/CheckPermission";
+import useCheckPermission from "@presentation/helpers/useCheckPermission";
 
 const CourtList = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
@@ -75,7 +75,7 @@ const CourtList = () => {
     }
   };
 
-  const checkCreatePermission = CheckPermission("Create")
+  const checkCreatePermission = useCheckPermission("Create")
   return (
     <>
       <CustomKTCard>

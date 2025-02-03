@@ -16,7 +16,7 @@ import {
   useFormikContext,
 } from "formik";
 import * as Yup from "yup";
-import { QUERIES } from "@presentation/helpers";
+import { combineBits, QUERIES } from "@presentation/helpers";
 import { useQueryClient } from "react-query";
 import PleaseWaitTxt from "@presentation/helpers/loading/PleaseWaitTxt";
 import CustomSelectField from "@presentation/components/forms/CustomSelectField";
@@ -56,10 +56,14 @@ export const UpdateRules = ({ RoleData, isLoading }: IProps) => {
     setSubmitting: (isSubmitting: boolean) => void
   ) => {
     const formData = new FormData();
+    const numberPermissionsArray = values.permissions?.map(Number);
+    const permissionsEnum = combineBits(
+      numberPermissionsArray.map((permission: number) => permission)
+    );
     formData.append("Id", String(initialValues.id));
     formData.append("Name", values.name);
     formData.append("Type", values.type.value);
-    formData.append("Permissions", values.permissions);
+    formData.append("Permissions", String(permissionsEnum));
     try {
       const data = await RolesCommandInstance.updateRoles(
         RoleUrlEnum.UpdateRole,

@@ -8,6 +8,8 @@ import { BuilderPageWrapper } from "../../presentation/pages/layoutBuilder";
 import { routes } from "./routes/Routes";
 import ProtectedRoute from "./ProtectedRoute";
 import ComingSoon from "@presentation/pages/comingSoon";
+import { useAuthStore } from "@infrastructure/storage/AuthStore";
+import { RoleTypesEnum } from "@domain/enums/roleTypesEnum/RoleTypesEnum";
 
 const PrivateRoutes = () => {
   const ProfilePage = lazy(
@@ -21,11 +23,23 @@ const PrivateRoutes = () => {
     () => import("../../partials/modules/widgets/WidgetsPage")
   );
   const ChatPage = lazy(() => import("../../presentation/pages/chat/ChatPage"));
+  const auth = useAuthStore((e) => e.auth);
   return (
     <Routes>
       <Route element={<MasterLayout />}>
         <Route path="/comingsoon" element={<ComingSoon />} />
-        <Route index element={<Navigate to="/dashboard" />} />
+        <Route
+          index
+          element={
+            <Navigate
+              to={
+                auth?.type == RoleTypesEnum["Super Admin"]
+                  ? "/dashboard"
+                  : "/apps/mycourts"
+              }
+            />
+          }
+        />
         <Route path="builder" element={<BuilderPageWrapper />} />
         <Route
           path="crafted/pages/profile/*"

@@ -37,6 +37,7 @@ export const UpdateAdminUsers = ({ AdminUsersData, isLoading }: IProps) => {
   const queryClient = useQueryClient();
 
   const initialValues = useMemo(() => {
+    // wait for name , clubId , roleId return in api
     return {
       id: AdminUsersData.id,
       userName: AdminUsersData.userName,
@@ -95,7 +96,7 @@ export const UpdateAdminUsers = ({ AdminUsersData, isLoading }: IProps) => {
       setSubmitting(false);
     }
   };
-
+console.log(AdminUsersData.clubId, "ddddd")
   return (
     <>
       {isLoading ? (
@@ -109,14 +110,17 @@ export const UpdateAdminUsers = ({ AdminUsersData, isLoading }: IProps) => {
             handleSubmit(values, setSubmitting);
           }}
         >
-          <RolesUpdateForm />
+          <RolesUpdateForm AdminUsersData={AdminUsersData} />
         </Formik>
       )}
     </>
   );
 };
+interface IProp {
+  AdminUsersData :IAddUsersData
+}
 
-const RolesUpdateForm = () => {
+const RolesUpdateForm = ({AdminUsersData}:IProp) => {
   const { setItemIdForUpdate } = useListView();
 
   const {
@@ -214,7 +218,7 @@ const RolesUpdateForm = () => {
             />
           </div>
           <div className="row row-cols-2">
-            {values.clubId && (
+            {AdminUsersData.clubId && (
               <CustomSelectField
                 name={"clubId"}
                 options={clubsOption}

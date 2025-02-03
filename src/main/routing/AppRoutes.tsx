@@ -15,6 +15,7 @@ import { AuthRoute } from "./routes/AuthRoute";
 import { useAuthStore } from "@infrastructure/storage/AuthStore";
 import { useLang } from "@presentation/localization";
 import { Constant } from "@presentation/helpers";
+import { RoleTypesEnum } from "@domain/enums/roleTypesEnum/RoleTypesEnum";
 
 /**
  * Base URL of the website.
@@ -56,6 +57,8 @@ const AppRoutes: FC = () => {
       document.removeEventListener("click", handleUserActivity);
     };
   }, [logout]);
+  const auth = useAuthStore((e) => e.auth);
+
   return (
     <BrowserRouter basename={BASE_URL}>
       <Routes>
@@ -65,7 +68,18 @@ const AppRoutes: FC = () => {
           {currentUser ? (
             <>
               <Route path="/*" element={<PrivateRoutes />} />
-              <Route path="auth/*" element={<Navigate to="/dashboard" />} />
+              <Route
+                path="auth/*"
+                element={
+                  <Navigate
+                    to={
+                      auth?.type == RoleTypesEnum["Super Admin"]
+                        ? "/dashboard"
+                        : "/apps/mycourts"
+                    }
+                  />
+                }
+              />
             </>
           ) : (
             <>

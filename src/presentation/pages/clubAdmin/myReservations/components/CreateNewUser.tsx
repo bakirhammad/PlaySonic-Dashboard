@@ -28,7 +28,7 @@ import { GetPlaySonicByIdInstance } from "@app/useCases/getPlaySonicId";
 import { GetPlaySonicByIdUrlEnum } from "@domain/enums/URL/GetPlaySonicById/GetPlaySonicById";
 import { showPalySonicIdAlert } from "@presentation/components/alerts/showPalySonicIdAlert";
 
-const CreateNewUserForm = ({ setFieldValue, values }: any) => {
+const CreateNewUserForm = ({ setFieldValue, values, clubId }: any) => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);
   const { setItemIdForUpdate } = useListView();
   const queryClient = useQueryClient();
@@ -42,7 +42,7 @@ const CreateNewUserForm = ({ setFieldValue, values }: any) => {
     dob: null,
     userLevel: null,
     gender: null,
-    createBy: 61,
+    createBy: clubId,
   });
 
   const _ReservationSchema = Object.assign({
@@ -256,10 +256,14 @@ const ReservationForm = ({
   );
 };
 
-export const CreateNewUser = ({ setFieldValue, values }: any) => {
+export const CreateNewUser = ({ setFieldValue, values, clubId }: any) => {
   return (
     <ListViewProvider>
-      <CreateNewUserForm setFieldValue={setFieldValue} values={values} />
+      <CreateNewUserForm
+        setFieldValue={setFieldValue}
+        values={values}
+        clubId={clubId}
+      />
     </ListViewProvider>
   );
 };

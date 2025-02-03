@@ -8,7 +8,8 @@ export enum PermissionsEnum {
   "Delete" = 64,
   "Edit" = 128,
   "Create" = 256,
-  "Access Admin Control" = 512
+  "Access Admin Control" = 512,
+  "Access Club Users" = 1024
 }
 
 

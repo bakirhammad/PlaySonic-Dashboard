@@ -30,11 +30,13 @@ interface ICourtId {
   courtId: number;
   startTime: string;
   reservationDate: string;
+  clubId:number
 }
 export const CalenderCreateMyReservationForm: FC<ICourtId> = ({
   courtId,
   reservationDate,
   startTime,
+  clubId
 }) => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);
   const { setItemIdForUpdate } = useListView();
@@ -123,15 +125,16 @@ export const CalenderCreateMyReservationForm: FC<ICourtId> = ({
         handleSubmit(values, setSubmitting);
       }}
     >
-      <ReservationForm courtId={courtId} formikRef={formikRef} />
+      <ReservationForm courtId={courtId} formikRef={formikRef} clubId={clubId} />
     </Formik>
   );
 };
 interface Iprop {
   courtId: number;
   formikRef: React.MutableRefObject<FormikProps<FormikValues> | null>;
+  clubId:number
 }
-const ReservationForm = ({ courtId, formikRef }: Iprop) => {
+const ReservationForm = ({ courtId, formikRef ,clubId }: Iprop) => {
   const {
     errors,
     touched,
@@ -254,7 +257,7 @@ const ReservationForm = ({ courtId, formikRef }: Iprop) => {
 
         {isSubmitting && <CustomListLoading />}
       </Form>
-      <CreateNewUser values={values} setFieldValue={setFieldValue} />
+      <CreateNewUser values={values} setFieldValue={setFieldValue} clubId={clubId}/>
       <div className="text-center pt-15">
         <CustomButton
           type="submit"

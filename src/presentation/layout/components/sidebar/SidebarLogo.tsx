@@ -59,7 +59,7 @@ const SidebarLogo = (props: PropsType) => {
           <img
             alt="PlaySonic-Logo"
             src={toAbsoluteUrlForLocalImage("media/playsonic/palysonic-1.png")}
-            className="h-50px w-200px app-sidebar-logo-default"
+            className="h-40px w-200px app-sidebar-logo-default"
           />
         ) : (
           <>

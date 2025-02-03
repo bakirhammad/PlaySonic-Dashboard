@@ -23,6 +23,7 @@ import { AddUsersCommandInstance } from "@app/useCases/general/addUsers";
 import { AddUsersUrlEnum } from "@domain/enums/URL/General/GeneralEnum/AddUsers";
 import { useClubsDDL } from "@presentation/hooks/queries/DDL/Club/useClubsDDL";
 import { useRolesDDL } from "@presentation/hooks/queries/DDL/Roles/useRolesDDL";
+import validationSchemas from "@presentation/helpers/validationSchemas";
 
 export const CreateAdminUsers = () => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);
@@ -46,6 +47,7 @@ export const CreateAdminUsers = () => {
     email: Yup.string().required("Field is Required"),
     phoneNumber: Yup.string().required("Field is Required"),
     password: Yup.string().required("Field is Required"),
+    roleId: validationSchemas.object.required("Field is Required"),
   });
 
   const RolesSchema = Yup.object().shape(_RolesSchema);

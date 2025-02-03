@@ -9,15 +9,15 @@ import { useLogin } from "@presentation/hooks/queries/auth/useLogin";
 // import { useLogin } from "@hooks/queries/auth/useLogin";
 
 const loginSchema = Yup.object().shape({
-  username: Yup.string().required("username is required"),
-  password: Yup.string()
-    .min(6, "Minimum 6 symbols")
-    .max(50, "Maximum 50 symbols")
-    .matches(/[0-9]/, "Password requires a number")
-    .matches(/[a-z]/, "Password requires a lowercase letter")
-    .matches(/[A-Z]/, "Password requires an uppercase letter")
-    .matches(/[^\w]/, "Password requires a symbol")
-    .required("Password is required"),
+  // username: Yup.string().required("username is required"),
+  // password: Yup.string()
+  //   .min(6, "Minimum 6 symbols")
+  //   .max(50, "Maximum 50 symbols")
+  //   .matches(/[0-9]/, "Password requires a number")
+  //   .matches(/[a-z]/, "Password requires a lowercase letter")
+  //   .matches(/[A-Z]/, "Password requires an uppercase letter")
+  //   .matches(/[^\w]/, "Password requires a symbol")
+  //   .required("Password is required"),
 });
 
 const initialValues = {

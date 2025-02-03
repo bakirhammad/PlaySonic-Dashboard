@@ -3,17 +3,18 @@ import { SidebarCourtMenuItems } from "./SidebarCourtMenuItems";
 import { SidebarClubMenuItems } from "./SidebarClubMenuItems";
 import { SidebarGeneralMenuItems } from "./SidebarGeneralMenuItems";
 import { SidebarReservationMenuItems } from "./SidebarReservationMenuItems";
-import CheckPermission from "@presentation/helpers/CheckPermission";
 import { SidebarAdminControlMenuItems } from "./SidebarAdminControlMenuItems";
+import useCheckPermission from "@presentation/helpers/useCheckPermission";
 
 const SidebarMenuAdmin = () => {
-  const checkSuberClubPermission = CheckPermission("Access Super Club");
-  const checkSuberCourtPermission = CheckPermission("Access Suber Courts");
-  const checSuberReservationPermission = CheckPermission(
+  const checkSuberClubPermission = useCheckPermission("Access Super Club");
+  const checkSuberCourtPermission = useCheckPermission("Access Suber Courts");
+  const checSuberReservationPermission = useCheckPermission(
     "Access Suber Reservtion"
   );
-  const checkGeneralPermission = CheckPermission("Access Genderal");
-  const checkAdminControlPermission = CheckPermission("Access Admin Control");
+  const checkGeneralPermission = useCheckPermission("Access Genderal");
+  const checkAdminControlPermission = useCheckPermission("Access Admin Control");
+console.log("checSuberReservationPermission",checSuberReservationPermission);
 
   return (
     <>

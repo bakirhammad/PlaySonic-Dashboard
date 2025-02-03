@@ -18,16 +18,16 @@ import {
 import { CourtModalCreateForm } from "./components/CourtModalCreateForm";
 import { CourtCommandInstance, CourtQueryInstance } from "@app/useCases/court";
 import { CourtUrlEnum } from "@domain/enums/URL/Court/CourtUrls/Court";
-import { CourtListColumns } from "./components/CourtListColumns";
 import CustomTemplate from "@presentation/components/CustomTemplate";
+import { useAuthStore } from "@infrastructure/storage/AuthStore";
 
 const MyCourts = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
-
-  const columns = useMemo(() => CourtListColumns, []);
-
   const queryClient = useQueryClient();
-  const clubId = 61;
+  
+  const { auth } = useAuthStore();
+  const clubId = auth?.clubID || 0;
+
   const { itemIdForUpdate, setItemIdForUpdate, selected, clearSelected } =
     useListView();
   const {

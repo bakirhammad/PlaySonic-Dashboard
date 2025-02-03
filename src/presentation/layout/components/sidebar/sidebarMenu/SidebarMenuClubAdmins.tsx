@@ -1,11 +1,15 @@
-import CheckPermission from "@presentation/helpers/CheckPermission";
+import useCheckPermission from "@presentation/helpers/useCheckPermission";
 import { SidebarMenuItem } from "./SidebarMenuItem";
 
 const SidebarMenuClubAdmins = () => {
-  const checkMyCourtPermission = CheckPermission("Access Club Courts");
-  const checkMyReservaionPermission = CheckPermission(
+  const checkMyCourtPermission = useCheckPermission("Access Club Courts");
+  const checkMyReservaionPermission = useCheckPermission(
     "Access Club Reservation"
   );
+  const checkMyUsersPermission = useCheckPermission(
+    "Access Club Users"
+  );
+  
   return (
     <>
       {checkMyCourtPermission && (
@@ -19,6 +23,13 @@ const SidebarMenuClubAdmins = () => {
         <SidebarMenuItem
           to="/apps/myreservations"
           title="SIDEBAR-My-Reservations"
+          hasBullet={true}
+        />
+      )}
+         {checkMyUsersPermission && (
+        <SidebarMenuItem
+          to="/apps/myusers"
+          title="SIDEBAR-My-Users"
           hasBullet={true}
         />
       )}

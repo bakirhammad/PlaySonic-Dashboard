@@ -6,6 +6,7 @@ import {
   CustomSelectionCell,
 } from "@presentation/components/tables";
 import { IPlaysonicUsersData } from "@domain/entities/general/PlaysonicUsers/PlaysonicUsers";
+import { PlaysonicUsersActionCell } from "./PlaysonicUsersActionCell";
 
 const PlaysonicUsersListColumns: ReadonlyArray<Column<IPlaysonicUsersData>> = [
   {
@@ -75,14 +76,13 @@ const PlaysonicUsersListColumns: ReadonlyArray<Column<IPlaysonicUsersData>> = [
     Header: (props) => (
       <CustomHeaderCell
         tableProps={props}
-        title="ACTION"
+        title="Transection "
         className="min-w-100px"
       />
     ),
     id: "actions",
     Cell: ({ ...props }) => (
-      <></>
-      // <AdminUsersActionCell id={props.data[props.row.index].id} />
+      <PlaysonicUsersActionCell id={props.data[props.row.index].id} />
     ),
   },
 ];

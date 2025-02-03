@@ -4,7 +4,7 @@ import {
   CustomKTCard,
   CustomKTCardBody,
 } from "@presentation/components";
-import { QUERIES, stringifyRequestQuery } from "@presentation/helpers";
+import { stringifyRequestQuery } from "@presentation/helpers";
 import { useQuery, useQueryClient } from "react-query";
 import { Form, Formik } from "formik";
 import { useState } from "react";
@@ -18,6 +18,7 @@ import { ReservationQueryInstance } from "@app/useCases/reservation";
 import { ReservationUrlEnum } from "@domain/enums/URL/Reservation/reservationUrls/Reservation";
 import { useClubCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useClubCourtsDDL";
 import CustomTimePicker from "@presentation/components/forms/CustomTimePicker";
+import { useAuthStore } from "@infrastructure/storage/AuthStore";
 
 export default function MyReservations() {
   const [applyFilter, setApplyFilter] = useState(false);
@@ -26,7 +27,8 @@ export default function MyReservations() {
   const [endTime, setEndTime] = useState("");
   const [courtId, setCourtId] = useState<any>();
 
-  const clubId = 81;
+  const { auth } = useAuthStore();
+  const clubId = auth?.clubID || 0;
 
   const {
     data: ReservationData,
@@ -90,7 +92,7 @@ export default function MyReservations() {
           }}
         >
           {({ resetForm, values }) => (
-            <Form>
+            <Form placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               <div className="row row-cols-2 align-items-center flex-wrap  border border-2  p-2 rounded mb-5">
                 <CustomTimePicker
                   label="From-Date"
@@ -143,6 +145,7 @@ export default function MyReservations() {
             startTime={startTime}
             endTime={endTime}
             courtId={courtId}
+            clubId={clubId}
           />
         )}
 
