@@ -16,10 +16,14 @@ import {
   showConfirmationAlert,
   showDeletedAlert,
 } from "@presentation/components";
-import { SlotTypeCommandInstance, SlotTypeQueryInstance } from "@app/useCases/slotType";
+import {
+  SlotTypeCommandInstance,
+  SlotTypeQueryInstance,
+} from "@app/useCases/slotType";
 import { SlotTypeUrlEnum } from "@domain/enums/URL/SlotType/SlotTyeUrls/SlotType";
 import { SlotTypeListColumns } from "./components/SlotTypeListColumns";
 import { SlotTypeModalCreateForm } from "./components/SlotTypeModalCreateForm";
+import useCheckPermission from "@presentation/helpers/useCheckPermission";
 
 const SlotType = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
@@ -58,11 +62,10 @@ const SlotType = () => {
     const confirm = await showConfirmationAlert(`${selected.length} item`);
     if (confirm) {
       try {
-        const data =
-          await SlotTypeCommandInstance.multipleDeleteSlotType(
-            SlotTypeUrlEnum.MultipleDeleteSlotType,
-            selected
-          );
+        const data = await SlotTypeCommandInstance.multipleDeleteSlotType(
+          SlotTypeUrlEnum.MultipleDeleteSlotType,
+          selected
+        );
         if (data) {
           showDeletedAlert(`${selected.length} item`);
           queryClient.invalidateQueries([QUERIES.SlotTypeList]);
@@ -75,7 +78,7 @@ const SlotType = () => {
       }
     }
   };
-
+  const checkSuperCreatePermission = useCheckPermission("Access Super Create");
   return (
     <>
       <CustomKTCard>
@@ -87,7 +90,7 @@ const SlotType = () => {
           filterBtn={true}
           // FilterComponent={<SlotTypeFilter></SlotTypeFilter>}
           onDeleteSelectedAll={() => handleDeleteSelected()}
-          addBtn={true}
+          addBtn={checkSuperCreatePermission}
           addName="ADD"
         />
         <CustomTable columns={columns} data={tableData || []} />

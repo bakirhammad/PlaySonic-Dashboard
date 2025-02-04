@@ -52,7 +52,7 @@ const CourtList = () => {
     setError(error as Error);
   }, [CourtData, isFetching, isLoading, error]);
 
-  console.log(CourtData , "ddddddddddd")
+  console.log(CourtData, "ddddddddddd");
   const tableData = useMemo(() => CourtData?.data, [CourtData]);
   const handleDeleteSelected = async () => {
     const confirm = await showConfirmationAlert(`${selected.length} item`);
@@ -75,7 +75,7 @@ const CourtList = () => {
     }
   };
 
-  const checkCreatePermission = useCheckPermission("Create")
+  const checkSuperCreatePermission = useCheckPermission("Access Super Create");
   return (
     <>
       <CustomKTCard>
@@ -87,7 +87,7 @@ const CourtList = () => {
           filterBtn={true}
           FilterComponent={<CourtFilter />}
           onDeleteSelectedAll={() => handleDeleteSelected()}
-          addBtn={checkCreatePermission}
+          addBtn={checkSuperCreatePermission}
           addName="ADD"
         />
         <CustomTable columns={columns} data={tableData || []} />
@@ -98,7 +98,6 @@ const CourtList = () => {
           modalTitle="Create-Court"
           onClick={() => setItemIdForUpdate(undefined)}
         >
-          
           <CourtModalCreateForm />
         </CustomModal>
       )}

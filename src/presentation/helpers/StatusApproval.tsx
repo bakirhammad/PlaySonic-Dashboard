@@ -1,15 +1,16 @@
 import { StatusCommandInstance } from "@app/useCases/general/status/command/StatusCommand";
+import { ReservationStatusEnum } from "@domain/enums/reservationStatus/ReservationStatusEnum";
 import { StatusUrlEnum } from "@domain/enums/URL/General/GeneralEnum/StatusEnum";
 import { ActionItem, CustomToast } from "@presentation/components";
 import { CustomComfirmationAlert } from "@presentation/components/alerts/CustomComfirmationAlert";
-import { QUERIES } from "@presentation/helpers";
 import { FC } from "react";
 import { useQueryClient } from "react-query";
 
 interface IStatusApproval {
   id: number;
+  queryKey: string;
 }
-const StatusApproval: FC<IStatusApproval> = ({ id }) => {
+const StatusApproval: FC<IStatusApproval> = ({ id, queryKey }) => {
   const queryClient = useQueryClient();
   const handleSubmit = async (statusId: number, statusType: string) => {
     try {
@@ -31,7 +32,7 @@ const StatusApproval: FC<IStatusApproval> = ({ id }) => {
           console.log(statusResult, "statusresres");
           CustomToast(`Success Update Status`, "success");
           queryClient.invalidateQueries({
-            queryKey: ["MyReservations"],
+            queryKey: [queryKey],
           });
         } else {
           CustomToast(`Failed to  Update Status`, "error");
@@ -46,12 +47,12 @@ const StatusApproval: FC<IStatusApproval> = ({ id }) => {
     <div className="d-flex tw-flex-col">
       <ActionItem
         icon="tablet-ok"
-        onClick={() => handleSubmit(2, "Approve")}
+        onClick={() => handleSubmit(ReservationStatusEnum["Approved"], "Approve")}
         title="Approve"
       />
       <ActionItem
         icon="tablet-delete"
-        onClick={() => handleSubmit(16, "Reject")}
+        onClick={() => handleSubmit(ReservationStatusEnum["Cancelled"], "Reject")}
         title="Reject"
       />
 

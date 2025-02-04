@@ -14,11 +14,14 @@ const SidebarAdminControlMenuItems: FC = () => {
         title="SIDEBAR-ROLES"
         hasBullet={true}
       />
-        <SidebarMenuItem
+      
+      {/* ----- Until api done ---- */}
+
+        {/* <SidebarMenuItem
         to="/apps/admin/playsonicusers"
         title="SIDEBAR-PLAYSONIC-USERS"
         hasBullet={true}
-      />
+      /> */}
     </>
   );
 };

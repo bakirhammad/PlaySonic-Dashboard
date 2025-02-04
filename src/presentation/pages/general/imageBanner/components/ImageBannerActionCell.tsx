@@ -13,6 +13,7 @@ import { ImageBannerUrlEnum } from "@domain/enums/URL/General/GeneralEnum/ImageB
 import { IImageBannerData } from "@domain/entities/general/ImageBanner/ImageBanner";
 import { ImageBannerCommandInstance, ImageBannerQueryByIdInstance } from "@app/useCases/general/imageBanner";
 import UpdateImageBanner from "./UpdateImageBanner";
+import useCheckPermission from "@presentation/helpers/useCheckPermission";
 
 interface Props {
   id: number;
@@ -82,14 +83,17 @@ const ImageBannerActionCell: FC<Props> = ({ id, name }) => {
       deleteImageBanner(id);
     }
   };
-
+  const checkSuperEditPermission = useCheckPermission("Access Super Edit");
+  const checkSuperDeletePermission = useCheckPermission("Access Super Delete");
   return (
     <>
       <CustomActionsCell
         id={id}
+        editBtn={checkSuperEditPermission}
         editBtnOnClick={() => {
           setItemIdForUpdate(id);
         }}
+        deleteBtn={checkSuperDeletePermission}
         deletBtnOnClick={() => handleDelete()}
       />
       {itemIdForUpdate === id && (

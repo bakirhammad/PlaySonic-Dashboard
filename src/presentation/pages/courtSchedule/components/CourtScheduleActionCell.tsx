@@ -9,10 +9,14 @@ import { FC } from "react";
 import { useQueryClient, useMutation, useQuery } from "react-query";
 import { QUERIES } from "@presentation/helpers";
 import { useListView } from "@presentation/context/index";
-import { CourtScheduleCommandInstance, CourtScheduleQueryByIdInstance } from "@app/useCases/courtSchedule";
+import {
+  CourtScheduleCommandInstance,
+  CourtScheduleQueryByIdInstance,
+} from "@app/useCases/courtSchedule";
 import { CourtScheduleUrlEnum } from "@domain/enums/URL/CourtSchedule/CourtScheduleUrls/CourtSchedule";
 import { ICourtScheduleData } from "@domain/entities/CourtSchedule/CourtSchedule";
 import UpdateCourtScheduleModalForm from "./UpdateCourtScheduleModalForm";
+import useCheckPermission from "@presentation/helpers/useCheckPermission";
 
 interface Props {
   id: number;
@@ -26,7 +30,10 @@ const CourtScheduleActionCell: FC<Props> = ({ id, name }) => {
   const { data, error, isLoading } = useQuery({
     queryKey: [QUERIES.CourtScheduleList, id],
     queryFn: () => {
-      return CourtScheduleQueryByIdInstance.getCourtScheduleById(CourtScheduleUrlEnum.GetCourtScheduleById, id);
+      return CourtScheduleQueryByIdInstance.getCourtScheduleById(
+        CourtScheduleUrlEnum.GetCourtScheduleById,
+        id
+      );
     },
     onError: () => {
       console.error("Error submitting form:", error);
@@ -82,14 +89,24 @@ const CourtScheduleActionCell: FC<Props> = ({ id, name }) => {
       deleteCourtSchedule(id);
     }
   };
+  const checkSuperEditPermission = useCheckPermission("Access Super Edit");
+  const checkSuperDeletePermission = useCheckPermission("Access Super Delete");
 
+  const checkClubEditSchedulePermission = useCheckPermission(
+    "Access Club Schedule/Edit"
+  );
+  const checkClubDeleteSchedulePermission = useCheckPermission(
+    "Access Club Schedule/Delete"
+  );
   return (
     <>
       <CustomActionsCell
         id={id}
+        editBtn={checkSuperEditPermission || checkClubEditSchedulePermission}
         editBtnOnClick={() => {
           setItemIdForUpdate(id);
         }}
+        deleteBtn={checkSuperDeletePermission || checkClubDeleteSchedulePermission}
         deletBtnOnClick={() => handleDelete()}
       />
       {itemIdForUpdate === id && (
@@ -101,7 +118,10 @@ const CourtScheduleActionCell: FC<Props> = ({ id, name }) => {
           }}
         >
           {data && (
-            <UpdateCourtScheduleModalForm CourtScheduleData={data} isLoading={isLoading} />
+            <UpdateCourtScheduleModalForm
+              CourtScheduleData={data}
+              isLoading={isLoading}
+            />
           )}
         </CustomModal>
       )}

@@ -9,10 +9,14 @@ import { FC } from "react";
 import { useQueryClient, useMutation, useQuery } from "react-query";
 import { QUERIES } from "@presentation/helpers";
 import { useListView } from "@presentation/context/index";
-import { CourtSlotsCommandInstance, CourtSlotsQueryByIdInstance } from "@app/useCases/courtSlot";
+import {
+  CourtSlotsCommandInstance,
+  CourtSlotsQueryByIdInstance,
+} from "@app/useCases/courtSlot";
 import { CourtSlotsUrlEnum } from "@domain/enums/URL/courtSlots/courtSlotsUrls/CourtSlots";
 import { ICourtSlotsData } from "@domain/entities/CourtSlot/CourtSlot";
 import UpdateCourtSlotsModalForm from "./UpdateCourtSlotsModalForm";
+import useCheckPermission from "@presentation/helpers/useCheckPermission";
 
 interface Props {
   id: number;
@@ -85,14 +89,24 @@ const CourtSlotsActionCell: FC<Props> = ({ id, name }) => {
       deleteCourtSlots(id);
     }
   };
+  const checkSuperEditPermission = useCheckPermission("Access Super Edit");
+  const checkSuperDeletePermission = useCheckPermission("Access Super Delete");
 
+  const checkClubEditSlotPermission = useCheckPermission(
+    "Access Club Slot/Edit"
+  );
+  const checkClubDeleteSlotPermission = useCheckPermission(
+    "Access Club Slot/Delete"
+  );
   return (
     <>
       <CustomActionsCell
         id={id}
+        editBtn={checkSuperEditPermission || checkClubEditSlotPermission}
         editBtnOnClick={() => {
           setItemIdForUpdate(id);
         }}
+        deleteBtn={checkSuperDeletePermission || checkClubDeleteSlotPermission}
         deletBtnOnClick={() => handleDelete()}
       />
       {itemIdForUpdate === id && (

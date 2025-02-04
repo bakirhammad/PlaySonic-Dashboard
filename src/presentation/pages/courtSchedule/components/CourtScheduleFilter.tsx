@@ -11,20 +11,13 @@ import {
   FormikValues,
   useFormikContext,
 } from "formik";
-import CustomTimePicker from "@presentation/components/forms/CustomTimePicker";
 import { CustomButton } from "@presentation/components";
 import moment from "moment";
 import CustomSelectField from "@presentation/components/forms/CustomSelectField";
-import { ReservationStatusOptionsOptions } from "@presentation/helpers/DDL/ReservationStatusOptions";
-import { useCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useCourtsDDL";
 import { useClubsDDL } from "@presentation/hooks/queries/DDL/Club/useClubsDDL";
 import { useClubCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useClubCourtsDDL";
 
-interface IReservationFilter {
-  reservationDate: string;
-  endTime: string;
-  startTime: string;
-  status: { value: number; label: string } | null;
+interface ICourtScheduleFilter {
   courtId: { value: number; label: string } | null;
   clubId: { value: number; label: string } | null;
 }
@@ -32,14 +25,10 @@ const validationSchema = Yup.object().shape({
   // reservationDate: Yup.date(),
 });
 
-const ReservaionFilter = () => {
+const CourtScheduleFilter = () => {
   const { updateState } = useQueryRequest();
 
-  const initialValues: IReservationFilter = {
-    reservationDate: "",
-    endTime: "",
-    startTime: "",
-    status: null,
+  const initialValues: ICourtScheduleFilter = {
     courtId: null,
     clubId: null,
   };
@@ -51,10 +40,6 @@ const ReservaionFilter = () => {
   const filterData = (values: typeof initialValues) => {
     updateState({
       filter: {
-        reservationDate: values.reservationDate,
-        endTime: values.endTime,
-        startTime: values.startTime,
-        status: values.status?.value,
         courtId: values.courtId?.value,
         clubId: values.clubId?.value,
       },
@@ -125,29 +110,6 @@ const DailyFlightsFilterWrapper = () => {
             onPointerLeaveCapture={undefined}
           >
             <div className="row row-cols-3">
-              <CustomTimePicker
-                name="reservationDate"
-                label="SIDEBAR-RESERVATION-RESERVATOIN-DATE"
-                placeholder="SIDEBAR-RESERVATION-RESERVATOIN-DATE"
-                enableTime={false}
-                touched={touched}
-                errors={errors}
-                labelRequired={false}
-              />
-              <CustomTimePicker
-                name="startTime"
-                label="SIDEBAR-RESERVATION-START-TIME"
-                placeholder="SIDEBAR-RESERVATION-START-TIME"
-                Mode="time"
-                labelRequired={false}
-              />
-              <CustomTimePicker
-                name="endTime"
-                label="SIDEBAR-RESERVATION-END-TIME"
-                placeholder="SIDEBAR-RESERVATION-END-TIME"
-                Mode="time"
-                labelRequired={false}
-              />
               <CustomSelectField
                 name="clubId"
                 options={clubsOption}
@@ -166,14 +128,6 @@ const DailyFlightsFilterWrapper = () => {
                 touched={touched}
                 errors={errors}
                 disabled={values.clubId ? false : true}
-              />
-              <CustomSelectField
-                name="status"
-                options={ReservationStatusOptionsOptions}
-                label="DDL-Status"
-                placeholder="DDL-Status"
-                touched={touched}
-                errors={errors}
               />
             </div>
             <div className="d-flex justify-content-end">
@@ -200,4 +154,4 @@ const DailyFlightsFilterWrapper = () => {
     </>
   );
 };
-export default ReservaionFilter;
+export default CourtScheduleFilter;

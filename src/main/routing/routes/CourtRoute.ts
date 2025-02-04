@@ -57,6 +57,20 @@ const CourtRoute: Route = {
       role: [],
       breadcrumbs: [],
     },
+    {
+      path: "courtslots/:courtId",
+      title: "SIDEBAR-COURT-SLOTS",
+      component: CourtSlotsListWrapper,
+      role: [],
+      breadcrumbs: [],
+    },
+    {
+      path: "courtschedule/:courtId",
+      title: "SIDEBAR-COURT-SCHEDULE",
+      component: CourtScheduleListWrapper,
+      role: [],
+      breadcrumbs: [],
+    },
   ],
 };
 

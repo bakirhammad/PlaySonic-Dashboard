@@ -21,6 +21,7 @@ import { AreaUrlEnum } from "@domain/enums/URL/General/GeneralEnum/AreaEnum";
 import { AreaCommandInstance } from "@app/useCases/general/area/command/AreaCommand";
 import { CreateArea } from "./components/CreateArea";
 import { AreaListColumns } from "./components/AreaListColumns";
+import useCheckPermission from "@presentation/helpers/useCheckPermission";
 
 const AreaList = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
@@ -75,7 +76,7 @@ console.log(AreaData, "dafadfsdf")
       }
     }
   };
-
+  const checkSuperCreatePermission = useCheckPermission("Access Super Create");
   return (
     <>
       <CustomKTCard>
@@ -87,7 +88,7 @@ console.log(AreaData, "dafadfsdf")
           filterBtn={true}
           // FilterComponent={<AreaFilter></AreaFilter>}
           onDeleteSelectedAll={() => handleDeleteSelected()}
-          addBtn={true}
+          addBtn={checkSuperCreatePermission}
           addName="ADD"
         />
         <CustomTable columns={columns} data={tableData || []} />

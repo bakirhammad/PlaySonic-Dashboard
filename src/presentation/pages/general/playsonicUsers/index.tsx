@@ -13,6 +13,7 @@ import {
 import { PlaysonicUsersListColumns } from "./components/PlaysonicUsersListColumns";
 import { PlaysonicUsersUrlEnum } from "@domain/enums/URL/General/GeneralEnum/PlaysonicUsers";
 import { PlaysonicUsersQueryInstance } from "@app/useCases/general/playsonicUsers/query/PlaysonicUsersQuery";
+import useCheckPermission from "@presentation/helpers/useCheckPermission";
 
 const PlaysonicUsers = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
@@ -44,6 +45,7 @@ const PlaysonicUsers = () => {
     () => PlaysonicUsersData?.data,
     [PlaysonicUsersData]
   );
+  // const checkSuperCreatePermission = useCheckPermission("Access Super Create");
   return (
     <>
       <CustomKTCard>

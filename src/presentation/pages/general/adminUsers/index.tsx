@@ -15,6 +15,7 @@ import { AddUsersQueryInstance } from "@app/useCases/general/addUsers";
 import { AddUsersUrlEnum } from "@domain/enums/URL/General/GeneralEnum/AddUsers";
 import { CreateAdminUsers } from "./components/CreateAdminUsers";
 import { AdminUsersListColumns } from "./components/AdminUsersListColumns";
+import useCheckPermission from "@presentation/helpers/useCheckPermission";
 
 const AdminUsers = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
@@ -65,7 +66,7 @@ const AdminUsers = () => {
   //     }
   //   }
   // };
-
+  const checkSuperCreatePermission = useCheckPermission("Access Super Create");
   return (
     <>
       <CustomKTCard>
@@ -77,7 +78,7 @@ const AdminUsers = () => {
           filterBtn={true}
           // FilterComponent={<AdminUsersFilter></AdminUsersFilter>}
           // onDeleteSelectedAll={() => handleDeleteSelected()}
-          addBtn={true}
+          addBtn={checkSuperCreatePermission}
           addName="ADD"
         />
         <CustomTable columns={columns} data={tableData || []} />

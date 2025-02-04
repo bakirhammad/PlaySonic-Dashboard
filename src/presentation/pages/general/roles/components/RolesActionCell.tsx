@@ -13,6 +13,7 @@ import UpdateRoles from "./UpdateRoles";
 import { RolesCommandInstance, RolesQueryByIdInstance } from "@app/useCases/general/roles";
 import { RoleUrlEnum } from "@domain/enums/URL/General/GeneralEnum/RolesEnum";
 import { IRolesData } from "@domain/entities/general/Roles/Roles";
+import useCheckPermission from "@presentation/helpers/useCheckPermission";
 
 interface Props {
   id: number;
@@ -82,14 +83,17 @@ const RolesActionCell: FC<Props> = ({ id, name }) => {
       deleteRoles(id);
     }
   };
-
+  const checkSuperEditPermission = useCheckPermission("Access Super Edit");
+  const checkSuperDeletePermission = useCheckPermission("Access Super Delete");
   return (
     <>
       <CustomActionsCell
         id={id}
+        editBtn={checkSuperEditPermission}
         editBtnOnClick={() => {
           setItemIdForUpdate(id);
         }}
+        deleteBtn={checkSuperDeletePermission}
         deletBtnOnClick={() => handleDelete()}
       />
       {itemIdForUpdate === id && (

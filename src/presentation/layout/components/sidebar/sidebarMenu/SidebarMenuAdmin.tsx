@@ -8,13 +8,14 @@ import useCheckPermission from "@presentation/helpers/useCheckPermission";
 
 const SidebarMenuAdmin = () => {
   const checkSuberClubPermission = useCheckPermission("Access Super Club");
-  const checkSuberCourtPermission = useCheckPermission("Access Suber Courts");
+  const checkSuberCourtPermission = useCheckPermission("Access Super Courts");
   const checSuberReservationPermission = useCheckPermission(
-    "Access Suber Reservtion"
+    "Access Super Reservtion"
   );
-  const checkGeneralPermission = useCheckPermission("Access Genderal");
-  const checkAdminControlPermission = useCheckPermission("Access Admin Control");
-console.log("checSuberReservationPermission",checSuberReservationPermission);
+  const checkGeneralPermission = useCheckPermission("Access Super Genderal");
+  const checkAdminControlPermission = useCheckPermission(
+    "Access Admin Control"
+  );
 
   return (
     <>

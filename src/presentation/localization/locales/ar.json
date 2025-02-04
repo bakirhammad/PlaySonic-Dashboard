@@ -292,7 +292,9 @@
   "PhoneNumber":"Phone Number",
   "Email":"الايميل",
   "Transection":"Transection",
-  "SIDEBAR-My-Users":"My Users"
+  "SIDEBAR-My-Users":"My Users",
+   "ROLE-Email":"Email",
+  "ROLE-Phone":"Phone Number"
 
 
 

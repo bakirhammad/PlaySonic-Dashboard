@@ -6,8 +6,6 @@ import {
   CustomSelectionCell,
 } from "@presentation/components/tables";
 import { AdminUsersActionCell } from "./AdminUsersActionCell";
-import { PermissionsCell } from "@presentation/helpers/cells/PermissionsCell";
-import { RoleTypeCell } from "@presentation/helpers/cells/RoleTypeCell";
 import { IAddUsersData } from "@domain/entities/general/AddUsers/AddUsers";
 
 const AdminUsersListColumns: ReadonlyArray<Column<IAddUsersData>> = [
@@ -18,20 +16,20 @@ const AdminUsersListColumns: ReadonlyArray<Column<IAddUsersData>> = [
       <CustomSelectionCell id={props.data[props.row.index]?.id} />
     ),
   },
-  {
-    Header: (props) => (
-      <CustomHeaderCell
-        tableProps={props}
-        title="SIDEBAR-ROLE-ID"
-        enableSorting={false}
-        className="min-w-125px"
-      />
-    ),
-    id: "id",
-    Cell: ({ ...props }) => (
-      <CustomCell data={props.data[props.row.index]?.id} />
-    ),
-  },
+  // {
+  //   Header: (props) => (
+  //     <CustomHeaderCell
+  //       tableProps={props}
+  //       title="SIDEBAR-ROLE-ID"
+  //       enableSorting={false}
+  //       className="min-w-125px"
+  //     />
+  //   ),
+  //   id: "id",
+  //   Cell: ({ ...props }) => (
+  //     <CustomCell data={props.data[props.row.index]?.id} />
+  //   ),
+  // },
   {
     Header: (props) => (
       <CustomHeaderCell
@@ -50,12 +48,12 @@ const AdminUsersListColumns: ReadonlyArray<Column<IAddUsersData>> = [
     Header: (props) => (
       <CustomHeaderCell
         tableProps={props}
-        title="ROLE-TYPE"
+        title="ROLE-Email"
         enableSorting={false}
         className="min-w-125px"
       />
     ),
-    id: "type",
+    id: "email",
     Cell: ({ ...props }) => {
       return <CustomCell data={props.data[props.row.index]?.email} />;
     },
@@ -64,29 +62,29 @@ const AdminUsersListColumns: ReadonlyArray<Column<IAddUsersData>> = [
     Header: (props) => (
       <CustomHeaderCell
         tableProps={props}
-        title="ROLE-PERRMISSIONS"
+        title="ROLE-Phone"
         enableSorting={false}
         className="min-w-125px"
       />
     ),
-    id: "permissions",
+    id: "phoneNumber",
     Cell: ({ ...props }) => {
       return <CustomCell data={props.data[props.row.index]?.phoneNo} />;
     },
   },
-  {
-    Header: (props) => (
-      <CustomHeaderCell
-        tableProps={props}
-        title="ACTION"
-        className="min-w-100px"
-      />
-    ),
-    id: "actions",
-    Cell: ({ ...props }) => (
-      <AdminUsersActionCell id={props.data[props.row.index].id} />
-    ),
-  },
+  // {
+  //   Header: (props) => (
+  //     <CustomHeaderCell
+  //       tableProps={props}
+  //       title="ACTION"
+  //       className="min-w-100px"
+  //     />
+  //   ),
+  //   id: "actions",
+  //   Cell: ({ ...props }) => (
+  //     <AdminUsersActionCell id={props.data[props.row.index].id} />
+  //   ),
+  // },
 ];
 
 export { AdminUsersListColumns };

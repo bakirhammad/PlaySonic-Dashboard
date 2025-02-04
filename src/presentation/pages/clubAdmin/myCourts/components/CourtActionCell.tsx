@@ -97,7 +97,7 @@ const CourtActionCell: FC<Props> = ({ id, name }) => {
         }}
         deleteBtn={false}
         deletBtnOnClick={() => handleDelete()}
-        children={<CustomActionSellDrop courtId={id}/>}
+        children={<CustomActionSellDrop courtId={id} isSuper={false}/>}
       />
       {itemIdForUpdate === id && (
         <CustomModal

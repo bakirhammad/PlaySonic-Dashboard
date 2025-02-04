@@ -14,6 +14,7 @@ import { CityUrlEnum } from "@domain/enums/URL/General/GeneralEnum/CityEnum";
 import { CityCommandInstance } from "@app/useCases/general/city/commands/CityCommand";
 import { ICityData } from "@domain/entities/general/city/City";
 import UpdateCity from "./UpdateCity";
+import useCheckPermission from "@presentation/helpers/useCheckPermission";
 
 interface Props {
   id: number;
@@ -83,14 +84,17 @@ const CityActionCell: FC<Props> = ({ id, name }) => {
       deleteCity(id);
     }
   };
-
+  const checkSuperEditPermission = useCheckPermission("Access Super Edit");
+  const checkSuperDeletePermission = useCheckPermission("Access Super Delete");
   return (
     <>
       <CustomActionsCell
         id={id}
+        editBtn={checkSuperEditPermission}
         editBtnOnClick={() => {
           setItemIdForUpdate(id);
         }}
+        deleteBtn={checkSuperDeletePermission}
         deletBtnOnClick={() => handleDelete()}
       />
       {itemIdForUpdate === id && (

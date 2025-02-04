@@ -14,6 +14,7 @@ import { CountryUrlEnum } from "@domain/enums";
 import { CountryCommandInstance } from "@app/useCases/general/country/commands/CountryCommand";
 import { ICountryBody } from "@domain/entities";
 import UpdateCountry from "./UpdateCountry";
+import useCheckPermission from "@presentation/helpers/useCheckPermission";
 
 interface Props {
   id: number;
@@ -86,14 +87,17 @@ const CountryActionCell: FC<Props> = ({ id, name }) => {
       deleteCountry(id);
     }
   };
-
+  const checkSuperEditPermission = useCheckPermission("Access Super Edit");
+  const checkSuperDeletePermission = useCheckPermission("Access Super Delete");
   return (
     <>
       <CustomActionsCell
         id={id}
+        editBtn={checkSuperEditPermission}
         editBtnOnClick={() => {
           setItemIdForUpdate(id);
         }}
+        deleteBtn={checkSuperDeletePermission}
         deletBtnOnClick={() => handleDelete()}
       />
       {itemIdForUpdate === id && (

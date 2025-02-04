@@ -4,19 +4,28 @@ import { useNavigate } from "react-router-dom";
 
 interface ICourtId {
   courtId: number;
+  isSuper: boolean;
 }
-const CustomActionSellDrop: FC<ICourtId> = ({ courtId }) => {
+const CustomActionSellDrop: FC<ICourtId> = ({ courtId, isSuper }) => {
   const navigate = useNavigate();
   return (
     <div>
       <ActionItem
         icon=""
-        onClick={() => navigate(`/apps/courtslots/${courtId}`)}
+        onClick={() =>
+          isSuper
+            ? navigate(`/apps/court/courtslots/${courtId}`)
+            : navigate(`/apps/courtslots/${courtId}`)
+        }
         title="Court Slots"
       />
       <ActionItem
         icon=""
-        onClick={() => navigate(`/apps/courtschedule/${courtId}`)}
+        onClick={() =>
+          isSuper
+            ? navigate(`/apps/court/courtschedule/${courtId}`)
+            : navigate(`/apps/courtschedule/${courtId}`)
+        }
         title="Court Schedule"
       />
     </div>

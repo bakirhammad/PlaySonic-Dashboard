@@ -85,8 +85,8 @@ export const UpdateClubModalForm = ({ ClubData, isLoading }: IProps) => {
       lat: lat,
       lng: lng,
       image: ClubData.image,
-      images: ClubData.images,
-      newImages: null,
+      // images: ClubData.images,
+      // newImages: null,
       ...translations,
     };
   }, [ClubData, Languages, lng, lat]);
@@ -140,10 +140,12 @@ export const UpdateClubModalForm = ({ ClubData, isLoading }: IProps) => {
     formData.append("lat", values.lat);
     formData.append("lng", values.lng);
     formData.append("Img", values.image);
-    values.newImages?.map((img: string) => {
-      formData.append(`Images`, img);
-    });
 
+    //  Until update images api done ---->
+    
+    // values.newImages?.map((img: string) => {
+    //   formData.append(`Images`, img);
+    // });
 
     let index = 0;
     Languages.forEach((lang) => {
@@ -297,23 +299,26 @@ const ClubUpdateForm: FC<IData> = ({ clubData }) => {
     }
   );
 
-  const HandelDeleteImage = async (img?: string) => {
-    showAreYouSure({
-      message: "Are you sure you want to delete the image?",
-      onConfirm: async () => {
-        if (img) {
-          await ClubCommandInstance.deleteClubImages(
-            ClubUrlEnum.DeleteClubImages,
-            clubData?.id,
-            img.trim()
-          );
-          // openUpdateHotelSupplierRoomModal(values?.id);
-        }
-      },
-      onCancel: async () => {},
-      icon: "warning",
-    });
-  };
+  {
+    /* ----- Until update images api done ---- */
+  }
+  // const HandelDeleteImage = async (img?: string) => {
+  //   showAreYouSure({
+  //     message: "Are you sure you want to delete the image?",
+  //     onConfirm: async () => {
+  //       if (img) {
+  //         await ClubCommandInstance.deleteClubImages(
+  //           ClubUrlEnum.DeleteClubImages,
+  //           clubData?.id,
+  //           img.trim()
+  //         );
+  //         // openUpdateHotelSupplierRoomModal(values?.id);
+  //       }
+  //     },
+  //     onCancel: async () => {},
+  //     icon: "warning",
+  //   });
+  // };
 
   console.log(values, "clubId");
   return (
@@ -449,7 +454,9 @@ const ClubUpdateForm: FC<IData> = ({ clubData }) => {
               </div>
             </div>
 
-            <div className="row row-cols-3">
+            {/* ----- Until update images api done ---- */}
+
+            {/* <div className="row row-cols-3">
               <div>
                 <CustomUploadFile
                   name="newImages"
@@ -474,7 +481,7 @@ const ClubUpdateForm: FC<IData> = ({ clubData }) => {
                     />
                   ))}
               </div>
-            </div>
+            </div> */}
             <hr />
             <div className="translation mt-5">
               <div className="d-flex mb-7">

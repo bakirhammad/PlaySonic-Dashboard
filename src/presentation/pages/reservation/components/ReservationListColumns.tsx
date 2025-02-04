@@ -239,8 +239,11 @@ const ReservationListColumns: ReadonlyArray<Column<IReservationData>> = [
           ReservationStatusEnum[props.data[props.row.index]?.status] === "New"
             ? "primary"
             : ReservationStatusEnum[props.data[props.row.index]?.status] ===
-              "Confirmed"
+              "Approved"
             ? "success"
+            : ReservationStatusEnum[props.data[props.row.index]?.status] ===
+              "Confirmed"
+            ? "secondary"
             : ReservationStatusEnum[props.data[props.row.index]?.status] ===
               "InProgress"
             ? "warning"
@@ -263,9 +266,11 @@ const ReservationListColumns: ReadonlyArray<Column<IReservationData>> = [
     ),
     id: "approval",
     Cell: ({ ...props }) => {
-      return props.data[props.row.index]?.status === 1
+      return props.data[props.row.index]?.status ===
+        ReservationStatusEnum["New"]
         ? "Pending"
-        : props.data[props.row.index]?.status === 16
+        : props.data[props.row.index]?.status ===
+          ReservationStatusEnum["Cancelled"]
         ? "Cancelled"
         : "Approved";
     },

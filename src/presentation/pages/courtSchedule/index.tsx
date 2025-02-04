@@ -24,6 +24,8 @@ import {
 import { CourtScheduleUrlEnum } from "@domain/enums/URL/CourtSchedule/CourtScheduleUrls/CourtSchedule";
 import { CourtScheduleModalCreateForm } from "./components/CourtScheduleModalCreateForm";
 import { useParams } from "react-router-dom";
+import useCheckPermission from "@presentation/helpers/useCheckPermission";
+import CourtScheduleFilter from "./components/CourtScheduleFilter";
 
 const CourtSchedule = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
@@ -82,7 +84,10 @@ const CourtSchedule = () => {
       }
     }
   };
-
+  const checkSuperCreatePermission = useCheckPermission("Access Super Create");
+  const checkClubCreateSchedulePermission = useCheckPermission(
+    "Access Club Schedule/Create"
+  );
   return (
     <>
       <CustomKTCard>
@@ -92,9 +97,9 @@ const CourtSchedule = () => {
           }}
           searchPlaceholder="SEARCH"
           filterBtn={true}
-          // FilterComponent={<CourtScheduleFilter></CourtScheduleFilter>}
+          FilterComponent={<CourtScheduleFilter/>}
           onDeleteSelectedAll={() => handleDeleteSelected()}
-          addBtn={true}
+          addBtn={checkSuperCreatePermission || checkClubCreateSchedulePermission}
           addName="ADD"
         />
         <CustomTable columns={columns} data={tableData || []} />

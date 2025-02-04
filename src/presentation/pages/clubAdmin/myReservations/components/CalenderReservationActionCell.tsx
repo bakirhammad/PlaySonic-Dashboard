@@ -7,7 +7,6 @@ import {
 import { CustomToast } from "@presentation/components/alerts/CustomToast";
 import { FC } from "react";
 import { useQueryClient, useMutation, useQuery } from "react-query";
-import { QUERIES } from "@presentation/helpers";
 import { useListView } from "@presentation/context/index";
 import { IReservationData } from "@domain/entities/Reservation/Reservation";
 import {
@@ -99,7 +98,7 @@ const CalenderReservationActionCell: FC<Props> = ({ id, name }) => {
           setItemIdForUpdate(id);
         }}
         deletBtnOnClick={() => handleDelete()}
-        children={<StatusApproval id={id} />}
+        children={<StatusApproval id={id} queryKey={"MyReservations"} />}
       />
       {itemIdForUpdate === id && (
         <CustomModal

@@ -31,7 +31,6 @@ import { useCitiesDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useCiti
 import { useAreasDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useAreasDDL";
 import { useCountriesDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useCountriesDDL";
 import validationSchemas from "@presentation/helpers/validationSchemas";
-import { useAreasByCityDDL } from "@presentation/hooks/queries/DDL/GeneralDDL/useAreasByCityDDL";
 import { CustomUploadFile } from "@presentation/components/forms/CustomUploadFile";
 
 export const ClubModalCreateForm = () => {
@@ -52,7 +51,7 @@ export const ClubModalCreateForm = () => {
       lat: 0,
       lng: 0,
       image: null,
-       images: [],
+      //  images: [],
     },
     ...Languages.map((lang) => ({
       [`name${lang?.id}`]: "",
@@ -105,10 +104,12 @@ export const ClubModalCreateForm = () => {
     formData.append("lat", values.lat);
     formData.append("lng", values.lng);
     formData.append("Img", values.image);
-    values?.images?.map((img: File) => {
-      formData.append("Images", img);
-    });
-    
+
+    // Wait until update images api done >>>
+    // values?.images?.map((img: File) => {
+    //   formData.append("Images", img);
+    // });
+
     let index = 0;
     Languages.forEach((lang) => {
       if (values[`name${lang?.id}`]) {
@@ -178,7 +179,7 @@ const ClubForm = () => {
   const { CityOption, isCityLoading } = useCitiesDDL();
   const { AreaOption, isAreaLoading } = useAreasDDL();
 
-  console.log(values , "Cover")
+  console.log(values, "Cover");
   return (
     <>
       <Form
@@ -296,7 +297,10 @@ const ClubForm = () => {
                 label="CLUB-IMAGE"
               />
             </div>
-             <div className="row row-cols-3">
+
+            {/* -- Wait until update images api done >>>  */}
+            
+            {/* <div className="row row-cols-3">
               <CustomUploadFile
                 name="images"
                 label="Club-Covers"
@@ -307,7 +311,7 @@ const ClubForm = () => {
                 isSubmitting={isSubmitting}
                 accept={"image/*"}
               />
-            </div>
+            </div> */}
 
             <hr />
             <div className="translation mt-5">

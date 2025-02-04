@@ -6,10 +6,8 @@ const SidebarMenuClubAdmins = () => {
   const checkMyReservaionPermission = useCheckPermission(
     "Access Club Reservation"
   );
-  const checkMyUsersPermission = useCheckPermission(
-    "Access Club Users"
-  );
-  
+  const checkMyUsersPermission = useCheckPermission("Access Club Users");
+
   return (
     <>
       {checkMyCourtPermission && (
@@ -26,13 +24,16 @@ const SidebarMenuClubAdmins = () => {
           hasBullet={true}
         />
       )}
-         {checkMyUsersPermission && (
+
+      {/* ----- Until api done ---- */}
+      
+      {/* {checkMyUsersPermission && (
         <SidebarMenuItem
           to="/apps/myusers"
           title="SIDEBAR-My-Users"
           hasBullet={true}
         />
-      )}
+      )} */}
     </>
   );
 };

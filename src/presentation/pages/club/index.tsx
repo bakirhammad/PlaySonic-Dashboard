@@ -21,6 +21,7 @@ import { ClubUrlEnum } from "@domain/enums/URL/Clubs/ClubUrls/Club";
 import { ClubListColumns } from "./components/ClubListColumns";
 import { ClubModalCreateForm } from "./components/ClubModalCreateForm";
 import ClubFilter from "./components/ClubFilter";
+import useCheckPermission from "@presentation/helpers/useCheckPermission";
 
 const ClubList = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
@@ -75,6 +76,7 @@ const ClubList = () => {
       }
     }
   };
+  const checkSuperCreatePermission = useCheckPermission("Access Super Create");
 
   return (
     <>
@@ -87,7 +89,7 @@ const ClubList = () => {
           filterBtn={true}
           FilterComponent={<ClubFilter />}
           onDeleteSelectedAll={() => handleDeleteSelected()}
-          addBtn={true}
+          addBtn={checkSuperCreatePermission}
           addName="ADD"
         />
         <CustomTable columns={columns} data={tableData || []} />

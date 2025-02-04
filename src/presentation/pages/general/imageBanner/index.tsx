@@ -23,6 +23,7 @@ import {
 import { ImageBannerUrlEnum } from "@domain/enums/URL/General/GeneralEnum/ImageBannerEnum";
 import { CreateImageBanner } from "./components/CreateImageBanner";
 import { ImageBannerListColumns } from "./components/ImageBannerListColumns";
+import useCheckPermission from "@presentation/helpers/useCheckPermission";
 
 const ImageBanner = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
@@ -76,7 +77,7 @@ const ImageBanner = () => {
       }
     }
   };
-
+  const checkSuperCreatePermission = useCheckPermission("Access Super Create");
   return (
     <>
       <CustomKTCard>
@@ -88,7 +89,7 @@ const ImageBanner = () => {
           filterBtn={true}
           // FilterComponent={<ImageBannerFilter></ImageBannerFilter>}
           onDeleteSelectedAll={() => handleDeleteSelected()}
-          addBtn={true}
+          addBtn={checkSuperCreatePermission}
           addName="ADD"
         />
         <CustomTable columns={columns} data={tableData || []} />

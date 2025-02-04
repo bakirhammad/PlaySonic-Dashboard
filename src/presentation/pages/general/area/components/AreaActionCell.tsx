@@ -14,6 +14,7 @@ import { AreaQueryByIdInstance } from "@app/useCases/general/area/query/AreaQuer
 import { AreaCommandInstance } from "@app/useCases/general/area/command/AreaCommand";
 import { IAreaBody } from "@domain/entities/general/area/Area";
 import UpdateArea from "./UpdateArea";
+import useCheckPermission from "@presentation/helpers/useCheckPermission";
 
 interface Props {
   id: number;
@@ -84,13 +85,17 @@ const AreaActionCell: FC<Props> = ({ id, name }) => {
     }
   };
 
+  const checkSuperEditPermission = useCheckPermission("Access Super Edit");
+  const checkSuperDeletePermission = useCheckPermission("Access Super Delete");
   return (
     <>
       <CustomActionsCell
         id={id}
+        editBtn={checkSuperEditPermission}
         editBtnOnClick={() => {
           setItemIdForUpdate(id);
         }}
+        deleteBtn={checkSuperDeletePermission}
         deletBtnOnClick={() => handleDelete()}
       />
       {itemIdForUpdate === id && (

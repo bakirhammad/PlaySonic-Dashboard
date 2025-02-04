@@ -114,6 +114,7 @@
 
 
 
+
   "-------------------------===============================":"",
   "DDL-CITY_LABEL": "City",
   "DDL-COUNTRY_LABEL": "Country",
@@ -305,7 +306,9 @@
   "PhoneNumber":"Phone Number",
   "Email":"Email",
   "Transection":"Transection",
-  "SIDEBAR-My-Users":"My Users"
+  "SIDEBAR-My-Users":"My Users",
+  "ROLE-Email":"Email",
+  "ROLE-Phone":"Phone Number"
 
 
 

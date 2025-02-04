@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useMemo, useRef } from "react";
 import {
   CustomButton,
@@ -135,7 +136,14 @@ const RolesUpdateForm = () => {
         return setFieldValue("type", { value: role.value, label: role.label });
       }
     });
-  }, [values.type, setFieldValue]);
+
+    const matchedPermissions = PermissionsEnumOptions.filter((permission) => {
+      return (values.permissions & permission.value) === permission.value;
+    }).map((permission) => permission.value.toString());
+
+    setFieldValue("permissions", matchedPermissions);
+  }, []);
+
   return (
     <>
       <Form

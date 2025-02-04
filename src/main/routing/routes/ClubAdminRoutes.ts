@@ -44,7 +44,7 @@ const ClubAdminRoutes: Route = {
     {
       path: "myreservations",
       title: "SIDEBAR-My-Reservations",
-      component: MyReservations, //MyReservationsWrapper,
+      component: MyReservations,
       role: [],
       breadcrumbs: [],
     },

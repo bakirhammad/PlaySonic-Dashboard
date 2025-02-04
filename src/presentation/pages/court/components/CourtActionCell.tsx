@@ -17,6 +17,7 @@ import { CourtUrlEnum } from "@domain/enums/URL/Court/CourtUrls/Court";
 import { ICourtData } from "@domain/entities/Court/Court";
 import CustomActionSellDrop from "@presentation/helpers/CustomActionSellDrop";
 import { UpdateCourtModalForm } from "./UpdateCourtModalForm";
+import useCheckPermission from "@presentation/helpers/useCheckPermission";
 
 interface Props {
   id: number;
@@ -87,15 +88,19 @@ const CourtActionCell: FC<Props> = ({ id, name }) => {
     }
   };
 
+  const checkSuperEditPermission = useCheckPermission("Access Super Edit");
+  const checkSuperDeletePermission = useCheckPermission("Access Super Delete");
   return (
     <>
       <CustomActionsCell
         id={id}
+        editBtn={checkSuperEditPermission}
         editBtnOnClick={() => {
           setItemIdForUpdate(id);
         }}
+        deleteBtn={checkSuperDeletePermission}
         deletBtnOnClick={() => handleDelete()}
-        children={<CustomActionSellDrop courtId={id}/>}
+        children={<CustomActionSellDrop courtId={id} isSuper={true}/>}
 
       />
       {itemIdForUpdate === id && (

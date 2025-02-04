@@ -1,7 +1,9 @@
+
 export enum ReservationStatusEnum {
   "New" = 1,
-  "Confirmed" = 2,
-  "InProgress" = 4,
-  "Finished" = 8,
-  "Cancelled" = 16,
+  "Approved" = 2,
+  "Confirmed" = 4,
+  "InProgress" = 8,
+  "Finished" = 16,
+  "Cancelled" = 32,
 }

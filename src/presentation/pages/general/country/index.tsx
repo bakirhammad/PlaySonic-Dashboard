@@ -21,6 +21,7 @@ import { CountryListColumns } from "./components/CountryListColumns";
 import { CountryQueryInstance } from "@app/useCases/general/country/query/CountryQuery";
 import { CountryUrlEnum } from "@domain/enums";
 import { CountryCommandInstance } from "@app/useCases/general/country/commands/CountryCommand";
+import useCheckPermission from "@presentation/helpers/useCheckPermission";
 
 const CountryList = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
@@ -75,7 +76,7 @@ const CountryList = () => {
       }
     }
   };
-
+  const checkSuperCreatePermission = useCheckPermission("Access Super Create");
   return (
     <>
       <CustomKTCard>
@@ -87,7 +88,7 @@ const CountryList = () => {
           filterBtn={true}
           // FilterComponent={<CountryFilter></CountryFilter>}
           onDeleteSelectedAll={() => handleDeleteSelected()}
-          addBtn={true}
+          addBtn={checkSuperCreatePermission}
           addName="ADD"
         />
         <CustomTable columns={columns} data={tableData || []} />

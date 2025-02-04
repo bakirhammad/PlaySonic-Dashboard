@@ -16,7 +16,8 @@ import {
 } from "@app/useCases/reservation";
 import { ReservationUrlEnum } from "@domain/enums/URL/Reservation/reservationUrls/Reservation";
 import UpdateReservationForm from "./UpdateReservationForm";
-import StatusApproval from "@presentation/pages/clubAdmin/myReservation/components/StatusApproval";
+import useCheckPermission from "@presentation/helpers/useCheckPermission";
+import StatusApproval from "@presentation/helpers/StatusApproval";
 
 interface Props {
   id: number;
@@ -89,7 +90,8 @@ const ReservationActionCell: FC<Props> = ({ id, name }) => {
       deleteReservation(id);
     }
   };
-
+  // const checkSuperEditPermission = useCheckPermission("Access Super Edit");
+  const checkSuperDeletePermission = useCheckPermission("Access Super Delete");
   return (
     <>
       <CustomActionsCell
@@ -98,8 +100,9 @@ const ReservationActionCell: FC<Props> = ({ id, name }) => {
         editBtnOnClick={() => {
           setItemIdForUpdate(id);
         }}
+        deleteBtn={checkSuperDeletePermission}
         deletBtnOnClick={() => handleDelete()}
-        // children={<StatusApproval id={id} />}
+        children={<StatusApproval id={id}  queryKey={QUERIES.ReservationList}/>}
       />
       {itemIdForUpdate === id && (
         <CustomModal

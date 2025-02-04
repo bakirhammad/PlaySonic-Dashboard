@@ -66,7 +66,7 @@ const ReservationList = () => {
         );
         if (data) {
           showDeletedAlert(`${selected.length} item`);
-          queryClient.invalidateQueries([QUERIES.ClubList]);
+          queryClient.invalidateQueries([QUERIES.ReservationList]);
           clearSelected();
           CustomToast(`Deleted successfully`, "success");
         }

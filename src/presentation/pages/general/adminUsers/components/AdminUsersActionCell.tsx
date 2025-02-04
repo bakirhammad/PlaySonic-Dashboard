@@ -16,6 +16,7 @@ import {
   AddUsersQueryByIdInstance,
 } from "@app/useCases/general/addUsers";
 import UpdateAdminUsers from "./UpdateAdminUsers";
+import useCheckPermission from "@presentation/helpers/useCheckPermission";
 
 interface Props {
   id: number;
@@ -89,10 +90,13 @@ const AdminUsersActionCell: FC<Props> = ({ id, name }) => {
     }
   };
 
+  const checkSuperEditPermission = useCheckPermission("Access Super Edit");
+  // const checkSuperDeletePermission = useCheckPermission("Access Super Delete");
   return (
     <>
       <CustomActionsCell
         id={id}
+        editBtn={checkSuperEditPermission}
         editBtnOnClick={() => {
           setItemIdForUpdate(id);
         }}

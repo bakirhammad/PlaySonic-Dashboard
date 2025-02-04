@@ -21,6 +21,7 @@ import { CityUrlEnum } from "@domain/enums/URL/General/GeneralEnum/CityEnum";
 import { CityCommandInstance } from "@app/useCases/general/city/commands/CityCommand";
 import { CreateCity } from "./components/CreateCity";
 import { CityListColumns } from "./components/CityListColumns";
+import useCheckPermission from "@presentation/helpers/useCheckPermission";
 
 const CityList = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
@@ -75,7 +76,7 @@ console.log("city", CityData)
       }
     }
   };
-
+  const checkSuperCreatePermission = useCheckPermission("Access Super Create");
   return (
     <>
       <CustomKTCard>
@@ -87,7 +88,7 @@ console.log("city", CityData)
           filterBtn={true}
           // FilterComponent={<CityFilter></CityFilter>}
           onDeleteSelectedAll={() => handleDeleteSelected()}
-          addBtn={true}
+          addBtn={checkSuperCreatePermission}
           addName="ADD"
         />
         <CustomTable columns={columns} data={tableData || []} />

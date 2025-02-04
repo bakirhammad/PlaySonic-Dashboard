@@ -24,6 +24,8 @@ import {
 import { CourtSlotsListColumns } from "./components/CourtSlotsListColumns";
 import { CourtSlotsModalCreateForm } from "./components/CourtSlotsModalCreateForm";
 import { useParams } from "react-router-dom";
+import useCheckPermission from "@presentation/helpers/useCheckPermission";
+import CourtSlotsFilter from "./components/CourtSlotsFilter";
 
 const CourtSlots = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
@@ -82,7 +84,9 @@ const CourtSlots = () => {
       }
     }
   };
-
+  const checkClubCreateSlotPermission = useCheckPermission(
+    "Access Club Slot/Create"
+  );const checkSuperCreatePermission = useCheckPermission("Access Super Create");
   return (
     <>
       <CustomKTCard>
@@ -92,9 +96,9 @@ const CourtSlots = () => {
           }}
           searchPlaceholder="SEARCH"
           filterBtn={true}
-          // FilterComponent={<CourtSlotsFilter></CourtSlotsFilter>}
+          FilterComponent={<CourtSlotsFilter/>}
           onDeleteSelectedAll={() => handleDeleteSelected()}
-          addBtn={true}
+          addBtn={checkSuperCreatePermission || checkClubCreateSlotPermission}
           addName="ADD"
         />
         <CustomTable columns={columns} data={tableData || []} />

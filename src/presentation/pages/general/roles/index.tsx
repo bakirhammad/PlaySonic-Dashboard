@@ -20,6 +20,7 @@ import { RolesListColumns } from "./components/RolesListColumns";
 import { CreateRoles } from "./components/CreateRoles";
 import { RoleUrlEnum } from "@domain/enums/URL/General/GeneralEnum/RolesEnum";
 import { RolesCommandInstance, RolesQueryInstance } from "@app/useCases/general/roles";
+import useCheckPermission from "@presentation/helpers/useCheckPermission";
 
 const Roles = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
@@ -73,7 +74,7 @@ const Roles = () => {
       }
     }
   };
-
+  const checkSuperCreatePermission = useCheckPermission("Access Super Create");
   return (
     <>
       <CustomKTCard>
@@ -85,7 +86,7 @@ const Roles = () => {
           filterBtn={true}
           // FilterComponent={<RolesFilter></RolesFilter>}
           onDeleteSelectedAll={() => handleDeleteSelected()}
-          addBtn={true}
+          addBtn={checkSuperCreatePermission}
           addName="ADD"
         />
         <CustomTable columns={columns} data={tableData || []} />

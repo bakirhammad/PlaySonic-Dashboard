@@ -19,6 +19,7 @@ import { ReservationUrlEnum } from "@domain/enums/URL/Reservation/reservationUrl
 import { useClubCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useClubCourtsDDL";
 import CustomTimePicker from "@presentation/components/forms/CustomTimePicker";
 import { useAuthStore } from "@infrastructure/storage/AuthStore";
+import { ReservationStatusEnum } from "@domain/enums/reservationStatus/ReservationStatusEnum";
 
 export default function MyReservations() {
   const [applyFilter, setApplyFilter] = useState(false);
@@ -63,7 +64,7 @@ export default function MyReservations() {
 
   // return all non cancelled reservations.
   const filteredData = ReservationData?.data.filter((data) => {
-    return data.status !== 16;
+    return data.status !== ReservationStatusEnum["Cancelled"];
   });
 
   const handleSubmit = (values: typeof initialValues) => {
@@ -92,7 +93,11 @@ export default function MyReservations() {
           }}
         >
           {({ resetForm, values }) => (
-            <Form placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <Form
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+            >
               <div className="row row-cols-2 align-items-center flex-wrap  border border-2  p-2 rounded mb-5">
                 <CustomTimePicker
                   label="From-Date"
@@ -113,7 +118,7 @@ export default function MyReservations() {
                   placeholder="DDL-CHOOSE-COURT"
                 />
                 <div className="d-flex mb-2">
-                  <CustomButton
+                  {/* <CustomButton
                     type="reset"
                     text="RESET_FILTER"
                     onClick={() => {
@@ -125,7 +130,7 @@ export default function MyReservations() {
                     className="btn btn-light btn-active-light-primary fw-bold me-2 px-6"
                     data-kt-user-table-filter="reset"
                     disabled={isLoading}
-                  />
+                  /> */}
                   <CustomButton
                     type="submit"
                     text={"APPLY_FILTER"}

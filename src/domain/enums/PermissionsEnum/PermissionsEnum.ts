@@ -1,50 +1,19 @@
 export enum PermissionsEnum {
   "Access Super Club" = 1,
-  "Access Suber Courts" = 2,
-  "Access Genderal" = 4,
-  "Access Suber Reservtion" = 8,
-  "Access Club Reservation" = 16,
-  "Access Club Courts" = 32,
-  "Delete" = 64,
-  "Edit" = 128,
-  "Create" = 256,
-  "Access Admin Control" = 512,
-  "Access Club Users" = 1024
+  "Access Super Courts" = 2,
+  "Access Super Genderal" = 4,
+  "Access Super Reservtion" = 8,
+  "Access Admin Control" = 16,
+  "Access Super Delete" = 32,
+  "Access Super Edit" = 64,
+  "Access Super Create" = 128,
+  "Access Club Reservation" = 256,
+  "Access Club Courts" = 512,
+  // "Access Club Users" = 1024,
+  "Access Club Slot/Delete" = 2048,
+  "Access Club Slot/Edit" = 4096,
+  "Access Club Slot/Create" = 8192,
+  "Access Club Schedule/Delete" = 16384,
+  "Access Club Schedule/Edit" = 32768,
+  "Access Club Schedule/Create" = 65536,
 }
-
-
-
-
-
-
-/*
- 
-export enum SuperAdminPermissionsEnum {
-"Access Super Club" = 1,
-"Access Suber Courts" = 2,
-"Access Genderal" = 4,
-"Access Suber Reservation" = 8,
-"Delete" = 16,
-"Edit" = 32,
-"Create" = 64,
-}
-
-
-export enum ClubAdminPermissionsEnum {
-"Create Resevation" = 1,
-"Delete" = 2,
-"Edit" = 4,
-"Create" = 8,
-"Acceess Club Courts" = 16,
-"Access Club Reservations" = 32
-}
-
-
-export enum SubAdminPermissionsEnum {
-"Delete" = 1,
-"Edit" = 2,
-"Create" = 4,
-"Acceess Club Courts" = 8,
-"Access Club Reservations" = 16
-}
-*/
