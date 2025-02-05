@@ -27,13 +27,13 @@ const SidebarMenuClubAdmins = () => {
 
       {/* ----- Until api done ---- */}
       
-      {/* {checkMyUsersPermission && (
+       {checkMyReservaionPermission && (
         <SidebarMenuItem
           to="/apps/myusers"
           title="SIDEBAR-My-Users"
           hasBullet={true}
         />
-      )} */}
+      )} 
     </>
   );
 };

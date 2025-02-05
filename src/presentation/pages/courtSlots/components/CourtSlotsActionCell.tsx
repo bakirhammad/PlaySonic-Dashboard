@@ -92,21 +92,15 @@ const CourtSlotsActionCell: FC<Props> = ({ id, name }) => {
   const checkSuperEditPermission = useCheckPermission("Access Super Edit");
   const checkSuperDeletePermission = useCheckPermission("Access Super Delete");
 
-  const checkClubEditSlotPermission = useCheckPermission(
-    "Access Club Slot/Edit"
-  );
-  const checkClubDeleteSlotPermission = useCheckPermission(
-    "Access Club Slot/Delete"
-  );
   return (
     <>
       <CustomActionsCell
         id={id}
-        editBtn={checkSuperEditPermission || checkClubEditSlotPermission}
+        editBtn={checkSuperEditPermission }
         editBtnOnClick={() => {
           setItemIdForUpdate(id);
         }}
-        deleteBtn={checkSuperDeletePermission || checkClubDeleteSlotPermission}
+        deleteBtn={checkSuperDeletePermission}
         deletBtnOnClick={() => handleDelete()}
       />
       {itemIdForUpdate === id && (

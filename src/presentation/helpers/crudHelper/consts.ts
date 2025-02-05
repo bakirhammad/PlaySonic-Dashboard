@@ -18,7 +18,8 @@ const QUERIES = {
   RolesList:"RolesList",
   ImageBannerList: "ImageBannerList",
   AdminUsersList:"AdminUsersList",
-  PlaysonicUsersList:"PlaysonicUsersList"
+  PlaysonicUsersList:"PlaysonicUsersList",
+  MyUsersList:"MyUsersList"
 };
 const PAGINATION_PAGES_COUNT = 3;
 const defaultPageNumberInPagination = 1;

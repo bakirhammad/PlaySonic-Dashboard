@@ -17,11 +17,11 @@ const SidebarAdminControlMenuItems: FC = () => {
       
       {/* ----- Until api done ---- */}
 
-        {/* <SidebarMenuItem
+         <SidebarMenuItem
         to="/apps/admin/playsonicusers"
         title="SIDEBAR-PLAYSONIC-USERS"
         hasBullet={true}
-      /> */}
+      /> 
     </>
   );
 };

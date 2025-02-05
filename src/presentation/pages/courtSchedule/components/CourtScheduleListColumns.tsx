@@ -10,6 +10,7 @@ import { ICourtScheduleData } from "@domain/entities/CourtSchedule/CourtSchedule
 import CourtNameCell from "@presentation/helpers/cells/CourtNameCell";
 import { DaysCell } from "@presentation/helpers/cells/DaysCell";
 import ClubNameCell from "@presentation/helpers/cells/ClubNameCell";
+import useCheckPermission from "@presentation/helpers/useCheckPermission";
 
 const CourtScheduleListColumns: ReadonlyArray<Column<ICourtScheduleData>> = [
   {
@@ -103,6 +104,7 @@ const CourtScheduleListColumns: ReadonlyArray<Column<ICourtScheduleData>> = [
       return <CustomCell data={props.data[props.row.index]?.endTime} />;
     },
   },
+
   {
     Header: (props) => (
       <CustomHeaderCell
@@ -112,9 +114,17 @@ const CourtScheduleListColumns: ReadonlyArray<Column<ICourtScheduleData>> = [
       />
     ),
     id: "actions",
-    Cell: ({ ...props }) => (
-      <CourtScheduleActionCell id={props.data[props.row.index].id} />
-    ),
+    Cell: ({ ...props }) => {
+      const checkSuperEditPermission = useCheckPermission("Access Super Edit");
+      const checkSuperDeletePermission = useCheckPermission(
+        "Access Super Delete"
+      );
+      return checkSuperDeletePermission || checkSuperEditPermission ? (
+        <CourtScheduleActionCell id={props.data[props.row.index].id} />
+      ) : (
+        <p>------------</p>
+      );
+    },
   },
 ];
 

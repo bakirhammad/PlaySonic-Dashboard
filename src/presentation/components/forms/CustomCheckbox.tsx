@@ -1,6 +1,6 @@
 import { FC, HTMLInputTypeAttribute } from "react";
 import { useLocaleFormate } from "../../hooks/localization/useLocaleFormate";
-import { Field, FormikErrors, FormikTouched } from "formik";
+import { Field, FormikErrors, FormikTouched, useField } from "formik";
 import clsx from "clsx";
 
 interface CheckboxProps
@@ -31,6 +31,7 @@ const CustomCheckbox: FC<CheckboxProps> = ({
 }) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const _labelTxt = isTranslated ? useLocaleFormate(labelTxt) : labelTxt;
+  const [field, meta] = useField(name);
 
   return (
     <>
@@ -51,7 +52,7 @@ const CustomCheckbox: FC<CheckboxProps> = ({
           <Field
             className="form-check-input"
             type="checkbox"
-            name={name}
+            name={field.name}
             value={value}
             {...inputProps}
           />

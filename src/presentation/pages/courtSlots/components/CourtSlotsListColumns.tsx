@@ -10,6 +10,7 @@ import { ICourtSlotsData } from "@domain/entities/CourtSlot/CourtSlot";
 import CourtNameCell from "@presentation/helpers/cells/CourtNameCell";
 import SlotTypeNameCell from "@presentation/helpers/cells/SlotTypeNameCell";
 import ClubNameCell from "@presentation/helpers/cells/ClubNameCell";
+import useCheckPermission from "@presentation/helpers/useCheckPermission";
 
 const CourtSlotsListColumns: ReadonlyArray<Column<ICourtSlotsData>> = [
   {
@@ -116,9 +117,18 @@ const CourtSlotsListColumns: ReadonlyArray<Column<ICourtSlotsData>> = [
       />
     ),
     id: "actions",
-    Cell: ({ ...props }) => (
-      <CourtSlotsActionCell id={props.data[props.row.index].id} />
-    ),
+    Cell: ({ ...props }) => {
+      const checkSuperEditPermission = useCheckPermission("Access Super Edit");
+      const checkSuperDeletePermission = useCheckPermission(
+        "Access Super Delete"
+      );
+
+      return checkSuperEditPermission || checkSuperDeletePermission ? (
+        <CourtSlotsActionCell id={props.data[props.row.index].id} />
+      ) : (
+        <p>------------</p>
+      );
+    },
   },
 ];
 

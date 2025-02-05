@@ -10,9 +10,6 @@ const MyReservations = lazy(
   () => import("@presentation/pages/clubAdmin/myReservations")
 );
 
-// const MyReservationsWrapper = lazy(
-//   () => import("@presentation/pages/clubAdmin/myReservation")
-// );
 
 const ViewCourtWrapper = lazy(
   () => import("@presentation/pages/clubAdmin/myCourts/components/ViewCourt")
@@ -26,6 +23,9 @@ const CourtScheduleListWrapper = lazy(
   () => import("@presentation/pages/courtSchedule")
 );
 
+const MyUsersListWrapper = lazy(
+  () => import("@presentation/pages/clubAdmin/myUsers")
+);
 
 const ClubAdminRoutes: Route = {
   path: "/apps",
@@ -66,6 +66,13 @@ const ClubAdminRoutes: Route = {
       path: "courtschedule/:courtId",
       title: "SIDEBAR-COURT-SCHEDULE",
       component: CourtScheduleListWrapper,
+      role: [],
+      breadcrumbs: [],
+    },
+    {
+      path: "myusers",
+      title: "SIDEBAR-My-Users",
+      component: MyUsersListWrapper,
       role: [],
       breadcrumbs: [],
     },

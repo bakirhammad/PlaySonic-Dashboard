@@ -36,7 +36,7 @@ interface IProps {
   CourtData: ICourtData;
   isLoading: boolean;
 }
-export const UpdateCourtModalForm = ({ CourtData, isLoading }: IProps) => {
+export const RemoveTransectionBalance = ({ CourtData, isLoading }: IProps) => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);
   const { setItemIdForUpdate } = useListView();
   const queryClient = useQueryClient();

@@ -1,15 +1,14 @@
 import { Column } from "react-table";
 import {
-  ActionItem,
   CustomCell,
   CustomHeaderCell,
   CustomSelectAll,
   CustomSelectionCell,
 } from "@presentation/components/tables";
-import { IPlaysonicUsersData } from "@domain/entities/general/PlaysonicUsers/PlaysonicUsers";
-import { useNavigate } from "react-router-dom";
 
-const PlaysonicUsersListColumns: ReadonlyArray<Column<IPlaysonicUsersData>> = [
+import { IMyUsersData } from "@domain/entities/MyUsers/MyUsers";
+
+const MyUsersListColumns: ReadonlyArray<Column<IMyUsersData>> = [
   {
     Header: (props) => <CustomSelectAll tableProps={props} />,
     id: "selection",
@@ -77,26 +76,15 @@ const PlaysonicUsersListColumns: ReadonlyArray<Column<IPlaysonicUsersData>> = [
     Header: (props) => (
       <CustomHeaderCell
         tableProps={props}
-        title="ACTION "
+        title="Transection "
         className="min-w-100px"
       />
     ),
     id: "actions",
-    Cell: ({ ...props }) => {
-      const navigate = useNavigate();
-      return (
-        <ActionItem
-          icon="pencil"
-          title="Transection"
-          onClick={() =>
-            navigate(
-              `/apps/admin/usertransection/${props.data[props.row.index]?.id}`
-            )
-          }
-        />
-      );
-    },
+    Cell: ({ ...props }) => (
+     <></>
+    ),
   },
 ];
 
-export { PlaysonicUsersListColumns };
+export { MyUsersListColumns };

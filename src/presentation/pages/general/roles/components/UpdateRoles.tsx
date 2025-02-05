@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   CustomButton,
   CustomCheckbox,
@@ -21,12 +21,16 @@ import { combineBits, QUERIES } from "@presentation/helpers";
 import { useQueryClient } from "react-query";
 import PleaseWaitTxt from "@presentation/helpers/loading/PleaseWaitTxt";
 import CustomSelectField from "@presentation/components/forms/CustomSelectField";
-import { PermissionsEnumOptions } from "@presentation/helpers/DDL/PermissionsEnumOptions";
-import { useLocaleFormate } from "@presentation/hooks";
+import {
+  ClubAdminEnumOptions,
+  SuberAdminEnumOptions,
+} from "@presentation/helpers/DDL/PermissionsEnumOptions";
 import { RoleTypesOptions } from "@presentation/helpers/DDL/RoleTypesOptions";
 import { RolesCommandInstance } from "@app/useCases/general/roles";
 import { RoleUrlEnum } from "@domain/enums/URL/General/GeneralEnum/RolesEnum";
 import { IRolesData } from "@domain/entities/general/Roles/Roles";
+import { RoleTypesEnum } from "@domain/enums/roleTypesEnum/RoleTypesEnum";
+import { useLocaleFormate } from "@presentation/hooks";
 
 interface IProps {
   RoleData: IRolesData;
@@ -39,11 +43,13 @@ export const UpdateRules = ({ RoleData, isLoading }: IProps) => {
   const queryClient = useQueryClient();
 
   const initialValues = useMemo(() => {
+    const permissionsType = RoleData.type;
     return {
       id: RoleData.id,
       name: RoleData.name,
       type: RoleData.type,
-      permissions: RoleData.permissions,
+      permissions: { [permissionsType]: RoleData.permissions },
+      permissionStata: RoleData.permissions,
     };
   }, [RoleData]);
 
@@ -57,7 +63,8 @@ export const UpdateRules = ({ RoleData, isLoading }: IProps) => {
     setSubmitting: (isSubmitting: boolean) => void
   ) => {
     const formData = new FormData();
-    const numberPermissionsArray = values.permissions?.map(Number);
+    const numberPermissionsArray =
+      values.permissions?.[values.type.value]?.map(Number);
     const permissionsEnum = combineBits(
       numberPermissionsArray.map((permission: number) => permission)
     );
@@ -121,14 +128,27 @@ const RolesUpdateForm = () => {
     setFieldValue,
   }: FormikContextType<FormikValues> = useFormikContext();
 
-  const HandelSelectPermissions = () => {
-    if (values?.permissions?.length === PermissionsEnumOptions?.length) {
-      setFieldValue("permissions", []);
-    } else {
-      const allPermissions = PermissionsEnumOptions.map((e) => String(e.value));
-      setFieldValue("permissions", allPermissions);
-    }
-  };
+  const [permissionsEnumOptions, setPermissionsEnumOptions] = useState(
+    values.type.value == RoleTypesEnum["Club Admin"]
+      ? ClubAdminEnumOptions
+      : SuberAdminEnumOptions
+  );
+
+  // const HandelSelectPermissions = () => {
+  //   if (
+  //     values?.permissions?.[values.type.value]?.length ===
+  //     permissionsEnumOptions?.length
+  //   ) {
+  //     if (values.type == RoleTypesEnum["Club Admin"]) {
+  //       setFieldValue(`permissions.[${RoleTypesEnum["Club Admin"]}]`, []);
+  //     } else {
+  //       setFieldValue(`permissions.[${RoleTypesEnum["Super Admin"]}]`, []);
+  //     }
+  //   } else {
+  //     const allPermissions = permissionsEnumOptions.map((e) => String(e.value));
+  //     setFieldValue("permissions", allPermissions);
+  //   }
+  // };
 
   useEffect(() => {
     RoleTypesOptions.forEach((role) => {
@@ -137,12 +157,26 @@ const RolesUpdateForm = () => {
       }
     });
 
-    const matchedPermissions = PermissionsEnumOptions.filter((permission) => {
-      return (values.permissions & permission.value) === permission.value;
-    }).map((permission) => permission.value.toString());
+    const matchedPermissions = permissionsEnumOptions
+      .filter((permission) => {
+        return (values.permissionStata & permission.value) === permission.value;
+      })
+      .map((permission) => permission.value.toString());
 
-    setFieldValue("permissions", matchedPermissions);
-  }, []);
+    setFieldValue(`permissions`, {
+      [typeof values.type == "number" ? values.type : values.type.value]:
+        matchedPermissions,
+    });
+  }, [permissionsEnumOptions]);
+
+  useEffect(() => {
+    setPermissionsEnumOptions(
+      (typeof values.type == "number" ? values.type : values.type.value) ==
+        RoleTypesEnum["Club Admin"]
+        ? ClubAdminEnumOptions
+        : SuberAdminEnumOptions
+    );
+  }, [values.type.value]);
 
   return (
     <>
@@ -171,7 +205,8 @@ const RolesUpdateForm = () => {
             </div>
 
             <div className="bg-text-secondary-emphasis p-5 rounded-2 shadow-sm my-4">
-              <div className="d-flex justify-content-between align-items-center">
+              <h2 className="text-info">{useLocaleFormate("Permissions")}</h2>
+              {/* <div className="d-flex justify-content-between align-items-center">
                 <h2 className="text-info">{useLocaleFormate("Permissions")}</h2>
                 <CustomButton
                   type="button"
@@ -179,21 +214,21 @@ const RolesUpdateForm = () => {
                     "btn btn-flush btn-white text-decoration-underline mx-5"
                   }
                   text={
-                    values?.permissions?.length ===
-                    PermissionsEnumOptions?.length
+                    values?.permissions?.[values.type]?.length ===
+                    permissionsEnumOptions?.length
                       ? "CLEAR-ALL"
                       : "SELECT-ALL-Permissions"
                   }
                   onClick={() => HandelSelectPermissions()}
                 />
-              </div>
+              </div> */}
               <div className="row">
-                {PermissionsEnumOptions?.map((permission) => (
+                {permissionsEnumOptions?.map((permission) => (
                   <div className="col-md-3">
                     <CustomCheckbox
                       labelTxt={permission.label}
                       value={permission.value.toString()}
-                      name={`permissions`}
+                      name={`permissions[${values.type.value}]`}
                       isTranslated={false}
                       touched={touched}
                       labelRequired={false}

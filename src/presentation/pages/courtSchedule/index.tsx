@@ -84,10 +84,10 @@ const CourtSchedule = () => {
       }
     }
   };
+
   const checkSuperCreatePermission = useCheckPermission("Access Super Create");
-  const checkClubCreateSchedulePermission = useCheckPermission(
-    "Access Club Schedule/Create"
-  );
+  const checkMyCourtPermission = useCheckPermission("Access Club Courts");
+
   return (
     <>
       <CustomKTCard>
@@ -97,9 +97,9 @@ const CourtSchedule = () => {
           }}
           searchPlaceholder="SEARCH"
           filterBtn={true}
-          FilterComponent={<CourtScheduleFilter/>}
+          FilterComponent={!checkMyCourtPermission && <CourtScheduleFilter />}
           onDeleteSelectedAll={() => handleDeleteSelected()}
-          addBtn={checkSuperCreatePermission || checkClubCreateSchedulePermission}
+          addBtn={checkSuperCreatePermission}
           addName="ADD"
         />
         <CustomTable columns={columns} data={tableData || []} />

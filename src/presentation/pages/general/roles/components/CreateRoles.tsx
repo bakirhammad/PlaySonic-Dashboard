@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   CustomButton,
   CustomCheckbox,
@@ -20,25 +20,29 @@ import { useQueryClient } from "react-query";
 import { combineBits, QUERIES } from "@presentation/helpers";
 import CustomSelectField from "@presentation/components/forms/CustomSelectField";
 import { RoleTypesOptions } from "@presentation/helpers/DDL/RoleTypesOptions";
-import { PermissionsEnumOptions } from "@presentation/helpers/DDL/PermissionsEnumOptions";
-import { useLocaleFormate } from "@presentation/hooks";
+import {
+  ClubAdminEnumOptions,
+  PermissionsEnumOptions as DefaultPermissionsEnumOptions,
+  SuberAdminEnumOptions,
+} from "@presentation/helpers/DDL/PermissionsEnumOptions";
 import { RolesCommandInstance } from "@app/useCases/general/roles";
 import { RoleUrlEnum } from "@domain/enums/URL/General/GeneralEnum/RolesEnum";
+import { RoleTypesEnum } from "@domain/enums/roleTypesEnum/RoleTypesEnum";
 
 export const CreateRoles = () => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);
   const { setItemIdForUpdate } = useListView();
   const queryClient = useQueryClient();
 
-  const initialValues = Object.assign({
-    name: null,
+  const initialValues = {
+    name: "",
     type: null,
     permissions: [],
-  });
+  };
 
-  const _RolesSchema = Object.assign({
+  const _RolesSchema = {
     name: Yup.string().required("Field is Required"),
-  });
+  };
 
   const RolesSchema = Yup.object().shape(_RolesSchema);
 
@@ -47,9 +51,7 @@ export const CreateRoles = () => {
     setSubmitting: (isSubmitting: boolean) => void
   ) => {
     const numberPermissionsArray = values.permissions?.map(Number);
-    const permissionsEnum = combineBits(
-      numberPermissionsArray.map((permission: number) => permission)
-    );
+    const permissionsEnum = combineBits(numberPermissionsArray);
 
     const formData = new FormData();
     formData.append("Name", values.name);
@@ -62,9 +64,7 @@ export const CreateRoles = () => {
         formData
       );
       if (data) {
-        CustomToast("Created successfully", "success", {
-          autoClose: 3000,
-        });
+        CustomToast("Created successfully", "success", { autoClose: 3000 });
         setItemIdForUpdate(undefined);
         queryClient.invalidateQueries({
           queryKey: [QUERIES.RolesList],
@@ -103,17 +103,29 @@ const RolesForm = () => {
     values,
     setFieldValue,
   }: FormikContextType<FormikValues> = useFormikContext();
-  console.log({ values });
   const { setItemIdForUpdate } = useListView();
 
-  const HandelSelectPermissions = () => {
-    if (values?.permissions?.length === PermissionsEnumOptions?.length) {
-      setFieldValue("permissions", []);
-    } else {
-      const allPermissions = PermissionsEnumOptions.map((e) => String(e.value));
-      setFieldValue("permissions", allPermissions);
-    }
-  };
+  const [permissionsEnumOptions, setPermissionsEnumOptions] = useState(
+    DefaultPermissionsEnumOptions
+  );
+
+  useEffect(() => {
+    setPermissionsEnumOptions(
+      values.type?.value === RoleTypesEnum["Super Admin"]
+        ? SuberAdminEnumOptions
+        : ClubAdminEnumOptions
+    );
+    setFieldValue("permissions", []);
+  }, [values.type?.value, setFieldValue]);
+
+  // const handleSelectPermissions = () => {
+  //   if (values?.permissions?.length === permissionsEnumOptions?.length) {
+  //     setFieldValue("permissions", []);
+  //   } else {
+  //     const allPermissions = permissionsEnumOptions.map((e) => String(e.value));
+  //     setFieldValue("permissions", allPermissions);
+  //   }
+  // };
 
   return (
     <>
@@ -123,44 +135,42 @@ const RolesForm = () => {
         onPointerEnterCapture={undefined}
         onPointerLeaveCapture={undefined}
       >
-        <div className="row row-cols-md-1 row-cols-sm-1 row-cols-1">
-          <div className="row">
-            <div className="row row-cols-2">
-              <CustomInputField
-                name="name"
-                placeholder="ROLE-NAME"
-                label="ROLE-NAME"
-                as="input"
-                isSubmitting={isSubmitting}
-              />
-              <CustomSelectField
-                name="type"
-                options={RoleTypesOptions}
-                label="DDL-ROLE-TYPE"
-                placeholder="DDL-ROLE-TYPE"
-              />
-            </div>
+        <div className="row">
+          <div className="row row-cols-2">
+            <CustomInputField
+              name="name"
+              placeholder="ROLE-NAME"
+              label="ROLE-NAME"
+              as="input"
+              isSubmitting={isSubmitting}
+            />
+            <CustomSelectField
+              name="type"
+              options={RoleTypesOptions}
+              label="DDL-ROLE-TYPE"
+              placeholder="DDL-ROLE-TYPE"
+            />
+          </div>
 
+          {values.type?.value && (
             <div className="bg-text-secondary-emphasis p-5 rounded-2 shadow-sm my-4">
-              <div className="d-flex justify-content-between align-items-center">
-                <h2 className="text-info">{useLocaleFormate("Permissions")}</h2>
+              <h2 className="text-info">Permissions</h2>
+              {/* <div className="d-flex justify-content-between align-items-center">
                 <CustomButton
                   type="button"
-                  className={
-                    "btn btn-flush btn-white text-decoration-underline mx-5"
-                  }
+                  className="btn btn-flush btn-white text-decoration-underline mx-5"
                   text={
                     values?.permissions?.length ===
-                    PermissionsEnumOptions?.length
+                    permissionsEnumOptions?.length
                       ? "CLEAR-ALL"
                       : "SELECT-ALL-Permissions"
                   }
-                  onClick={() => HandelSelectPermissions()}
+                  onClick={handleSelectPermissions}
                 />
-              </div>
+              </div> */}
               <div className="row">
-                {PermissionsEnumOptions?.map((permission) => (
-                  <div className="col-md-3">
+                {permissionsEnumOptions?.map((permission) => (
+                  <div className="col-md-3" key={permission.value}>
                     <CustomCheckbox
                       labelTxt={permission.label}
                       value={permission.value.toString()}
@@ -175,7 +185,7 @@ const RolesForm = () => {
                 ))}
               </div>
             </div>
-          </div>
+          )}
         </div>
 
         <div className="text-center pt-15">

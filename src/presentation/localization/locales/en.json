@@ -308,7 +308,11 @@
   "Transection":"Transection",
   "SIDEBAR-My-Users":"My Users",
   "ROLE-Email":"Email",
-  "ROLE-Phone":"Phone Number"
+  "ROLE-Phone":"Phone Number",
+  "Club_LABEL": "Court Image",
+  "SIDEBAR-USER-TRANSECTOINS": "User Transections",
+    "REMOVE-BALANCE":"Remove Balance",
+  "ADD-BALANCE": "Add Balance"
 
 
 

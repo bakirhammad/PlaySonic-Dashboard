@@ -41,7 +41,7 @@ export const UpdateImageBanner = ({ ImageBannerData, isLoading }: IProps) => {
       id: ImageBannerData.id,
       title: ImageBannerData.title,
       description: ImageBannerData.description,
-      image: ImageBannerData.image,
+      image: "",
       path: ImageBannerData.path,
     };
   }, [ImageBannerData]);
@@ -59,7 +59,9 @@ export const UpdateImageBanner = ({ ImageBannerData, isLoading }: IProps) => {
     formData.append("Id", String(initialValues.id));
     formData.append("Title", values.title);
     formData.append("Description", values.description);
-    formData.append("Image", values.image);
+    if (values.image) {
+      formData.append("Image", values.image);
+    }
     formData.append("Path", values.path);
     try {
       const data = await ImageBannerCommandInstance.updateImageBanner(

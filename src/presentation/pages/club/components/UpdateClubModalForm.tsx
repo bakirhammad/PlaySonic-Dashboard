@@ -84,7 +84,7 @@ export const UpdateClubModalForm = ({ ClubData, isLoading }: IProps) => {
       payload: ClubData.payload,
       lat: lat,
       lng: lng,
-      image: ClubData.image,
+      image: "",
       // images: ClubData.images,
       // newImages: null,
       ...translations,
@@ -139,10 +139,12 @@ export const UpdateClubModalForm = ({ ClubData, isLoading }: IProps) => {
     formData.append("Payload", values.payload);
     formData.append("lat", values.lat);
     formData.append("lng", values.lng);
-    formData.append("Img", values.image);
+    if (values.image) {
+      formData.append("Img", values.image);
+    }
 
     //  Until update images api done ---->
-    
+
     // values.newImages?.map((img: string) => {
     //   formData.append(`Images`, img);
     // });

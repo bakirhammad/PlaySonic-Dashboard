@@ -76,7 +76,7 @@ export const CreateAdminUsers = () => {
         });
         setItemIdForUpdate(undefined);
         queryClient.invalidateQueries({
-          queryKey: [QUERIES.RolesList],
+          queryKey: [QUERIES.AdminUsersList],
         });
       }
     } catch (error) {

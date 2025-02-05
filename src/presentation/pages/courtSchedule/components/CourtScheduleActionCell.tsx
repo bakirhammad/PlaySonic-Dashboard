@@ -92,21 +92,15 @@ const CourtScheduleActionCell: FC<Props> = ({ id, name }) => {
   const checkSuperEditPermission = useCheckPermission("Access Super Edit");
   const checkSuperDeletePermission = useCheckPermission("Access Super Delete");
 
-  const checkClubEditSchedulePermission = useCheckPermission(
-    "Access Club Schedule/Edit"
-  );
-  const checkClubDeleteSchedulePermission = useCheckPermission(
-    "Access Club Schedule/Delete"
-  );
   return (
     <>
       <CustomActionsCell
         id={id}
-        editBtn={checkSuperEditPermission || checkClubEditSchedulePermission}
+        editBtn={checkSuperEditPermission }
         editBtnOnClick={() => {
           setItemIdForUpdate(id);
         }}
-        deleteBtn={checkSuperDeletePermission || checkClubDeleteSchedulePermission}
+        deleteBtn={checkSuperDeletePermission}
         deletBtnOnClick={() => handleDelete()}
       />
       {itemIdForUpdate === id && (

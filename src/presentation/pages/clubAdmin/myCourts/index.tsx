@@ -77,6 +77,7 @@ const MyCourts = () => {
     <>
       <CustomKTCard className="">
         <CustomTableToolbar
+        
           addBtnAction={() => {
             setItemIdForUpdate(null);
           }}
@@ -84,7 +85,7 @@ const MyCourts = () => {
           filterBtn={true}
           // FilterComponent={<ClubFilter></ClubFilter>}
           onDeleteSelectedAll={() => handleDeleteSelected()}
-          addBtn={true}
+          addBtn={false}
           addName="ADD-Court"
         />
         <CustomTemplate courtData={tableData || []} />

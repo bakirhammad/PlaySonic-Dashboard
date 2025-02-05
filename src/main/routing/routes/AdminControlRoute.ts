@@ -15,6 +15,10 @@ const PlaysonicUsersListWrapper = lazy(
   () => import("@presentation/pages/general/playsonicUsers")
 );
 
+const UserTransectionsListWrapper = lazy(
+  () => import("@presentation/pages/general/playsonicUsers/components/Transections")
+);
+
 const AdminControlRoute: Route = {
   path: "/apps/admin",
   title: "",
@@ -40,6 +44,13 @@ const AdminControlRoute: Route = {
       path: "playsonicusers",
       title: "SIDEBAR-PLAYSONIC-USERS",
       component: PlaysonicUsersListWrapper,
+      role: [],
+      breadcrumbs: [],
+    },
+    {
+      path: "usertransection/:userId",
+      title: "SIDEBAR-USER-TRANSECTOINS",
+      component: UserTransectionsListWrapper,
       role: [],
       breadcrumbs: [],
     }

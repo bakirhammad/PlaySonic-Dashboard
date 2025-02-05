@@ -84,9 +84,11 @@ const CourtSlots = () => {
       }
     }
   };
-  const checkClubCreateSlotPermission = useCheckPermission(
-    "Access Club Slot/Create"
-  );const checkSuperCreatePermission = useCheckPermission("Access Super Create");
+
+  const checkSuperCreatePermission = useCheckPermission("Access Super Create");
+
+  const checkMyCourtPermission = useCheckPermission("Access Club Courts");
+
   return (
     <>
       <CustomKTCard>
@@ -96,9 +98,9 @@ const CourtSlots = () => {
           }}
           searchPlaceholder="SEARCH"
           filterBtn={true}
-          FilterComponent={<CourtSlotsFilter/>}
+        FilterComponent={!checkMyCourtPermission && <CourtSlotsFilter />}
           onDeleteSelectedAll={() => handleDeleteSelected()}
-          addBtn={checkSuperCreatePermission || checkClubCreateSlotPermission}
+          addBtn={checkSuperCreatePermission}
           addName="ADD"
         />
         <CustomTable columns={columns} data={tableData || []} />
