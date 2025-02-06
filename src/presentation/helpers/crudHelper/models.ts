@@ -84,7 +84,7 @@ export const initialQueryRequest: QueryRequestContextProps = {
  * NUMBER => (EDIT MODE) | MODAL IS OPENED
  *  UNDEFINED => MODAL IS CLOSED
  * */
-export type ID = undefined | null | number;
+export type ID = undefined | null | number ;
 export type ListViewContextProps = {
   selected: Array<number>;
   itemIdForUpdate?: ID | string;

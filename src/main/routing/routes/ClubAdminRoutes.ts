@@ -27,6 +27,10 @@ const MyUsersListWrapper = lazy(
   () => import("@presentation/pages/clubAdmin/myUsers")
 );
 
+const ClubUserTransectionsListWrapper = lazy(
+  () => import("@presentation/pages/clubAdmin/myUsers/components/Transections")
+);
+
 const ClubAdminRoutes: Route = {
   path: "/apps",
   title: "",
@@ -76,6 +80,13 @@ const ClubAdminRoutes: Route = {
       role: [],
       breadcrumbs: [],
     },
+    {
+      path: "clubtransection/:userId",
+      title: "SIDEBAR-USER-TRANSECTOINS",
+      component: ClubUserTransectionsListWrapper,
+      role: [],
+      breadcrumbs: [],
+    }
   ],
 };
 

@@ -11,11 +11,13 @@ import { WithChildren } from "@presentation/helpers/react18MigrationHelpers";
 // import { ICountryBody } from "@domain/entities/general/country/Country";
 
 type Props = {
-  id?: number;
+  id?: number | string;
   RemoveBalaceBtn?: boolean;
   addBalanceBtn?: boolean;
+  cashPaymentBtn?: boolean;
   addBalanceBtnOnClick?: () => void;
   removeBalanceBtnOnClick?: () => void;
+  cashPaymentBtnOnClick?: () => void;
   title?: string;
 };
 
@@ -23,9 +25,11 @@ const TransectionsActionsCell: FC<Props & WithChildren> = ({
   id,
   RemoveBalaceBtn = true,
   addBalanceBtn = true,
+  cashPaymentBtn = true,
   children,
   addBalanceBtnOnClick,
   removeBalanceBtnOnClick,
+  cashPaymentBtnOnClick,
   title,
 }) => {
   const intl = useIntl();
@@ -76,6 +80,9 @@ const TransectionsActionsCell: FC<Props & WithChildren> = ({
             onClick={removeBalanceBtnOnClick}
             title="Remove Balance"
           />
+        )}
+        {cashPaymentBtn && (
+          <ActionItem onClick={cashPaymentBtnOnClick} title="Cash Payment" />
         )}
         {children}
       </div>

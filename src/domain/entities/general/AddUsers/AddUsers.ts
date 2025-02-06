@@ -46,5 +46,6 @@ export interface IAddUsersData {
   phoneNo: string
   phoneNumber: string
   roleId: number,
-  clubId: number
+  clubId: number,
+  roleName: string,
 }

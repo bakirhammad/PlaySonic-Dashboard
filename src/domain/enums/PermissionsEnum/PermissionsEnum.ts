@@ -9,7 +9,7 @@ export enum PermissionsEnum {
   "Access Super Create" = 128,
   "Access Club Reservation" = 256,
   "Access Club Courts" = 512,
-  // "Access Club Users" = 1024,
+  "Access Club Users" = 1024,
 }
 
 
@@ -29,5 +29,5 @@ export enum SuberAdmin {
 export enum ClubAdmin {
   "Access Club Reservation" = 256,
   "Access Club Courts" = 512,
-  // "Access Club Users" = 1024,
+  "Access Club Users" = 1024,
 }

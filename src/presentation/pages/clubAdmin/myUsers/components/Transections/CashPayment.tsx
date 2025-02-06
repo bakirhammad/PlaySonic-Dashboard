@@ -25,7 +25,7 @@ import { CommerceUrlEnum } from "@domain/enums/URL/Commerce/CommerceUrls/Commerc
 interface IProps {
   userId: string;
 }
-export const AddTransectionBalance = ({ userId }: IProps) => {
+export const CashPayment = ({ userId }: IProps) => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);
   const { setItemIdForUpdate } = useListView();
   const queryClient = useQueryClient();
@@ -36,17 +36,17 @@ export const AddTransectionBalance = ({ userId }: IProps) => {
     return {
       userId: userId,
       amount: null,
-      transactionType: { value: 4, label: "Add Balance" },
+      transactionType: { value: 16, label: "Cash Payment" },
       description: null,
     };
   }, [userId]);
 
-  const _AddBalanceSchema = Object.assign({
+  const _CashPaymentSchema = Object.assign({
     amount: Yup.number().required("Field required"),
     description: Yup.string().required("Field required"),
   });
 
-  const AddBalanceSchema = Yup.object().shape(_AddBalanceSchema);
+  const CashPaymentSchema = Yup.object().shape(_CashPaymentSchema);
   const handleSubmit = async (
     values: FormikValues,
     setSubmitting: (isSubmitting: boolean) => void
@@ -64,12 +64,12 @@ export const AddTransectionBalance = ({ userId }: IProps) => {
         formData
       );
       if (data) {
-        CustomToast("AddBalance updated successfully", "success", {
+        CustomToast("CashPayment updated successfully", "success", {
           autoClose: 3000,
         });
         setItemIdForUpdate(undefined);
         queryClient.invalidateQueries({
-          queryKey: [QUERIES.UserTransectionsList],
+          queryKey: [QUERIES.ClubUserTransectionsList],
         });
       }
     } catch (error) {
@@ -94,18 +94,18 @@ export const AddTransectionBalance = ({ userId }: IProps) => {
           },
           {}
         )}
-        validationSchema={AddBalanceSchema}
+        validationSchema={CashPaymentSchema}
         onSubmit={(values, { setSubmitting }) => {
           handleSubmit(values, setSubmitting);
         }}
       >
-        <AddBalanceUpdateForm />
+        <CashPaymentUpdateForm />
       </Formik>
     </>
   );
 };
 
-const AddBalanceUpdateForm = () => {
+const CashPaymentUpdateForm = () => {
   const { setItemIdForUpdate } = useListView();
 
   const {

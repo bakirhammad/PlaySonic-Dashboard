@@ -19,7 +19,9 @@ const QUERIES = {
   ImageBannerList: "ImageBannerList",
   AdminUsersList:"AdminUsersList",
   PlaysonicUsersList:"PlaysonicUsersList",
-  MyUsersList:"MyUsersList"
+  MyUsersList:"MyUsersList",
+  UserTransectionsList:"UserTransectionsList",
+  ClubUserTransectionsList:"ClubUserTransectionsList"
 };
 const PAGINATION_PAGES_COUNT = 3;
 const defaultPageNumberInPagination = 1;

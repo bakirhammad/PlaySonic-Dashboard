@@ -5,10 +5,10 @@ import {
   CustomSelectAll,
   CustomSelectionCell,
 } from "@presentation/components/tables";
-import { IAddUsersData } from "@domain/entities/general/AddUsers/AddUsers";
-import ClubNameCell from "@presentation/helpers/cells/ClubNameCell";
+import { ICommerceData } from "@domain/entities/Commerce/Commerce";
+import { TransectionTypeCell } from "@presentation/helpers/cells/TransectionTypeCell";
 
-const AdminUsersListColumns: ReadonlyArray<Column<IAddUsersData>> = [
+const ClubUserTransectionsListColumns: ReadonlyArray<Column<ICommerceData>> = [
   {
     Header: (props) => <CustomSelectAll tableProps={props} />,
     id: "selection",
@@ -34,71 +34,62 @@ const AdminUsersListColumns: ReadonlyArray<Column<IAddUsersData>> = [
     Header: (props) => (
       <CustomHeaderCell
         tableProps={props}
-        title="ROLE-Email"
+        title="Amount"
         enableSorting={false}
         className="min-w-125px"
       />
     ),
-    id: "email",
+    id: "amount",
     Cell: ({ ...props }) => {
-      return <CustomCell data={props.data[props.row.index]?.email} />;
+      return <CustomCell data={props.data[props.row.index]?.amount} />;
     },
   },
   {
     Header: (props) => (
       <CustomHeaderCell
         tableProps={props}
-        title="ROLE"
+        title="Transection-Type"
         enableSorting={false}
         className="min-w-125px"
       />
     ),
-    id: "roleName",
+    id: "type",
     Cell: ({ ...props }) => {
-      return <CustomCell data={props.data[props.row.index]?.roleName} />;
+      return (
+        <TransectionTypeCell
+          type={props.data[props.row.index]?.transactionType}
+        />
+      );
     },
   },
   {
     Header: (props) => (
       <CustomHeaderCell
         tableProps={props}
-        title="Club-Name"
+        title="Note"
         enableSorting={false}
         className="min-w-125px"
       />
     ),
-    id: "clubId",
+    id: "notes",
     Cell: ({ ...props }) => {
-      return <ClubNameCell clubId={props.data[props.row.index]?.clubId} />;
+      return <CustomCell data={props.data[props.row.index]?.notes} />;
     },
   },
   {
     Header: (props) => (
       <CustomHeaderCell
         tableProps={props}
-        title="ROLE-Phone"
+        title="AddedDate"
         enableSorting={false}
         className="min-w-125px"
       />
     ),
-    id: "phoneNumber",
+    id: "date",
     Cell: ({ ...props }) => {
-      return <CustomCell data={props.data[props.row.index]?.phoneNo} />;
+      return <CustomCell data={props.data[props.row.index]?.dateAdded} />;
     },
   },
-  // {
-  //   Header: (props) => (
-  //     <CustomHeaderCell
-  //       tableProps={props}
-  //       title="ACTION"
-  //       className="min-w-100px"
-  //     />
-  //   ),
-  //   id: "actions",
-  //   Cell: ({ ...props }) => (
-  //     <AdminUsersActionCell id={props.data[props.row.index].id} />
-  //   ),
-  // },
 ];
 
-export { AdminUsersListColumns };
+export { ClubUserTransectionsListColumns };

@@ -5,87 +5,91 @@ import {
   CustomSelectAll,
   CustomSelectionCell,
 } from "@presentation/components/tables";
-import { IPlaysonicUsersData } from "@domain/entities/general/PlaysonicUsers/PlaysonicUsers";
-import { UserTransectionsActionCell } from "./UserTransectionsActionCell";
+import { ICommerceData } from "@domain/entities/Commerce/Commerce";
+import { TransectionTypeCell } from "@presentation/helpers/cells/TransectionTypeCell";
 
-const UserTransectionsListColumns: ReadonlyArray<Column<IPlaysonicUsersData>> =
-  [
-    {
-      Header: (props) => <CustomSelectAll tableProps={props} />,
-      id: "selection",
-      Cell: ({ ...props }) => (
-        <CustomSelectionCell id={props.data[props.row.index]?.id} />
-      ),
+const UserTransectionsListColumns: ReadonlyArray<Column<ICommerceData>> = [
+  {
+    Header: (props) => <CustomSelectAll tableProps={props} />,
+    id: "selection",
+    Cell: ({ ...props }) => (
+      <CustomSelectionCell id={props.data[props.row.index]?.id} />
+    ),
+  },
+  {
+    Header: (props) => (
+      <CustomHeaderCell
+        tableProps={props}
+        title="NAME"
+        enableSorting={false}
+        className="min-w-125px"
+      />
+    ),
+    id: "name",
+    Cell: ({ ...props }) => {
+      return <CustomCell data={props.data[props.row.index]?.userName} />;
     },
-    // {
-    //   Header: (props) => (
-    //     <CustomHeaderCell
-    //       tableProps={props}
-    //       title="SIDEBAR-ROLE-ID"
-    //       enableSorting={false}
-    //       className="min-w-125px"
-    //     />
-    //   ),
-    //   id: "id",
-    //   Cell: ({ ...props }) => (
-    //     <CustomCell data={props.data[props.row.index]?.id} />
-    //   ),
-    // },
-    {
-      Header: (props) => (
-        <CustomHeaderCell
-          tableProps={props}
-          title="ROLE-NAME"
-          enableSorting={false}
-          className="min-w-125px"
+  },
+  {
+    Header: (props) => (
+      <CustomHeaderCell
+        tableProps={props}
+        title="Amount"
+        enableSorting={false}
+        className="min-w-125px"
+      />
+    ),
+    id: "amount",
+    Cell: ({ ...props }) => {
+      return <CustomCell data={props.data[props.row.index]?.amount} />;
+    },
+  },
+  {
+    Header: (props) => (
+      <CustomHeaderCell
+        tableProps={props}
+        title="Transection-Type"
+        enableSorting={false}
+        className="min-w-125px"
+      />
+    ),
+    id: "type",
+    Cell: ({ ...props }) => {
+      return (
+        <TransectionTypeCell
+          type={props.data[props.row.index]?.transactionType}
         />
-      ),
-      id: "name",
-      Cell: ({ ...props }) => {
-        return <CustomCell data={props.data[props.row.index]?.userName} />;
-      },
+      );
     },
-    {
-      Header: (props) => (
-        <CustomHeaderCell
-          tableProps={props}
-          title="Email"
-          enableSorting={false}
-          className="min-w-125px"
-        />
-      ),
-      id: "email",
-      Cell: ({ ...props }) => {
-        return <CustomCell data={props.data[props.row.index]?.email} />;
-      },
+  },
+  {
+    Header: (props) => (
+      <CustomHeaderCell
+        tableProps={props}
+        title="Note"
+        enableSorting={false}
+        className="min-w-125px"
+      />
+    ),
+    id: "notes",
+    Cell: ({ ...props }) => {
+      return <CustomCell data={props.data[props.row.index]?.notes} />;
     },
-    {
-      Header: (props) => (
-        <CustomHeaderCell
-          tableProps={props}
-          title="PhoneNumber"
-          enableSorting={false}
-          className="min-w-125px"
-        />
-      ),
-      id: "phoneNumber",
-      Cell: ({ ...props }) => {
-        return <CustomCell data={props.data[props.row.index]?.phoneNo} />;
-      },
+  },
+  {
+    Header: (props) => (
+      <CustomHeaderCell
+        tableProps={props}
+        title="AddedDate"
+        enableSorting={false}
+        className="min-w-125px"
+      />
+    ),
+    id: "date",
+    Cell: ({ ...props }) => {
+      return <CustomCell data={props.data[props.row.index]?.dateAdded} />;
     },
-    {
-      Header: (props) => (
-        <CustomHeaderCell
-          tableProps={props}
-          title="ACTION "
-          className="min-w-100px"
-        />
-      ),
-      id: "actions",
-      Cell: ({ ...props }) => (
-        <UserTransectionsActionCell id={props.data[props.row.index]?.id} />
-      ),
-    },
-  ];
+  },
+];
 
 export { UserTransectionsListColumns };

@@ -1,5 +1,6 @@
 import { Column } from "react-table";
 import {
+  ActionItem,
   CustomCell,
   CustomHeaderCell,
   CustomSelectAll,
@@ -7,6 +8,7 @@ import {
 } from "@presentation/components/tables";
 
 import { IMyUsersData } from "@domain/entities/MyUsers/MyUsers";
+import { useNavigate } from "react-router-dom";
 
 const MyUsersListColumns: ReadonlyArray<Column<IMyUsersData>> = [
   {
@@ -16,20 +18,6 @@ const MyUsersListColumns: ReadonlyArray<Column<IMyUsersData>> = [
       <CustomSelectionCell id={props.data[props.row.index]?.id} />
     ),
   },
-  // {
-  //   Header: (props) => (
-  //     <CustomHeaderCell
-  //       tableProps={props}
-  //       title="SIDEBAR-ROLE-ID"
-  //       enableSorting={false}
-  //       className="min-w-125px"
-  //     />
-  //   ),
-  //   id: "id",
-  //   Cell: ({ ...props }) => (
-  //     <CustomCell data={props.data[props.row.index]?.id} />
-  //   ),
-  // },
   {
     Header: (props) => (
       <CustomHeaderCell
@@ -42,20 +30,6 @@ const MyUsersListColumns: ReadonlyArray<Column<IMyUsersData>> = [
     id: "name",
     Cell: ({ ...props }) => {
       return <CustomCell data={props.data[props.row.index]?.userName} />;
-    },
-  },
-  {
-    Header: (props) => (
-      <CustomHeaderCell
-        tableProps={props}
-        title="Email"
-        enableSorting={false}
-        className="min-w-125px"
-      />
-    ),
-    id: "email",
-    Cell: ({ ...props }) => {
-      return <CustomCell data={props.data[props.row.index]?.email} />;
     },
   },
   {
@@ -81,9 +55,20 @@ const MyUsersListColumns: ReadonlyArray<Column<IMyUsersData>> = [
       />
     ),
     id: "actions",
-    Cell: ({ ...props }) => (
-     <></>
-    ),
+     Cell: ({ ...props }) => {
+       const navigate = useNavigate();
+       return (
+         <ActionItem
+           icon="pencil"
+           title="Transection"
+           onClick={() =>
+             navigate(
+               `/apps/clubtransection/${props.data[props.row.index]?.id}`
+             )
+           }
+         />
+       );
+     },
   },
 ];
 

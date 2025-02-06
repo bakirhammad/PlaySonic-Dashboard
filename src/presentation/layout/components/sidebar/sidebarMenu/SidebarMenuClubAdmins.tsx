@@ -27,7 +27,7 @@ const SidebarMenuClubAdmins = () => {
 
       {/* ----- Until api done ---- */}
       
-       {checkMyReservaionPermission && (
+       {checkMyUsersPermission && (
         <SidebarMenuItem
           to="/apps/myusers"
           title="SIDEBAR-My-Users"

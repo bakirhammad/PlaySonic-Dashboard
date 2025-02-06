@@ -13,11 +13,12 @@ import {
 import { MyUsersQueryInstance } from "@app/useCases/myUsers/query/myUsersQuery";
 import { MyUsersUrlEnum } from "@domain/enums/URL/MyUsers/MyUsers";
 import { MyUsersListColumns } from "./components/MyUsersListColumns";
+import { useAuthStore } from "@infrastructure/storage/AuthStore";
 const MyUsers = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
   const columns = useMemo(() => MyUsersListColumns, []);
-
-  // wait for new api users for club
+  const { auth } = useAuthStore();
+  const clubId = auth?.clubID || 0;
 
   const { itemIdForUpdate, setItemIdForUpdate } = useListView();
   const {
@@ -28,9 +29,8 @@ const MyUsers = () => {
   } = useQuery({
     queryKey: [QUERIES.MyUsersList, [query]],
     queryFn: () => {
-      const searchQuery = query ? `&${query}` : "";
       return MyUsersQueryInstance.getMyUsersList(
-        `${MyUsersUrlEnum.GetMyUsersList + searchQuery}`
+        `${MyUsersUrlEnum.GetMyUsersList}clubId=${clubId}`
       );
     },
   });

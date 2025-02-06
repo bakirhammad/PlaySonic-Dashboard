@@ -298,7 +298,17 @@
   "Club_LABEL": "Court Image",
   "SIDEBAR-USER-TRANSECTOINS": "User Transections",
   "REMOVE-BALANCE":"Remove Balance",
-  "ADD-BALANCE": "Add Balance"
+  "ADD-BALANCE": "Add Balance",
+  "NAME": "Name",
+  "Amount":"Amount",
+  "Transection-Type":"Transection Type",
+  "Note":"Note",
+  "ROLE": "Role Name",
+  "AddedDate": "Added Date",
+  "Cash-Payment":"Cash Payment"
+
+
+
 
 
 

@@ -10,30 +10,28 @@ import {
   useListView,
   useQueryRequest,
 } from "@presentation/context/index";
-import { UserTransectionsListColumns } from "./UserTransectionsListColumns";
 import { useParams } from "react-router-dom";
 import { CommerceQueryInstance } from "@app/useCases/commerce";
 import { CommerceUrlEnum } from "@domain/enums/URL/Commerce/CommerceUrls/Commerce";
 import { TransectionsActionsCell } from "@presentation/components/tables/cells/TransectionsActionsCell";
 import { CustomModal } from "@presentation/components";
-import { AddTransectionBalance } from "./AddTransectionBalance";
-import { RemoveTransectionBalance } from "./RemoveTransectionBalance";
+import { ClubUserTransectionsListColumns } from "./ClubUserTransectionsListColumns";
+import { CashPayment } from "./CashPayment";
 
-const UserTransections = () => {
+const ClubUserTransections = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
-  const columns = useMemo(() => UserTransectionsListColumns, []);
+  const columns = useMemo(() => ClubUserTransectionsListColumns, []);
   const [addOrRemove, setAddOrRemove] = useState("");
   const { userId } = useParams();
-  console.log("userId tran", userId);
 
   const { itemIdForUpdate, setItemIdForUpdate } = useListView();
   const {
-    data: UserTransectionsData,
+    data: ClubUserTransectionsData,
     error,
     isLoading,
     isFetching,
   } = useQuery({
-    queryKey: [QUERIES.UserTransectionsList, [query]],
+    queryKey: [QUERIES.ClubUserTransectionsList, [query]],
     queryFn: () => {
       return CommerceQueryInstance.getCommerceList(
         `${CommerceUrlEnum.GetCommerceList}userId=${userId}`
@@ -41,16 +39,15 @@ const UserTransections = () => {
     },
   });
 
-  console.log(UserTransectionsData, "transaceion", userId);
   useEffect(() => {
-    updateData(UserTransectionsData);
+    updateData(ClubUserTransectionsData);
     setIsLoading(isFetching || isLoading);
     setError(error as Error);
-  }, [UserTransectionsData, isFetching, isLoading, error]);
+  }, [ClubUserTransectionsData, isFetching, isLoading, error]);
 
   const tableData = useMemo(
-    () => UserTransectionsData?.data,
-    [UserTransectionsData]
+    () => ClubUserTransectionsData?.data,
+    [ClubUserTransectionsData]
   );
 
   return (
@@ -68,14 +65,11 @@ const UserTransections = () => {
           children={
             <TransectionsActionsCell
               id={userId}
-              cashPaymentBtn={false}
-              addBalanceBtnOnClick={() => {
+              addBalanceBtn={false}
+              RemoveBalaceBtn={false}
+              cashPaymentBtnOnClick={() => {
                 setItemIdForUpdate(userId);
-                setAddOrRemove("add");
-              }}
-              removeBalanceBtnOnClick={() => {
-                setItemIdForUpdate(userId);
-                setAddOrRemove("remove");
+                setAddOrRemove("cash");
               }}
             />
           }
@@ -83,40 +77,28 @@ const UserTransections = () => {
         <CustomTable columns={columns} data={tableData || []} />
       </CustomKTCard>
 
-      {itemIdForUpdate === userId && addOrRemove === "add" && (
+      {itemIdForUpdate === userId && addOrRemove === "cash" && (
         <CustomModal
           modalSize="xl"
-          modalTitle="ADD-BALANCE"
+          modalTitle="Cash-Payment"
           onClick={() => {
             setItemIdForUpdate(undefined);
           }}
         >
-          <AddTransectionBalance userId={userId || ""} />
-        </CustomModal>
-      )}
-
-      {itemIdForUpdate === userId && addOrRemove === "remove" && (
-        <CustomModal
-          modalSize="xl"
-          modalTitle="REMOVE-BALANCE"
-          onClick={() => {
-            setItemIdForUpdate(undefined);
-          }}
-        >
-          <RemoveTransectionBalance userId={userId || ""} />
+          <CashPayment userId={userId || ""} />
         </CustomModal>
       )}
     </>
   );
 };
 
-function UserTransectionsListWrapper() {
+function ClubUserTransectionsListWrapper() {
   return (
     <QueryRequestProvider>
       <ListViewProvider>
-        <UserTransections />
+        <ClubUserTransections />
       </ListViewProvider>
     </QueryRequestProvider>
   );
 }
-export default UserTransectionsListWrapper;
+export default ClubUserTransectionsListWrapper;

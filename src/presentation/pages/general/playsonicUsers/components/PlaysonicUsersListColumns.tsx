@@ -45,20 +45,20 @@ const PlaysonicUsersListColumns: ReadonlyArray<Column<IPlaysonicUsersData>> = [
       return <CustomCell data={props.data[props.row.index]?.userName} />;
     },
   },
-  {
-    Header: (props) => (
-      <CustomHeaderCell
-        tableProps={props}
-        title="Email"
-        enableSorting={false}
-        className="min-w-125px"
-      />
-    ),
-    id: "email",
-    Cell: ({ ...props }) => {
-      return <CustomCell data={props.data[props.row.index]?.email} />;
-    },
-  },
+  // {
+  //   Header: (props) => (
+  //     <CustomHeaderCell
+  //       tableProps={props}
+  //       title="Email"
+  //       enableSorting={false}
+  //       className="min-w-125px"
+  //     />
+  //   ),
+  //   id: "email",
+  //   Cell: ({ ...props }) => {
+  //     return <CustomCell data={props.data[props.row.index]?.email} />;
+  //   },
+  // },
   {
     Header: (props) => (
       <CustomHeaderCell
