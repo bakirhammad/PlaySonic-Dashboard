@@ -102,7 +102,7 @@ const ReservationActionCell: FC<Props> = ({ id, name }) => {
         }}
         deleteBtn={checkSuperDeletePermission}
         deletBtnOnClick={() => handleDelete()}
-        children={<StatusApproval id={id}  queryKey={QUERIES.ReservationList}/>}
+        children={<StatusApproval id={id} queryKey={QUERIES.ReservationList} />}
       />
       {itemIdForUpdate === id && (
         <CustomModal
