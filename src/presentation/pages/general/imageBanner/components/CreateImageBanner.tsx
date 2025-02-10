@@ -95,7 +95,6 @@ const ImageBannerForm = () => {
     isValid,
     values,
   }: FormikContextType<FormikValues> = useFormikContext();
-  console.log({ values });
   const { setItemIdForUpdate } = useListView();
 
   return (

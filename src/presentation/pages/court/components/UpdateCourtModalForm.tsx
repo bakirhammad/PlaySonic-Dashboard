@@ -177,7 +177,6 @@ const CourtUpdateForm = ({ CourtData }: IProp) => {
     );
     setFieldValue("allowedSlotTypes", SlotTypesOptions);
   }, [clubsOption, SlotTypesOption]);
-  console.log(values, "dfadsfa");
 
   const { mutateAsync: deleteImage } = useMutation(
     async () => {

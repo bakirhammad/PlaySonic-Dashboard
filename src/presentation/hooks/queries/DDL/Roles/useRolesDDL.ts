@@ -5,7 +5,6 @@ import { RoleUrlEnum } from "@domain/enums/URL/General/GeneralEnum/RolesEnum";
 import { RolesQueryInstance } from "@app/useCases/general/roles";
 import { IDDlOption } from "@domain/entities";
 
-
 function useRolesDDL() {
   const [RolesList, setRoles] = useState<IRolesBody>();
   const [RolesOption, setRolesOption] = useState<IDDlOption[]>([]);
@@ -17,7 +16,6 @@ function useRolesDDL() {
       const RolesListRes = await RolesQueryInstance.getRolesList(
         RoleUrlEnum.GetRoleList
       );
-      console.log(RolesListRes)
       const _RolesOption = RolesListRes?.data?.map((Role) => {
         return {
           value: Role.id,
@@ -36,7 +34,6 @@ function useRolesDDL() {
   useEffect(() => {
     fetchRoles();
   }, [fetchRoles]);
-  console.log(RolesOption)
   return { RolesList, isRoleLoading: isLoading, RolesOption };
 }
 

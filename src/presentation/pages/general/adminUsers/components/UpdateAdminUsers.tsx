@@ -96,7 +96,6 @@ export const UpdateAdminUsers = ({ AdminUsersData, isLoading }: IProps) => {
       setSubmitting(false);
     }
   };
-console.log(AdminUsersData.clubId, "ddddd")
   return (
     <>
       {isLoading ? (
@@ -117,10 +116,10 @@ console.log(AdminUsersData.clubId, "ddddd")
   );
 };
 interface IProp {
-  AdminUsersData :IAddUsersData
+  AdminUsersData: IAddUsersData;
 }
 
-const RolesUpdateForm = ({AdminUsersData}:IProp) => {
+const RolesUpdateForm = ({ AdminUsersData }: IProp) => {
   const { setItemIdForUpdate } = useListView();
 
   const {

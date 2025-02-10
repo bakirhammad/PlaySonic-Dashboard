@@ -55,7 +55,6 @@ const CityList = () => {
   }, [CityData, isFetching, isLoading, error]);
 
   const tableData = useMemo(() => CityData?.data, [CityData]);
-console.log("city", CityData)
   const handleDeleteSelected = async () => {
     const confirm = await showConfirmationAlert(`${selected.length} item`);
     if (confirm) {

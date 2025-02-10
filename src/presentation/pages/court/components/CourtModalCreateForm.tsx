@@ -75,7 +75,7 @@ export const CourtModalCreateForm = () => {
     formData.append("Payload", values.payload);
     formData.append("AllowedSlotTypes", String(allowedSlots));
     formData.append("SportId", values.sportId);
-     formData.append("Img", values.image);
+    formData.append("Img", values.image);
 
     try {
       const data = await CourtCommandInstance.createCourt(
@@ -120,15 +120,14 @@ const CourtForm = () => {
     errors,
     touched,
     isSubmitting,
-    isValid,values,
-  }: 
-  FormikContextType<FormikValues> = useFormikContext();
+    isValid,
+    values,
+  }: FormikContextType<FormikValues> = useFormikContext();
 
   const { setItemIdForUpdate } = useListView();
   const { isClubLoading, clubsOption } = useClubsDDL();
   const { SlotTypesOption, isSlotTypesLoading } = useSlotTypesDDL();
 
-  console.log(values)
   return (
     <>
       <Form
@@ -229,14 +228,14 @@ const CourtForm = () => {
               />
             </div> */}
             <div className="row row-cols-1 row-cols-md-2 border-info-subtle border-black">
-               <CustomUploadFile
+              <CustomUploadFile
                 isSubmitting={isSubmitting}
                 touched={touched}
                 errors={errors}
                 accept="image/*"
                 name="image"
                 label="COURT-IMAGE"
-              /> 
+              />
               <CustomCheckbox
                 labelTxt="COURT-INDOOR"
                 name={"indoor"}

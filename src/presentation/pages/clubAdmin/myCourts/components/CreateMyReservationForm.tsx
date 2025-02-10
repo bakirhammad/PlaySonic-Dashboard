@@ -167,7 +167,6 @@ const ReservationForm = () => {
     }
   };
 
-  console.log(values, ";d;;d;;dd");
   const { setItemIdForUpdate } = useListView();
   const { SlotTypesOption, isSlotTypesLoading } = useSlotTypesDDL();
   return (

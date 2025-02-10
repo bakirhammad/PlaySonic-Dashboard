@@ -96,7 +96,6 @@ const CustomTimePicker: FC<DatePickerProps> = ({
     <Field name={name}>
       {({ field, form }: FieldProps) => (
         <>
-          {console.log("field.value", field.value)}
           <div
             className={clsx(
               additionalClassName

@@ -1,11 +1,9 @@
 import { CustomToast } from "@presentation/components";
 
 const copyToClipboard = async (values: Array<number | string | object>) => {
-  console.log("vvvv", values);
 
   try {
     const formattedValues = JSON.stringify(values, null, 2);
-    console.log("formattedValues", formattedValues);
 
     await navigator.clipboard.writeText(formattedValues);
     CustomToast("Copied to clipboard successfully!", "success", {

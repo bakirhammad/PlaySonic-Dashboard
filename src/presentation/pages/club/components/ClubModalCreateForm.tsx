@@ -179,7 +179,6 @@ const ClubForm = () => {
   const { CityOption, isCityLoading } = useCitiesDDL();
   const { AreaOption, isAreaLoading } = useAreasDDL();
 
-  console.log(values, "Cover");
   return (
     <>
       <Form

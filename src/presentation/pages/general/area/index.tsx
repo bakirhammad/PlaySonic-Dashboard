@@ -55,7 +55,6 @@ const AreaList = () => {
   }, [AreaData, isFetching, isLoading, error]);
 
   const tableData = useMemo(() => AreaData?.data, [AreaData]);
-console.log(AreaData, "dafadfsdf")
   const handleDeleteSelected = async () => {
     const confirm = await showConfirmationAlert(`${selected.length} item`);
     if (confirm) {

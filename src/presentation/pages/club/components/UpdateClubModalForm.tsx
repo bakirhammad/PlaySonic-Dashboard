@@ -274,8 +274,6 @@ const ClubUpdateForm: FC<IData> = ({ clubData }) => {
     }
   }, [CountryOption, CityOption, AreaOption, featuresList]);
 
-  console.log(values, "dasadsadsasdadsads");
-
   const { mutateAsync: deleteImage } = useMutation(
     async () => {
       const confirm = await showConfirmationAlert();
@@ -301,28 +299,23 @@ const ClubUpdateForm: FC<IData> = ({ clubData }) => {
     }
   );
 
-  {
-    /* ----- Until update images api done ---- */
-  }
-  // const HandelDeleteImage = async (img?: string) => {
-  //   showAreYouSure({
-  //     message: "Are you sure you want to delete the image?",
-  //     onConfirm: async () => {
-  //       if (img) {
-  //         await ClubCommandInstance.deleteClubImages(
-  //           ClubUrlEnum.DeleteClubImages,
-  //           clubData?.id,
-  //           img.trim()
-  //         );
-  //         // openUpdateHotelSupplierRoomModal(values?.id);
-  //       }
-  //     },
-  //     onCancel: async () => {},
-  //     icon: "warning",
-  //   });
-  // };
+  const HandelDeleteImage = async (img?: string) => {
+    showAreYouSure({
+      message: "Are you sure you want to delete this image?",
+      onConfirm: async () => {
+        if (img) {
+          await ClubCommandInstance.deleteClubImage(
+            ClubUrlEnum.DeleteClubImage,
+            clubData.id || 0
+          );
+          // openUpdateHotelSupplierRoomModal(values?.id);
+        }
+      },
+      onCancel: async () => {},
+      icon: "warning",
+    });
+  };
 
-  console.log(values, "clubId");
   return (
     <>
       <Form

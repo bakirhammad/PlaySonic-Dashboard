@@ -26,8 +26,6 @@ import useCheckPermission from "@presentation/helpers/useCheckPermission";
 const ClubList = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
 
-  const columns = useMemo(() => ClubListColumns, []);
-
   const queryClient = useQueryClient();
 
   const { itemIdForUpdate, setItemIdForUpdate, selected, clearSelected } =
@@ -55,6 +53,7 @@ const ClubList = () => {
   }, [ClubData, isFetching, isLoading, error]);
 
   const tableData = useMemo(() => ClubData?.data, [ClubData]);
+  const columns = useMemo(() => ClubListColumns, []);
 
   const handleDeleteSelected = async () => {
     const confirm = await showConfirmationAlert(`${selected.length} item`);

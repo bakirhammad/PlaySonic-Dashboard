@@ -5,7 +5,6 @@ import { IClubBody } from "@domain/entities/Clubs/Clubs";
 import { ClubQueryInstance } from "@app/useCases/clubs";
 import { ClubUrlEnum } from "@domain/enums/URL/Clubs/ClubUrls/Club";
 
-
 function useClubsDDL() {
   const [clubsList, setClubs] = useState<IClubBody>();
   const [clubsOption, setClubsOption] = useState<IDDlOptionClub[]>([]);
@@ -17,7 +16,6 @@ function useClubsDDL() {
       const clubsListRes = await ClubQueryInstance.getClubList(
         ClubUrlEnum.GetClubList
       );
-      console.log(clubsListRes)
       const _clubsOption = clubsListRes?.data?.map((club) => {
         return {
           value: club.id,
@@ -36,7 +34,6 @@ function useClubsDDL() {
   useEffect(() => {
     fetchClubs();
   }, [fetchClubs]);
-  console.log(clubsOption)
   return { clubsList, isClubLoading: isLoading, clubsOption };
 }
 

@@ -24,7 +24,6 @@ const UserTransections = () => {
   const columns = useMemo(() => UserTransectionsListColumns, []);
   const [addOrRemove, setAddOrRemove] = useState("");
   const { userId } = useParams();
-  console.log("userId tran", userId);
 
   const { itemIdForUpdate, setItemIdForUpdate } = useListView();
   const {
@@ -41,7 +40,6 @@ const UserTransections = () => {
     },
   });
 
-  console.log(UserTransectionsData, "transaceion", userId);
   useEffect(() => {
     updateData(UserTransectionsData);
     setIsLoading(isFetching || isLoading);

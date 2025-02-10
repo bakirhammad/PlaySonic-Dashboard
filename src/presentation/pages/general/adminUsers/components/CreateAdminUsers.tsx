@@ -112,7 +112,6 @@ const RolesForm = () => {
     values,
     setFieldValue,
   }: FormikContextType<FormikValues> = useFormikContext();
-  console.log({ values });
   const { setItemIdForUpdate } = useListView();
   const { clubsOption, isClubLoading } = useClubsDDL();
   const { RolesOption, isRoleLoading } = useRolesDDL();
