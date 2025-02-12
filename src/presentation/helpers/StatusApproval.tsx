@@ -52,8 +52,10 @@ const StatusApproval: FC<IStatusApproval> = ({ id, queryKey }) => {
           );
           formData.append("Status", statusId.toString());
           formData.append("ReservationDate", data?.reservationDate);
-          formData.append("MinLevel", data?.levelMin.toString());
-          formData.append("MaxLevel", data?.levelMax.toString());
+          data?.levelMin &&
+            formData.append("MinLevel", data?.levelMin.toString());
+          data?.levelMax &&
+            formData.append("MaxLevel", data?.levelMax.toString());
 
           const statusResult = await StatusCommandInstance.updateStatus(
             StatusUrlEnum.UpdateStatus,
