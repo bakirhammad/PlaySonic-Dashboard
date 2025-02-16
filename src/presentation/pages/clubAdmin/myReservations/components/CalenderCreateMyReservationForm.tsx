@@ -25,6 +25,8 @@ import CustomTimePicker from "@presentation/components/forms/CustomTimePicker";
 import { useSlotTypesDDL } from "@presentation/hooks/queries/DDL/SlotTypes/useSlotTypesDDL";
 import { CreateNewUser } from "./CreateNewUser";
 import { useGetSlotTypeByCourtIdDDL } from "@presentation/hooks/queries/DDL/SlotTypes/useGetSlotTypeByCourtIdDDL ";
+import { GetPlaySonicByIdInstance } from "@app/useCases/getPlaySonicId";
+import { GetPlaySonicByIdUrlEnum } from "@domain/enums/URL/GetPlaySonicById/GetPlaySonicById";
 
 interface ICourtId {
   courtId: number;
@@ -85,16 +87,27 @@ export const CalenderCreateMyReservationForm: FC<ICourtId> = ({
     formData.append("SlotTypeId", values.slotTypeId.value);
     formData.append("StartTime", values.startTime);
     formData.append("EndTime", values.endTime);
-    formData.append("Status", values.status.value);
     formData.append("ReservationTypeId", values.reservationTypeId.value);
     formData.append("LevelMin", values.levelMin);
     formData.append("LevelMax", values.levelMax);
     formData.append("IsPublic", values.isPublic);
     formData.append("ReservationDate", values.reservationDate);
     formData.append("SportId", values.sportId);
-    formData.append("OwnerID", values.ownerID.value);
+    formData.append("Status", "2");
 
     try {
+      if (Object.keys(values.ownerID ?? {}).length === 0) {
+        const findUser = await GetPlaySonicByIdInstance.getPlaySonicById(
+          GetPlaySonicByIdUrlEnum.GetGetPlaySonicByIdById,
+          values.playSonicId
+        );
+
+        if (findUser) {
+          formData.append("OwnerID", findUser.userId);
+        }
+      } else {
+        formData.append("OwnerID", values.ownerID.value);
+      }
       const data = await ReservationCommandInstance.createReservation(
         ReservationUrlEnum.CreateReservation,
         formData
