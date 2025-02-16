@@ -146,7 +146,7 @@ export default function MyReservations() {
         </Formik>
         {ReservationData?.data && !isLoading && !isFetching && (
           <Calendar
-            ReservationData={filteredData || []}
+            ReservationData={filteredData ?? []}
             startTime={startTime}
             endTime={endTime}
             courtId={courtId}
