@@ -83,6 +83,10 @@ const CreateNewUserForm = ({ setFieldValue, values, clubId }: any) => {
           "Success Create"
         );
         setFieldValue("playSonicId", data.playSonicId);
+        setFieldValue("ownerID", {
+          value: data.userId,
+          label: data.userName,
+        });
         setItemIdForUpdate(undefined);
         queryClient.invalidateQueries({
           queryKey: [QUERIES.ReservationList],
