@@ -26,7 +26,7 @@ const { BASE_URL } = import.meta.env;
 
 const AppRoutes: FC = () => {
   const { currentUser, logout } = useAuthStore();
-
+  const auth = useAuthStore((e) => e.auth);
   const locale = useLang();
   useEffect(() => {
     const _dir = ["ar"].includes(locale) ? "rtl" : "ltr";
@@ -57,7 +57,6 @@ const AppRoutes: FC = () => {
       document.removeEventListener("click", handleUserActivity);
     };
   }, [logout]);
-  const auth = useAuthStore((e) => e.auth);
 
   return (
     <BrowserRouter basename={BASE_URL}>

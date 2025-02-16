@@ -148,11 +148,16 @@ export const UpdateClubModalForm = ({ ClubData, isLoading }: IProps) => {
     // values.newImages?.map((img: string) => {
     //   formData.append(`Images`, img);
     // });
-
+    const usedLangIds = ClubData.clubInfoResponses.map((lang) => {
+      return lang.languageId;
+    });
     let index = 0;
     Languages.forEach((lang) => {
       if (values[`name${lang?.id}`]) {
-        formData.append(`ClubInfos[${index}].id`, values.id.toString());
+        formData.append(
+          `ClubInfos[${index}].id`,
+          usedLangIds.includes(lang.id) ? values.id.toString() : "0"
+        );
         formData.append(`ClubInfos[${index}].clubId`, values.id.toString());
         formData.append(`ClubInfos[${index}].languageId`, lang.id.toString());
         formData.append(`ClubInfos[${index}].name`, values[`name${lang?.id}`]);
@@ -276,14 +281,11 @@ const ClubUpdateForm: FC<IData> = ({ clubData }) => {
 
   const { mutateAsync: deleteImage } = useMutation(
     async () => {
-      const confirm = await showConfirmationAlert();
-      if (confirm) {
-        const data = await ClubCommandInstance.deleteClubImage(
-          ClubUrlEnum.DeleteClubImage,
-          clubData?.id
-        );
-        return data;
-      }
+      const data = await ClubCommandInstance.deleteClubImage(
+        ClubUrlEnum.DeleteClubImage,
+        clubData?.id
+      );
+      return data;
     },
     {
       onSuccess: async () => {
@@ -440,7 +442,10 @@ const ClubUpdateForm: FC<IData> = ({ clubData }) => {
                     fileName={clubData.image}
                     imageUrl={clubData.image}
                     onClickDelete={async () => {
-                      await deleteImage();
+                      const confirm = await showConfirmationAlert();
+                      if (confirm) {
+                        await deleteImage();
+                      }
                     }}
                   />
                 ) : (

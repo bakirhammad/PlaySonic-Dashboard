@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef } from "react";
 import {
   CustomButton,
-  CustomCheckbox,
   CustomInputField,
   CustomListLoading,
   CustomToast,
@@ -37,11 +36,10 @@ export const UpdateAdminUsers = ({ AdminUsersData, isLoading }: IProps) => {
   const queryClient = useQueryClient();
 
   const initialValues = useMemo(() => {
-    // wait for name , clubId , roleId return in api
     return {
       id: AdminUsersData.id,
       userName: AdminUsersData.userName,
-      name: AdminUsersData.name,
+      name: AdminUsersData.firstName,
       email: AdminUsersData.email,
       password: AdminUsersData.password,
       phoneNumber: AdminUsersData.phoneNo,
@@ -55,7 +53,7 @@ export const UpdateAdminUsers = ({ AdminUsersData, isLoading }: IProps) => {
     userName: Yup.string().required("Field is Required"),
     email: Yup.string().required("Field is Required"),
     phoneNumber: Yup.string().required("Field is Required"),
-    password: Yup.string().required("Field is Required"),
+    // password: Yup.string().required("Field is Required"),
   });
 
   const RolesSchema = Yup.object().shape(_RolesSchema);
@@ -68,7 +66,7 @@ export const UpdateAdminUsers = ({ AdminUsersData, isLoading }: IProps) => {
     formData.append("Name", values.name);
     formData.append("UserName", values.userName);
     formData.append("Email", values.email);
-    formData.append("Password", values.password);
+    formData.append("Password", values.password ? values.password : "");
     formData.append("PhoneNumber", values.phoneNumber);
     formData.append("RoleId", values.roleId.value);
     values.clubId && formData.append("ClubId", values.clubId.value);
@@ -84,7 +82,7 @@ export const UpdateAdminUsers = ({ AdminUsersData, isLoading }: IProps) => {
         });
         setItemIdForUpdate(undefined);
         queryClient.invalidateQueries({
-          queryKey: [QUERIES.RolesList],
+          queryKey: [QUERIES.AdminUsersList],
         });
       }
     } catch (error) {
@@ -172,6 +170,7 @@ const RolesUpdateForm = ({ AdminUsersData }: IProp) => {
               type="text"
             />
             <CustomInputField
+              disabled={true}
               name="userName"
               placeholder="User-Name"
               label="User-Name"

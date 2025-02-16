@@ -1,15 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IAddUsersCommand {
   createAddUsers(url: string, body: any): Promise<IAddUsersData>;
-  updateAddUsers(
-    url: string,
-    body: IAddUsersBody
-  ): Promise<IAddUsersData>;
+  updateAddUsers(url: string, body: IAddUsersBody): Promise<IAddUsersData>;
   deleteAddUsers(url: any, id: number): Promise<IAddUsersData>;
-  multipleDeleteAddUsers(
-    url: string,
-    ids: number[]
-  ): Promise<IAddUsersData>;
+  multipleDeleteAddUsers(url: string, ids: number[]): Promise<IAddUsersData>;
 }
 
 export interface IAddUsersQuery {
@@ -17,10 +11,7 @@ export interface IAddUsersQuery {
 }
 
 export interface IAddUsersQueryById {
-  getAddUsersById(
-    url: string,
-    id: number | string
-  ): Promise<IAddUsersData>;
+  getAddUsersById(url: string, id: number | string): Promise<IAddUsersData>;
 }
 
 export interface IAddUsersBody {
@@ -38,14 +29,14 @@ export interface IAddUsersBody {
 }
 
 export interface IAddUsersData {
-  id: number,
-  userName: string,
-  name:string,
-  email: string,
-  password: string
-  phoneNo: string
-  phoneNumber: string
-  roleId: number,
-  clubId: number,
-  roleName: string,
+  id: number;
+  userName: string;
+  firstName: string;
+  email: string;
+  password: string;
+  phoneNo: string;
+  phoneNumber: string;
+  roleId: number;
+  clubId: number;
+  roleName: string;
 }

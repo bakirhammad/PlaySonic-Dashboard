@@ -1,6 +1,7 @@
 import { ClubAdminWrapper } from "@presentation/pages/clubAdmin/ClubAdminWrapper";
 import { Route } from "./Routes";
 import { lazy } from "react";
+import ReservationListWrapper from "@presentation/pages/reservation";
 
 const MyCourtsWrapper = lazy(
   () => import("@presentation/pages/clubAdmin/myCourts")
@@ -9,7 +10,6 @@ const MyCourtsWrapper = lazy(
 const MyReservations = lazy(
   () => import("@presentation/pages/clubAdmin/myReservations")
 );
-
 
 const ViewCourtWrapper = lazy(
   () => import("@presentation/pages/clubAdmin/myCourts/components/ViewCourt")
@@ -53,6 +53,13 @@ const ClubAdminRoutes: Route = {
       breadcrumbs: [],
     },
     {
+      path: "myreservations/list",
+      title: "SIDEBAR-My-Reservations",
+      component: ReservationListWrapper,
+      role: [],
+      breadcrumbs: [],
+    },
+    {
       path: "viewcourt/:id",
       title: "SIDEBAR-Court",
       component: ViewCourtWrapper,
@@ -86,7 +93,7 @@ const ClubAdminRoutes: Route = {
       component: ClubUserTransectionsListWrapper,
       role: [],
       breadcrumbs: [],
-    }
+    },
   ],
 };
 

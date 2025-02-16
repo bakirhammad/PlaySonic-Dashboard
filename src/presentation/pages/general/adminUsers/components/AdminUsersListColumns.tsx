@@ -7,6 +7,7 @@ import {
 } from "@presentation/components/tables";
 import { IAddUsersData } from "@domain/entities/general/AddUsers/AddUsers";
 import ClubNameCell from "@presentation/helpers/cells/ClubNameCell";
+import { AdminUsersActionCell } from "./AdminUsersActionCell";
 
 const AdminUsersListColumns: ReadonlyArray<Column<IAddUsersData>> = [
   {
@@ -26,6 +27,20 @@ const AdminUsersListColumns: ReadonlyArray<Column<IAddUsersData>> = [
       />
     ),
     id: "name",
+    Cell: ({ ...props }) => {
+      return <CustomCell data={props.data[props.row.index]?.firstName} />;
+    },
+  },
+  {
+    Header: (props) => (
+      <CustomHeaderCell
+        tableProps={props}
+        title="USER-NAME"
+        enableSorting={false}
+        className="min-w-125px"
+      />
+    ),
+    id: "user name",
     Cell: ({ ...props }) => {
       return <CustomCell data={props.data[props.row.index]?.userName} />;
     },
@@ -86,19 +101,19 @@ const AdminUsersListColumns: ReadonlyArray<Column<IAddUsersData>> = [
       return <CustomCell data={props.data[props.row.index]?.phoneNo} />;
     },
   },
-  // {
-  //   Header: (props) => (
-  //     <CustomHeaderCell
-  //       tableProps={props}
-  //       title="ACTION"
-  //       className="min-w-100px"
-  //     />
-  //   ),
-  //   id: "actions",
-  //   Cell: ({ ...props }) => (
-  //     <AdminUsersActionCell id={props.data[props.row.index].id} />
-  //   ),
-  // },
+  {
+    Header: (props) => (
+      <CustomHeaderCell
+        tableProps={props}
+        title="ACTION"
+        className="min-w-100px"
+      />
+    ),
+    id: "actions",
+    Cell: ({ ...props }) => (
+      <AdminUsersActionCell id={props.data[props.row.index].id} />
+    ),
+  },
 ];
 
 export { AdminUsersListColumns };

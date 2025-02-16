@@ -27,7 +27,6 @@ import {
   DaysOptionsDDL,
   IDaysOptionsDDL,
 } from "@presentation/helpers/DDL/DaysOptions";
-import { useCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useCourtsDDL";
 import CustomTimePicker from "@presentation/components/forms/CustomTimePicker";
 import { useClubCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useClubCourtsDDL";
 import { useClubsDDL } from "@presentation/hooks/queries/DDL/Club/useClubsDDL";
@@ -145,7 +144,6 @@ const CourtScheduleUpdateForm: FC<IPropData> = ({ CourtScheduleData }) => {
     setFieldValue,
   }: FormikContextType<FormikValues> = useFormikContext();
 
-  const { CourtsOption } = useCourtsDDL();
   const { clubsOption, isClubLoading } = useClubsDDL();
   const { ClubCourtsOption, isClubCourtLoading } = useClubCourtsDDL(
     values.clubId.value
@@ -168,19 +166,25 @@ const CourtScheduleUpdateForm: FC<IPropData> = ({ CourtScheduleData }) => {
         });
       }
     });
-    CourtsOption.forEach((elem) => {
-      if (elem.value === values.courtId) {
-        return setFieldValue("courtId", {
-          value: elem.value,
-          label: elem.label,
-        });
+
+    const selectedCourt = ClubCourtsOption.find((elem) => {
+      if (elem.value === CourtScheduleData.courtId) {
+        return true;
       }
     });
+    if (selectedCourt) {
+      setFieldValue("courtId", {
+        value: selectedCourt.value,
+        label: selectedCourt.label,
+      });
+    } else {
+      setFieldValue("courtId", null);
+    }
   }, [
-    CourtsOption,
+    ClubCourtsOption,
     clubsOption,
     values.clubId,
-    values.courtId,
+    CourtScheduleData.courtId,
     setFieldValue,
     CourtScheduleData.days,
   ]);

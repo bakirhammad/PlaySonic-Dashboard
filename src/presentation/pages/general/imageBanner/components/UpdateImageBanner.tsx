@@ -123,14 +123,11 @@ const ImageBannerUpdateForm: FC<IProp> = ({ ImageBannerData }) => {
 
   const { mutateAsync: deleteImage } = useMutation(
     async () => {
-      const confirm = await showConfirmationAlert();
-      if (confirm) {
-        const data = await ImageBannerCommandInstance.deleteBannerImage(
-          ImageBannerUrlEnum.DeleteBannerImage,
-          ImageBannerData?.id
-        );
-        return data;
-      }
+      const data = await ImageBannerCommandInstance.deleteBannerImage(
+        ImageBannerUrlEnum.DeleteBannerImage,
+        ImageBannerData?.id
+      );
+      return data;
     },
     {
       onSuccess: async () => {
@@ -196,7 +193,10 @@ const ImageBannerUpdateForm: FC<IProp> = ({ ImageBannerData }) => {
                     fileName={ImageBannerData.image}
                     imageUrl={ImageBannerData.image}
                     onClickDelete={async () => {
-                      await deleteImage();
+                      const confirm = await showConfirmationAlert();
+                      if (confirm) {
+                        await deleteImage();
+                      }
                     }}
                   />
                 ) : (

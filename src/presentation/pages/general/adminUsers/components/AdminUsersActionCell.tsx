@@ -111,7 +111,9 @@ const AdminUsersActionCell: FC<Props> = ({ id, name }) => {
             setItemIdForUpdate(undefined);
           }}
         >
-          {data && <UpdateAdminUsers AdminUsersData={data} isLoading={isLoading} />}
+          {data && (
+            <UpdateAdminUsers AdminUsersData={data} isLoading={isLoading} />
+          )}
         </CustomModal>
       )}
     </>

@@ -68,6 +68,25 @@ const ReservationListColumns: ReadonlyArray<Column<IReservationData>> = [
     Header: (props) => (
       <CustomHeaderCell
         tableProps={props}
+        title="STATUS-APPROVAL"
+        className=" min-w-150px tw-text-center"
+      />
+    ),
+    id: "approval",
+    Cell: ({ ...props }) => {
+      return props.data[props.row.index]?.status ===
+        ReservationStatusEnum["New"]
+        ? "Pending"
+        : props.data[props.row.index]?.status ===
+          ReservationStatusEnum["Cancelled"]
+        ? "Cancelled"
+        : "Approved";
+    },
+  },
+  {
+    Header: (props) => (
+      <CustomHeaderCell
+        tableProps={props}
         title="SIDEBAR-RESERVATION-OWNER-NAME"
         enableSorting={false}
         className="min-w-125px"
@@ -256,25 +275,7 @@ const ReservationListColumns: ReadonlyArray<Column<IReservationData>> = [
       />
     ),
   },
-  {
-    Header: (props) => (
-      <CustomHeaderCell
-        tableProps={props}
-        title="STATUS-APPROVAL"
-        className=" min-w-100px tw-text-center"
-      />
-    ),
-    id: "approval",
-    Cell: ({ ...props }) => {
-      return props.data[props.row.index]?.status ===
-        ReservationStatusEnum["New"]
-        ? "Pending"
-        : props.data[props.row.index]?.status ===
-          ReservationStatusEnum["Cancelled"]
-        ? "Cancelled"
-        : "Approved";
-    },
-  },
+
   {
     Header: (props) => (
       <CustomHeaderCell
@@ -285,7 +286,10 @@ const ReservationListColumns: ReadonlyArray<Column<IReservationData>> = [
     ),
     id: "actions",
     Cell: ({ ...props }) => (
-      <ReservationActionCell id={props.data[props.row.index].id} />
+      <ReservationActionCell
+        id={props.data[props.row.index].id}
+        status={props.data[props.row.index].status}
+      />
     ),
   },
 ];
