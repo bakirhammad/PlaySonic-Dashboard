@@ -205,7 +205,7 @@
   "Reservation-Level-Min": "أدنى مستوى للحجز",
   "Reservation-Level-Max": "أقصى مستوى للحجز",
   "Reservation-Date": "تاريخ الحجز",
-  "isPublic": "مغلق",
+  "isPublic": "هل الحجز عام",
   "SIDEBAR-My-Courts": "ملاعبي",
   "SIDEBAR-My-Reservations":"حجوزاتي",
   "SIDEBAR-Court":"الملعب",

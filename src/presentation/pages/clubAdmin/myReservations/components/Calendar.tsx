@@ -18,14 +18,16 @@ interface IPropsCalendar {
   startTime: string | Date;
   endTime: string | Date;
   courtId: number;
-  clubId:number
+  clubId: number;
+  isIndoor: boolean;
 }
 const Calendar = ({
   ReservationData,
-  startTime ,
+  startTime,
   endTime,
   courtId,
-  clubId
+  clubId,
+  isIndoor,
 }: IPropsCalendar) => {
   const columns = useMemo(() => CalenderReservationListColumns, []);
   const [reservationPerDay, setReservaionPerDay] = useState<IReservationData[]>(
@@ -54,7 +56,6 @@ const Calendar = ({
     };
   });
 
-
   function handleEventClick(clickInfo: EventClickArg) {
     setReservaionPerDay(clickInfo.event.extendedProps.activeRate);
     setModalTitle(moment(clickInfo.event.start!).format("YYYY-MM-DD"));
@@ -81,7 +82,6 @@ const Calendar = ({
           timeGridPlugin,
           interactionPlugin,
         ]}
-        
         headerToolbar={{
           left: "prevYear,prev,next,nextYear,today",
           center: "title",
@@ -128,6 +128,7 @@ const Calendar = ({
             reservationDate={clickedReservationDate}
             startTime={clickedReservationTime}
             clubId={clubId}
+            isIndoor={isIndoor}
           />
         </CustomModal>
       )}{" "}

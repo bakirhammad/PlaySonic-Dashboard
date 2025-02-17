@@ -5,7 +5,6 @@ import { ICourtBody } from "@domain/entities/Court/Court";
 import { CourtUrlEnum } from "@domain/enums/URL/Court/CourtUrls/Court";
 import { useCallback, useEffect, useState } from "react";
 
-
 const useClubCourtsDDL = (id: number) => {
   const [ClubCourtsList, setCourts] = useState<ICourtBody>();
   const [ClubCourtsOption, setCourtsOption] = useState<IDDlOption[]>([]);
@@ -21,6 +20,7 @@ const useClubCourtsDDL = (id: number) => {
         return {
           value: Court.id,
           label: Court.name,
+          isIndoor: Court.indoor,
         };
       });
       setCourtsOption(_CourtsOption?.length ? _CourtsOption : []);
@@ -36,6 +36,6 @@ const useClubCourtsDDL = (id: number) => {
     fetchCourts();
   }, [fetchCourts]);
   return { ClubCourtsList, isClubCourtLoading: isLoading, ClubCourtsOption };
-}
+};
 
 export { useClubCourtsDDL };

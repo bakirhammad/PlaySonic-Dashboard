@@ -30,19 +30,21 @@ interface ICourtId {
   courtId: number;
   startTime: string;
   reservationDate: string;
-  clubId:number
+  clubId: number;
+  isIndoor: boolean;
 }
 export const CalenderCreateMyReservationForm: FC<ICourtId> = ({
   courtId,
   reservationDate,
   startTime,
-  clubId
+  clubId,
+  isIndoor,
 }) => {
   const formikRef = useRef<FormikProps<FormikValues> | null>(null);
   const { setItemIdForUpdate } = useListView();
   const queryClient = useQueryClient();
 
-  const initialValues = Object.assign({
+  const initialValues = {
     courtId: courtId,
     playSonicId: 0,
     slotTypeId: null,
@@ -52,13 +54,13 @@ export const CalenderCreateMyReservationForm: FC<ICourtId> = ({
     reservationTypeId: { value: 4, label: "Book Court" },
     levelMin: null,
     levelMax: null,
-    isPublic: false,
+    isPublic: !isIndoor,
     reservationDate: reservationDate,
     slotsRemaining: 1,
     sportId: 1,
     //  ownerID: "345ebbb9-924b-4359-845d-60860c5ed515",
     ownerID: null,
-  });
+  };
 
   const _ReservationSchema = Object.assign({
     // courtId: validationSchemas.object,
@@ -125,16 +127,20 @@ export const CalenderCreateMyReservationForm: FC<ICourtId> = ({
         handleSubmit(values, setSubmitting);
       }}
     >
-      <ReservationForm courtId={courtId} formikRef={formikRef} clubId={clubId} />
+      <ReservationForm
+        courtId={courtId}
+        formikRef={formikRef}
+        clubId={clubId}
+      />
     </Formik>
   );
 };
 interface Iprop {
   courtId: number;
   formikRef: React.MutableRefObject<FormikProps<FormikValues> | null>;
-  clubId:number
+  clubId: number;
 }
-const ReservationForm = ({ courtId, formikRef ,clubId }: Iprop) => {
+const ReservationForm = ({ courtId, formikRef, clubId }: Iprop) => {
   const {
     errors,
     touched,
@@ -233,7 +239,7 @@ const ReservationForm = ({ courtId, formikRef ,clubId }: Iprop) => {
               <div className="row  row-cols-1 row-cols-md-2 border-info-subtle border-black">
                 <CustomCheckbox
                   labelTxt="isPublic"
-                  name={"indoor"}
+                  name={"isPublic"}
                   touched={touched}
                   errors={errors}
                 />
@@ -257,7 +263,11 @@ const ReservationForm = ({ courtId, formikRef ,clubId }: Iprop) => {
 
         {isSubmitting && <CustomListLoading />}
       </Form>
-      <CreateNewUser values={values} setFieldValue={setFieldValue} clubId={clubId}/>
+      <CreateNewUser
+        values={values}
+        setFieldValue={setFieldValue}
+        clubId={clubId}
+      />
       <div className="text-center pt-15">
         <CustomButton
           type="submit"
