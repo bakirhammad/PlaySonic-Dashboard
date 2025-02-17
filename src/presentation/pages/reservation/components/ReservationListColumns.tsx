@@ -73,15 +73,23 @@ const ReservationListColumns: ReadonlyArray<Column<IReservationData>> = [
       />
     ),
     id: "approval",
-    Cell: ({ ...props }) => {
-      return props.data[props.row.index]?.status ===
-        ReservationStatusEnum["New"]
-        ? "Pending"
-        : props.data[props.row.index]?.status ===
-          ReservationStatusEnum["Cancelled"]
-        ? "Cancelled"
-        : "Approved";
-    },
+    Cell: ({ ...props }) => (
+      <CustomStatusCell
+        status={
+          ReservationStatusEnum[props.data[props.row.index]?.status] === "New"
+            ? "info"
+            : ReservationStatusEnum[props.data[props.row.index]?.status] ===
+              "Cancelled"
+            ? "danger"
+            : "success"
+        }
+        title={
+          ReservationStatusEnum[props.data[props.row.index]?.status] === "New"
+            ? "Pending"
+            : ReservationStatusEnum[props.data[props.row.index]?.status]
+        }
+      />
+    ),
   },
   {
     Header: (props) => (
