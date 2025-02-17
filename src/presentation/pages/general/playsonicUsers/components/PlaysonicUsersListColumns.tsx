@@ -87,7 +87,7 @@ const PlaysonicUsersListColumns: ReadonlyArray<Column<IPlaysonicUsersData>> = [
       return (
         <ActionItem
           icon="pencil"
-          title="Transection"
+          title="Transaction"
           onClick={() =>
             navigate(
               `/apps/admin/usertransection/${props.data[props.row.index]?.id}`

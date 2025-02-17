@@ -50,25 +50,23 @@ const MyUsersListColumns: ReadonlyArray<Column<IMyUsersData>> = [
     Header: (props) => (
       <CustomHeaderCell
         tableProps={props}
-        title="Transection "
+        title="Transaction"
         className="min-w-100px"
       />
     ),
     id: "actions",
-     Cell: ({ ...props }) => {
-       const navigate = useNavigate();
-       return (
-         <ActionItem
-           icon="pencil"
-           title="Transection"
-           onClick={() =>
-             navigate(
-               `/apps/clubtransection/${props.data[props.row.index]?.id}`
-             )
-           }
-         />
-       );
-     },
+    Cell: ({ ...props }) => {
+      const navigate = useNavigate();
+      return (
+        <ActionItem
+          icon="pencil"
+          title="Transaction"
+          onClick={() =>
+            navigate(`/apps/clubtransection/${props.data[props.row.index]?.id}`)
+          }
+        />
+      );
+    },
   },
 ];
 
