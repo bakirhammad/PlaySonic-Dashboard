@@ -27,6 +27,7 @@ export default function MyReservations() {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [courtId, setCourtId] = useState<any>();
+  const [isIndoor, setIsIndoor] = useState(false);
 
   const { auth } = useAuthStore();
   const clubId = auth?.clubID || 0;
@@ -67,21 +68,26 @@ export default function MyReservations() {
     return data.status !== ReservationStatusEnum["Cancelled"];
   });
 
+  const { ClubCourtsOption, isClubCourtLoading } = useClubCourtsDDL(clubId);
+
   const handleSubmit = (values: typeof initialValues) => {
     const query = stringifyRequestQuery({
       filter: {
         courtId: values.court?.value,
       },
     });
+    const getCourt = ClubCourtsOption.find(
+      (court) => court.value === values.court?.value
+    );
     setSearchQuery(query);
     setApplyFilter(true);
     setStartTime(values.fromDate);
     setEndTime(values.toDate);
     setCourtId(values.court?.value);
+    setIsIndoor(getCourt?.isIndoor);
   };
   const queryClient = useQueryClient();
 
-  const { ClubCourtsOption, isClubCourtLoading } = useClubCourtsDDL(clubId);
   return (
     <CustomKTCard>
       <CustomKTCardBody>
@@ -151,6 +157,7 @@ export default function MyReservations() {
             endTime={endTime}
             courtId={courtId}
             clubId={clubId}
+            isIndoor={isIndoor}
           />
         )}
 
