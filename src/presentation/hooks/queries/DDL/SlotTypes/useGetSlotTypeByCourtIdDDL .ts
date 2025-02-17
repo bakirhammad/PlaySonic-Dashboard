@@ -4,22 +4,32 @@ import { ICourtSlotsBody } from "@domain/entities/CourtSlot/CourtSlot";
 import { CourtSlotsUrlEnum } from "@domain/enums/URL/courtSlots/courtSlotsUrls/CourtSlots";
 import { useCallback, useEffect, useState } from "react";
 
-
-function useGetSlotTypeByCourtIdDDL(courtId: number) {
+function useGetSlotTypeByCourtIdDDL(courtId: number, enabled = true) {
   const [CourtSlotTypesList, setCourtSlotTypes] = useState<ICourtSlotsBody>();
-  const [CourtSlotTypesOption, setCourtSlotTypesOption] = useState<number[]>([]);
+  const [CourtSlotTypesOption, setCourtSlotTypesOption] = useState<number[]>(
+    []
+  );
   const [isLoading, setIsLoadingCourtSlotTypes] = useState<boolean>(false);
+  const refresh = useCallback(() => {
+    fetchCourtSlotTypes();
+  }, []);
 
   const fetchCourtSlotTypes = useCallback(async () => {
     try {
+      if (!enabled) return;
       setIsLoadingCourtSlotTypes(true);
-      const CourtSlotTypesListRes = await CourtSlotsQueryInstance.getCourtSlotsList(
-        `${CourtSlotsUrlEnum.GetCourtSlotsList}courtId=${courtId}`
+      const CourtSlotTypesListRes =
+        await CourtSlotsQueryInstance.getCourtSlotsList(
+          `${CourtSlotsUrlEnum.GetCourtSlotsList}courtId=${courtId}`
+        );
+      const _CourtSlotTypesOption = CourtSlotTypesListRes?.data?.map(
+        (court) => {
+          return court.slotTypeId;
+        }
       );
-      const _CourtSlotTypesOption = CourtSlotTypesListRes?.data?.map((court) => {
-        return court.slotTypeId
-      });
-      setCourtSlotTypesOption(_CourtSlotTypesOption?.length ? _CourtSlotTypesOption : []);
+      setCourtSlotTypesOption(
+        _CourtSlotTypesOption?.length ? _CourtSlotTypesOption : []
+      );
       setCourtSlotTypes(CourtSlotTypesListRes);
     } catch (error) {
       console.log(error);
@@ -31,7 +41,12 @@ function useGetSlotTypeByCourtIdDDL(courtId: number) {
   useEffect(() => {
     fetchCourtSlotTypes();
   }, [fetchCourtSlotTypes]);
-  return { CourtSlotTypesList, isCourtSlotTypesLoading: isLoading, CourtSlotTypesOption };
+  return {
+    CourtSlotTypesList,
+    isCourtSlotTypesLoading: isLoading,
+    CourtSlotTypesOption,
+    refresh,
+  };
 }
 
 export { useGetSlotTypeByCourtIdDDL };

@@ -21,6 +21,24 @@ interface IPropsCalendar {
   clubId: number;
   isIndoor: boolean;
 }
+
+export const CalendarColors = [
+  "green", // Red
+  "purple", // Purple
+  "blue", // Blue
+  "mint", // Mint
+  "gray", // Gray
+  "orange", // Orange
+  "pink", // Pink
+  "teal", // Green
+  "red", // Teal
+];
+
+export const getColorForCourt = (index: number) => {
+  // Use modulo to cycle through colors if we have more courts than colors
+  return CalendarColors[index % CalendarColors.length];
+};
+
 const Calendar = ({
   ReservationData,
   startTime,
@@ -45,7 +63,8 @@ const Calendar = ({
     const fullEndDate = `${filterDate}T${data.endTime}`;
     return {
       id: data.id,
-      backgroundColor: data.status === 1 ? "#4584FF" : "green",
+      backgroundColor:
+        courtId !== "All" ? "green" : getColorForCourt(data.courtId),
       title: data.name,
       start: fullStartDate,
       end: fullEndDate,

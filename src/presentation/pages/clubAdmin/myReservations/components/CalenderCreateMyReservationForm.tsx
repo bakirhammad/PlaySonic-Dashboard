@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import {
   CustomButton,
   CustomCheckbox,
@@ -27,9 +27,10 @@ import { CreateNewUser } from "./CreateNewUser";
 import { useGetSlotTypeByCourtIdDDL } from "@presentation/hooks/queries/DDL/SlotTypes/useGetSlotTypeByCourtIdDDL ";
 import { GetPlaySonicByIdInstance } from "@app/useCases/getPlaySonicId";
 import { GetPlaySonicByIdUrlEnum } from "@domain/enums/URL/GetPlaySonicById/GetPlaySonicById";
+import { useClubCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useClubCourtsDDL";
 
 interface ICourtId {
-  courtId: number;
+  courtId: number | "All";
   startTime: string;
   reservationDate: string;
   clubId: number;
@@ -47,7 +48,7 @@ export const CalenderCreateMyReservationForm: FC<ICourtId> = ({
   const queryClient = useQueryClient();
 
   const initialValues = {
-    courtId: courtId,
+    courtId: courtId === "All" ? null : courtId,
     playSonicId: 0,
     slotTypeId: null,
     startTime: startTime,
@@ -65,7 +66,7 @@ export const CalenderCreateMyReservationForm: FC<ICourtId> = ({
   };
 
   const _ReservationSchema = Object.assign({
-    // courtId: validationSchemas.object,
+    courtId: courtId === "All" ? validationSchemas.object : null,
     slotTypeId: validationSchemas.object,
     startTime: Yup.string().required("Required"),
     endTime: Yup.string().required("Required"),
@@ -83,7 +84,10 @@ export const CalenderCreateMyReservationForm: FC<ICourtId> = ({
     setSubmitting: (isSubmitting: boolean) => void
   ) => {
     const formData = new FormData();
-    formData.append("CourtId", values.courtId);
+    formData.append(
+      "CourtId",
+      courtId === "All" ? values.courtId.value : courtId
+    );
     formData.append("SlotTypeId", values.slotTypeId.value);
     formData.append("StartTime", values.startTime);
     formData.append("EndTime", values.endTime);
@@ -149,7 +153,7 @@ export const CalenderCreateMyReservationForm: FC<ICourtId> = ({
   );
 };
 interface Iprop {
-  courtId: number;
+  courtId: number | "All";
   formikRef: React.MutableRefObject<FormikProps<FormikValues> | null>;
   clubId: number;
 }
@@ -162,13 +166,25 @@ const ReservationForm = ({ courtId, formikRef, clubId }: Iprop) => {
     values,
     setFieldValue,
   }: FormikContextType<FormikValues> = useFormikContext();
-
+  const { ClubCourtsOption, isClubCourtLoading } = useClubCourtsDDL(clubId);
+  const [getCourtId, setGetCourtId] = useState(courtId === "All" ? 0 : courtId);
   const { SlotTypesOption } = useSlotTypesDDL();
-  const { CourtSlotTypesOption } = useGetSlotTypeByCourtIdDDL(courtId);
+  const { CourtSlotTypesOption, refresh } = useGetSlotTypeByCourtIdDDL(
+    courtId === "All" ? getCourtId : courtId,
+    !!getCourtId
+  );
 
   const filteredSlotTypes = SlotTypesOption.filter((slot) =>
     CourtSlotTypesOption.includes(slot.value)
   );
+
+  useEffect(() => {
+    if (values.courtId) {
+      setGetCourtId(values.courtId.value);
+      setFieldValue("slotTypeId", null);
+      refresh();
+    }
+  }, [values.courtId]);
 
   useEffect(() => {
     if (values.slotTypeId && values.startTime) {
@@ -193,6 +209,15 @@ const ReservationForm = ({ courtId, formikRef, clubId }: Iprop) => {
         <div className="row row-cols-md-1 row-cols-sm-1 row-cols-1">
           <div className="row">
             <div className="row row-cols-1 row-cols-md-2">
+              {courtId === "All" && (
+                <CustomSelectField
+                  name="courtId"
+                  options={ClubCourtsOption}
+                  isloading={isClubCourtLoading}
+                  label="DDL-COURT-NAME"
+                  placeholder="DDL-CHOOSE-COURT"
+                />
+              )}
               <CustomSelectField
                 name="slotTypeId"
                 options={filteredSlotTypes}
