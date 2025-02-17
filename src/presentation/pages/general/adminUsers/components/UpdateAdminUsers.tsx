@@ -53,7 +53,16 @@ export const UpdateAdminUsers = ({ AdminUsersData, isLoading }: IProps) => {
     userName: Yup.string().required("Field is Required"),
     email: Yup.string().required("Field is Required"),
     phoneNumber: Yup.string().required("Field is Required"),
-    // password: Yup.string().required("Field is Required"),
+    password: Yup.string()
+      .min(6, "Password must be at least 6 characters long")
+      .matches(/\d/, "Password must contain at least one digit")
+      .matches(/[a-z]/, "Password must contain at least one lowercase letter")
+      .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+      .matches(
+        /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/,
+        "Password must contain at least one special character"
+      )
+      .nullable(),
   });
 
   const RolesSchema = Yup.object().shape(_RolesSchema);
@@ -195,6 +204,7 @@ const RolesUpdateForm = ({ AdminUsersData }: IProp) => {
               errors={errors}
               type="password"
               isSubmitting={isSubmitting}
+              toggleShowPassword
             />
           </div>
           <div className="row row-cols-2">

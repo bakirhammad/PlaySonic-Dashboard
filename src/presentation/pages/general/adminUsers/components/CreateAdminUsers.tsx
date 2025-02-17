@@ -46,7 +46,10 @@ export const CreateAdminUsers = () => {
     userName: Yup.string().required("Field is Required"),
     email: Yup.string().required("Field is Required"),
     phoneNumber: Yup.string().required("Field is Required"),
-    password: Yup.string().required("Field is Required"),
+    password: validationSchemas.password,
+    confirmPassword: validationSchemas.ConfirmPassword({
+      passwordRef: "password",
+    }),
     roleId: validationSchemas.object.required("Field is Required"),
   });
 
@@ -159,6 +162,18 @@ const RolesForm = () => {
               errors={errors}
               type="password"
               isSubmitting={isSubmitting}
+              toggleShowPassword
+            />
+            <CustomInputField
+              name="confirmPassword"
+              placeholder="Confirm Password"
+              label="Confirm Password"
+              as="input"
+              type="password"
+              touched={touched}
+              errors={errors}
+              isSubmitting={isSubmitting}
+              toggleShowPassword
             />
           </div>
           <div className="row row-cols-2">
