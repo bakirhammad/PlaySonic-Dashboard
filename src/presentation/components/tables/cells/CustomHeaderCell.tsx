@@ -18,12 +18,14 @@ const CustomHeaderCell: FC<Props> = ({
   tableProps,
   enableSorting = true,
 }) => {
-  const id = tableProps?.column.id;
+  const id =
+    tableProps?.column.id === "approval" ? "status" : tableProps?.column.id;
   const { state, updateState } = useQueryRequest();
 
   const isSelectedForSorting = useMemo(() => {
     return state.orderBy && state.orderBy === id;
   }, [state, id]);
+
   const orderDirection: "asc" | "desc" | undefined = useMemo(
     () => (state.orderDirection ? "asc" : "desc"),
     [state]
