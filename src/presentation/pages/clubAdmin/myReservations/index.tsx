@@ -24,11 +24,14 @@ import { ReservationStatusEnum } from "@domain/enums/reservationStatus/Reservati
 import { useNavigate } from "react-router-dom";
 
 export default function MyReservations() {
-  const [applyFilter, setApplyFilter] = useState(false);
-  const [searchQuery, setSearchQuery] = useState<string>();
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
-  const [courtId, setCourtId] = useState<any>();
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [startTime, setStartTime] = useState(
+    new Date(Date.now() - 172800000).toISOString()
+  );
+  const [endTime, setEndTime] = useState(
+    new Date(Date.now() + 345600000).toISOString()
+  );
+  const [courtId, setCourtId] = useState<any>("All");
   const [isIndoor, setIsIndoor] = useState(false);
   const navigate = useNavigate();
 
@@ -46,13 +49,15 @@ export default function MyReservations() {
         `${ReservationUrlEnum.GetReservationList}${searchQuery}`
       );
     },
-    enabled: applyFilter,
   });
 
   const initialValues = {
-    fromDate: "",
-    toDate: "",
-    court: null as IDDlOption | null,
+    fromDate: new Date(Date.now() - 172800000).toISOString(),
+    toDate: new Date(Date.now() + 345600000).toISOString(),
+    court: {
+      label: "All",
+      value: "All",
+    } as IDDlOption | null,
   };
 
   const filterSchema = Yup.object().shape({
@@ -86,7 +91,6 @@ export default function MyReservations() {
       (court) => court.value === values.court?.value
     );
     setSearchQuery(query);
-    setApplyFilter(true);
     setStartTime(values.fromDate);
     setEndTime(values.toDate);
     setCourtId(values.court?.value);
