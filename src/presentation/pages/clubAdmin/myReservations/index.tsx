@@ -3,6 +3,7 @@ import {
   CustomButton,
   CustomKTCard,
   CustomKTCardBody,
+  CustomKTIcon,
 } from "@presentation/components";
 import { stringifyRequestQuery } from "@presentation/helpers";
 import { useQuery, useQueryClient } from "react-query";
@@ -20,6 +21,7 @@ import { useClubCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useClubC
 import CustomTimePicker from "@presentation/components/forms/CustomTimePicker";
 import { useAuthStore } from "@infrastructure/storage/AuthStore";
 import { ReservationStatusEnum } from "@domain/enums/reservationStatus/ReservationStatusEnum";
+import { useNavigate } from "react-router-dom";
 
 export default function MyReservations() {
   const [applyFilter, setApplyFilter] = useState(false);
@@ -28,6 +30,7 @@ export default function MyReservations() {
   const [endTime, setEndTime] = useState("");
   const [courtId, setCourtId] = useState<any>();
   const [isIndoor, setIsIndoor] = useState(false);
+  const navigate = useNavigate();
 
   const { auth } = useAuthStore();
   const clubId = auth?.clubID || 0;
@@ -111,6 +114,14 @@ export default function MyReservations() {
 
   return (
     <CustomKTCard>
+      <div className="tw-ml-10 tw-mt-4">
+        <CustomKTIcon iconName="element-6" className="fs-1 text-primary" />
+        <button
+          onClick={() => navigate(`/apps/myreservations/list?from=calendar`)}
+        >
+          <CustomKTIcon iconName="element-9" className="fs-1" />
+        </button>
+      </div>
       <CustomKTCardBody>
         <Formik
           initialValues={initialValues}
