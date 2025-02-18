@@ -155,8 +155,7 @@ const Calendar = ({
             isIndoor={isIndoor}
           />
         </CustomModal>
-      )}{" "}
-      *
+      )}
     </div>
   );
 };
