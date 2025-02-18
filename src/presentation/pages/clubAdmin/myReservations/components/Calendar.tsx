@@ -98,7 +98,7 @@ const Calendar = ({
   }
 
   return (
-    <div className="">
+    <div className="tw-min-h-[1400px]">
       <FullCalendar
         plugins={[
           dayGridPlugin,
@@ -127,6 +127,7 @@ const Calendar = ({
         dayCellClassNames="border-5"
         eventClassNames="d-block"
         dayMaxEventRows={2}
+        viewClassNames={"tw-h-[1370px]"}
       />
       {isModalopen && (
         <CustomModal
