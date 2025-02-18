@@ -60,7 +60,12 @@ const Calendar = ({
   const reservationEventData = ReservationData.map((data) => {
     const filterDate = data.reservationDate.split("T").shift();
     const fullStartDate = `${filterDate}T${data.startTime}`;
-    const fullEndDate = `${filterDate}T${data.endTime}`;
+    let fullEndDate = `${filterDate}T${data.endTime}`;
+    if (moment(fullEndDate).diff(fullStartDate, "hours") < 0) {
+      fullEndDate = moment(fullEndDate)
+        .add(1, "day")
+        .format("YYYY-MM-DDTHH:mm");
+    }
     return {
       id: data.id,
       backgroundColor:
