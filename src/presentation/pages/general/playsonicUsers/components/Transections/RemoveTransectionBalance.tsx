@@ -137,8 +137,8 @@ const RemoveBalanceUpdateForm = () => {
               />
               <CustomSelectField
                 name="transactionType"
-                label="Transection-Type"
-                placeholder="Transection-Type"
+                label="Transaction-Type"
+                placeholder="Transaction-Type"
                 touched={touched}
                 errors={errors}
                 disabled={true}

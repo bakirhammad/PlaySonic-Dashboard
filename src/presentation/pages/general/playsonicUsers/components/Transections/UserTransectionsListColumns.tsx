@@ -48,7 +48,7 @@ const UserTransectionsListColumns: ReadonlyArray<Column<ICommerceData>> = [
     Header: (props) => (
       <CustomHeaderCell
         tableProps={props}
-        title="Transection-Type"
+        title="Transaction-Type"
         enableSorting={false}
         className="min-w-125px"
       />

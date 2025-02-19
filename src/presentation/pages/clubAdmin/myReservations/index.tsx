@@ -3,13 +3,14 @@ import {
   CustomButton,
   CustomKTCard,
   CustomKTCardBody,
+  CustomKTIcon,
 } from "@presentation/components";
 import { stringifyRequestQuery } from "@presentation/helpers";
 import { useQuery, useQueryClient } from "react-query";
 import { Form, Formik } from "formik";
 import { useState } from "react";
 import PleaseWaitTxt from "@presentation/helpers/loading/PleaseWaitTxt";
-import Calendar from "./components/Calendar";
+import Calendar, { getColorForCourt } from "./components/Calendar";
 import validationSchemas from "@presentation/helpers/validationSchemas";
 import * as Yup from "yup";
 import CustomSelectField from "@presentation/components/forms/CustomSelectField";
@@ -20,14 +21,19 @@ import { useClubCourtsDDL } from "@presentation/hooks/queries/DDL/Court/useClubC
 import CustomTimePicker from "@presentation/components/forms/CustomTimePicker";
 import { useAuthStore } from "@infrastructure/storage/AuthStore";
 import { ReservationStatusEnum } from "@domain/enums/reservationStatus/ReservationStatusEnum";
+import { useNavigate } from "react-router-dom";
 
 export default function MyReservations() {
-  const [applyFilter, setApplyFilter] = useState(false);
-  const [searchQuery, setSearchQuery] = useState<string>();
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
-  const [courtId, setCourtId] = useState<any>();
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [startTime, setStartTime] = useState(
+    new Date(Date.now() - 172800000).toISOString()
+  );
+  const [endTime, setEndTime] = useState(
+    new Date(Date.now() + 345600000).toISOString()
+  );
+  const [courtId, setCourtId] = useState<any>("All");
   const [isIndoor, setIsIndoor] = useState(false);
+  const navigate = useNavigate();
 
   const { auth } = useAuthStore();
   const clubId = auth?.clubID || 0;
@@ -43,13 +49,15 @@ export default function MyReservations() {
         `${ReservationUrlEnum.GetReservationList}${searchQuery}`
       );
     },
-    enabled: applyFilter,
   });
 
   const initialValues = {
-    fromDate: "",
-    toDate: "",
-    court: null as IDDlOption | null,
+    fromDate: new Date(Date.now() - 172800000).toISOString(),
+    toDate: new Date(Date.now() + 345600000).toISOString(),
+    court: {
+      label: "All",
+      value: "All",
+    } as IDDlOption | null,
   };
 
   const filterSchema = Yup.object().shape({
@@ -65,22 +73,25 @@ export default function MyReservations() {
 
   // return all non cancelled reservations.
   const filteredData = ReservationData?.data.filter((data) => {
-    return data.status !== ReservationStatusEnum["Cancelled"];
+    return data.status === ReservationStatusEnum["Approved"];
   });
 
   const { ClubCourtsOption, isClubCourtLoading } = useClubCourtsDDL(clubId);
 
   const handleSubmit = (values: typeof initialValues) => {
-    const query = stringifyRequestQuery({
-      filter: {
-        courtId: values.court?.value,
-      },
-    });
+    let query = "";
+    if (values.court?.value !== "All") {
+      query = stringifyRequestQuery({
+        filter: {
+          courtId: values.court?.value,
+        },
+      });
+    }
+    
     const getCourt = ClubCourtsOption.find(
       (court) => court.value === values.court?.value
     );
     setSearchQuery(query);
-    setApplyFilter(true);
     setStartTime(values.fromDate);
     setEndTime(values.toDate);
     setCourtId(values.court?.value);
@@ -88,8 +99,34 @@ export default function MyReservations() {
   };
   const queryClient = useQueryClient();
 
+  const generateCourtColors = ({ label, value }: IDDlOption) => {
+    const color = getColorForCourt(+value);
+    return (
+      <>
+        <div
+          key={color}
+          style={{
+            backgroundColor: color,
+            borderRadius: "50%",
+            width: "20px",
+            height: "20px",
+          }}
+        />
+        {label}
+      </>
+    );
+  };
+
   return (
     <CustomKTCard>
+      <div className="tw-ml-10 tw-mt-4">
+        <CustomKTIcon iconName="element-6" className="fs-1 text-primary" />
+        <button
+          onClick={() => navigate(`/apps/myreservations/list?from=calendar`)}
+        >
+          <CustomKTIcon iconName="element-9" className="fs-1" />
+        </button>
+      </div>
       <CustomKTCardBody>
         <Formik
           initialValues={initialValues}
@@ -118,7 +155,10 @@ export default function MyReservations() {
                 />
                 <CustomSelectField
                   name="court"
-                  options={ClubCourtsOption}
+                  options={[
+                    { label: "All", value: "All" },
+                    ...ClubCourtsOption,
+                  ]}
                   isloading={isClubCourtLoading}
                   label="DDL-COURT-NAME"
                   placeholder="DDL-CHOOSE-COURT"
@@ -132,11 +172,11 @@ export default function MyReservations() {
                       setSearchQuery("");
                       setApplyFilter(false);
                       queryClient.removeQueries("MyReservations");
-                    }}
-                    className="btn btn-light btn-active-light-primary fw-bold me-2 px-6"
-                    data-kt-user-table-filter="reset"
-                    disabled={isLoading}
-                  /> */}
+                      }}
+                      className="btn btn-light btn-active-light-primary fw-bold me-2 px-6"
+                      data-kt-user-table-filter="reset"
+                      disabled={isLoading}
+                      /> */}
                   <CustomButton
                     type="submit"
                     text={"APPLY_FILTER"}
@@ -146,6 +186,13 @@ export default function MyReservations() {
                     disabled={isLoading}
                   />
                 </div>
+                {courtId === "All" && (
+                  <div className="d-flex tw-items-center mb-2 tw-gap-2">
+                    {ClubCourtsOption.map((court) =>
+                      generateCourtColors(court)
+                    )}
+                  </div>
+                )}
               </div>
             </Form>
           )}

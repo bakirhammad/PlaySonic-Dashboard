@@ -21,6 +21,24 @@ interface IPropsCalendar {
   clubId: number;
   isIndoor: boolean;
 }
+
+export const CalendarColors = [
+  "green", // Red
+  "purple", // Purple
+  "blue", // Blue
+  "mint", // Mint
+  "gray", // Gray
+  "orange", // Orange
+  "pink", // Pink
+  "teal", // Green
+  "red", // Teal
+];
+
+export const getColorForCourt = (index: number) => {
+  // Use modulo to cycle through colors if we have more courts than colors
+  return CalendarColors[index % CalendarColors.length];
+};
+
 const Calendar = ({
   ReservationData,
   startTime,
@@ -42,10 +60,16 @@ const Calendar = ({
   const reservationEventData = ReservationData.map((data) => {
     const filterDate = data.reservationDate.split("T").shift();
     const fullStartDate = `${filterDate}T${data.startTime}`;
-    const fullEndDate = `${filterDate}T${data.endTime}`;
+    let fullEndDate = `${filterDate}T${data.endTime}`;
+    if (moment(fullEndDate).diff(fullStartDate, "hours") < 0) {
+      fullEndDate = moment(fullEndDate)
+        .add(1, "day")
+        .format("YYYY-MM-DDTHH:mm");
+    }
     return {
       id: data.id,
-      backgroundColor: data.status === 1 ? "#4584FF" : "green",
+      backgroundColor:
+        courtId !== "All" ? "green" : getColorForCourt(data.courtId),
       title: data.name,
       start: fullStartDate,
       end: fullEndDate,
@@ -74,7 +98,7 @@ const Calendar = ({
   }
 
   return (
-    <div className="">
+    <div className="tw-min-h-[1400px]">
       <FullCalendar
         plugins={[
           dayGridPlugin,
@@ -103,6 +127,7 @@ const Calendar = ({
         dayCellClassNames="border-5"
         eventClassNames="d-block"
         dayMaxEventRows={2}
+        viewClassNames={"tw-h-[1370px]"}
       />
       {isModalopen && (
         <CustomModal
@@ -131,8 +156,7 @@ const Calendar = ({
             isIndoor={isIndoor}
           />
         </CustomModal>
-      )}{" "}
-      *
+      )}
     </div>
   );
 };

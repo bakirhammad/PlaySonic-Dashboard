@@ -12,6 +12,7 @@ import {
   useQueryRequest,
 } from "@presentation/context/index";
 import {
+  CustomKTIcon,
   CustomToast,
   showConfirmationAlert,
   showDeletedAlert,
@@ -23,9 +24,13 @@ import { ReservationUrlEnum } from "@domain/enums/URL/Reservation/reservationUrl
 import { ReservationListColumns } from "./components/ReservationListColumns";
 import { CreateReservationForm } from "./components/CreateReservationForm";
 import ReservaionFilter from "./components/ReservaionFilter";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const ReservationList = () => {
   const { updateData, query, setIsLoading, setError } = useQueryRequest();
+  const navigate = useNavigate();
+  const [queryParameters] = useSearchParams();
+  const from = queryParameters.get("from");
 
   const columns = useMemo(() => ReservationListColumns, []);
 
@@ -80,6 +85,14 @@ const ReservationList = () => {
   return (
     <>
       <CustomKTCard>
+        {from === "calendar" && (
+          <div className="tw-ml-10 tw-mt-4">
+            <button onClick={() => navigate(`/apps/myreservations`)}>
+              <CustomKTIcon iconName="element-6" className="fs-1" />
+            </button>
+            <CustomKTIcon iconName="element-9" className="fs-1 text-primary" />
+          </div>
+        )}
         <CustomTableToolbar
           addBtnAction={() => {
             setItemIdForUpdate(null);
